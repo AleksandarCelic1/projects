@@ -1,0 +1,87 @@
+
+    // CHARACTER
+    int previous_tile_tag_;
+    int current_tile_tag_;
+
+
+
+        int getCurrentTileTag() const { return this->current_tile_tag_;}
+    int getLastTileTag() const { return this->previous_tile_tag_;}
+
+        void setCurrentTileTag(int new_tile_tag)  { this->current_tile_tag_ = new_tile_tag;}
+    void setPreviousTileTag(int new_tile_tag) { this->previous_tile_tag_ = new_tile_tag;}
+
+
+    //SOLDIER
+      this->current_tile_tag_ = 0;
+  this->previous_tile_tag_ = 0;
+
+
+
+  case static_cast<int>(Grid::WALL_VERTICAL):
+    case static_cast<int>(Grid::WALL_VERTICAL_NEW):
+    case static_cast<int>(Grid::WALL_VERTICAL_EDGE_DOWNSIDE):
+
+      srcRect.h = static_cast<int>(Grid::V_WALL_H);
+      srcRect.w = static_cast<int>(Grid::V_WALL_W);
+
+      dstRect.h = static_cast<int>(Grid::TILE_SIZE);
+      dstRect.w = static_cast<int>(Grid::V_WALL_W) * 4; // 28 not 64
+
+      if(x_axis == x_off_set)
+      {
+        dstRect.x = x_axis + (static_cast<int>(Grid::TILE_SIZE) - static_cast<int>(Grid::V_WALL_W) * 4);
+      }
+      else
+      {
+        dstRect.x = x_axis;
+      }
+      break;
+    case static_cast<int>(Grid::WALL_HORIZONTAL):
+    case static_cast<int>(Grid::WALL_HORIZONTAL_NEW_ONE):
+    case static_cast<int>(Grid::WALL_HORIZONTAL_NEW_TWO):
+    case static_cast<int>(Grid::WALL_HORIZONTAL_NEW_THREE):
+    case static_cast<int>(Grid::WALL_HORIZONTAL_NEW_DOWNSIDE):
+      srcRect.h = static_cast<int>(Grid::H_WALL_H);
+      srcRect.w = static_cast<int>(Grid::H_WALL_W);
+
+      dstRect.h = static_cast<int>(Grid::TILE_SIZE);
+      dstRect.w = static_cast<int>(Grid::TILE_SIZE);
+      break;
+    case static_cast<int>(Grid::FLOOR):
+    case static_cast<int>(Grid::FLOOR_NEW_ONE):
+    case static_cast<int>(Grid::FLOOR_NEW_TWO):
+    case static_cast<int>(Grid::FLOOR_NEW_THREE):
+      srcRect.h = static_cast<int>(Grid::FLOOR_H);
+      srcRect.w = static_cast<int>(Grid::FLOOR_W);
+
+      dstRect.h = static_cast<int>(Grid::TILE_SIZE);
+      dstRect.w = static_cast<int>(Grid::TILE_SIZE);
+      break;
+
+
+
+
+
+    {2, 69, 70, 71, 69, 70, 71, 69, 70, 2},
+    {73, 0, 0, 0, 0, 0, 0, 0, 0, 73},
+    {73, 0, 0, 0, 0, 0, 0, 0, 0, 73},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {73, 0, 0, 3, 0, 0, 0, 4, 0, 73},
+    {73, 0, 0, 0, 0, 0, 0, 0, 0, 73},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {73, 0, 0, 0, 0, 0, 0, 0, 0, 73},
+    {74, 72, 72, 72, 72, 72, 72, 72, 72, 74}
+
+
+    {2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 3, 0, 0, 0, 4, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+    {2, 1, 1, 1, 1, 1, 1, 1, 1, 2}

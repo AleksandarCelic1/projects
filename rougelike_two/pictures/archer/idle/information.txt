@@ -1,0 +1,2 @@
+The archer has 6 frames in total the sequence goes {1 1 2 2 1 1}, as there is only two pictures
+its meaningless to crop out 4 extra photos that are the same we shall just render in this order << !

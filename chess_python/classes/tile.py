@@ -9,6 +9,7 @@ class Tile:
     self.x = x
     self.y = y
     self.piece = piece
+    self.is_under_attack = False
 
   def is_occupied(self) -> bool: # -> is used to indicate what the function returns 
     return self.piece is not None

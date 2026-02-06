@@ -1,5 +1,6 @@
 # Constants used for the project << !
 from enum import Enum
+from typing import List, Tuple
 
 class PieceType(Enum):
   PAWN = 1
@@ -28,6 +29,18 @@ class ColorsTile(Enum):
 class ColorsPieces(Enum):
   WHITE = 1
   BLACK = 2
+
+class PlayerID(Enum):
+  PLAYER_ONE_WHITE = 1
+  PLAYER_TWO_BLACK = 2
+
+
+
+MAP_WIDTH = 8
+MAP_HEIGHT = 8
+
+MAP_UPPER_BOUND = 7
+MAP_LOWER_BOUND = 0 # constants used for map scanning 
 
 
 

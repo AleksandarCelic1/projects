@@ -1,4 +1,5 @@
-import tile
+from .constants import ColorsTile
+from .tile import Tile
 
 
 
@@ -8,7 +9,7 @@ class Board:
     self.chess_board = []
 
     remove_piece_this_iteration = True
-    current_color = tile.piece.constants.ColorsTile.WHITE
+    current_color = ColorsTile.WHITE
 
     for y in range(size_height):
       row = [] # outer index // index // y in python you must make rows 
@@ -20,14 +21,14 @@ class Board:
 
 
         if remove_piece_this_iteration == True:
-          row.append(tile.Tile(current_color, deque_of_pieces.popLeft(), x, y))
+          row.append(Tile(current_color, deque_of_pieces.popleft(), x, y))
         else:
-          row.append(tile.Tile(current_color, None, x, y))
+          row.append(Tile(current_color, None, x, y))
 
-        if current_color == tile.piece.constants.ColorsTile.BLACK:
-          current_color = tile.piece.constants.ColorsTile.WHITE
+        if current_color == ColorsTile.BLACK:
+          current_color = ColorsTile.WHITE
         else:  
-          current_color = tile.piece.constants.ColorsTile.BLACK
+          current_color = ColorsTile.BLACK
 
         remove_piece_this_iteration = True
 

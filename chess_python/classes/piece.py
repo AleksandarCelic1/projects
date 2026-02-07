@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
-import constants
+from typing import TYPE_CHECKING
+from .constants import PieceType, ColorsPieces, PlayerID
+
+if TYPE_CHECKING:
+    from .board import Board
 
 
 class Piece(ABC):
     
-    def __init__(self, piece_type : constants.PieceType, color : constants.ColorsPieces, x : int, y : int, player_id : constants.PlayerID):
+    def __init__(self, piece_type : PieceType, color : ColorsPieces, x : int, y : int, player_id : PlayerID):
         
         self.type = piece_type
         self.color = color
@@ -15,7 +19,7 @@ class Piece(ABC):
         self.is_protected = False
 
     @abstractmethod
-    def getMoves(self, logic_map, x, y):
+    def getMoves(self, logic_map: "Board", x: int, y: int):
         pass
     
         

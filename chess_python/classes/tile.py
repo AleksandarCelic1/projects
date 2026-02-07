@@ -1,9 +1,12 @@
-import piece
+from typing import Optional, TYPE_CHECKING
 
-from typing import Optional
+if TYPE_CHECKING:
+  from .piece import Piece
+
+from .constants import ColorsTile
 
 class Tile:
-  def __init__(self, color_of_tile : piece.constants.ColorsTile, piece : Optional[piece.Piece], x, y): # piece : Optional[piece.Piece] means i must pass something
+  def __init__(self, color_of_tile : ColorsTile, piece : "Piece", x: int , y: int): # piece : Optional[piece.Piece] means i must pass something
     # piece : Optional[piece.Piece] = None, i can pass something but i dont have to << !
     self.color = color_of_tile
     self.x = x

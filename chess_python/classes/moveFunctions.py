@@ -1,9 +1,9 @@
 from .board import Board
 from .tile import Tile
 from .piece import Piece
-from .piece import constants
-from .constants import ColorsPieces
-from .constants import ColorsTile
+from . import constants
+from .constants import ColorsPieces, ColorsTile
+from .pawn import Pawn
 
 from typing import List, Tuple
 

@@ -3,7 +3,6 @@ from .tile import Tile
 from .piece import Piece
 from . import constants
 from .constants import ColorsPieces, ColorsTile
-from .pawn import Pawn
 
 from typing import List, Tuple
 
@@ -121,6 +120,9 @@ def knightViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile
   iterator_y :int = y
 
   for offset_x, offset_y in KNIGHT_VIABLE_MOVES_OFFSETS:
+    iterator_x = x
+    iterator_y = y
+
     iterator_y += offset_y
     iterator_x += offset_x
 
@@ -147,6 +149,10 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
   iterator_y = y
 
   for offset_x, offset_y in KING_VIABLE_MOVES_OFFSETS:
+
+    iterator_x = x
+    iterator_y = y # must be reseted every time << !
+
     iterator_x += offset_x
     iterator_y += offset_y ### SEE IF THE LOGIC HERE IS AS IT SHOULD BE << !!
 
@@ -163,20 +169,24 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
       else:
         if(not current_tile.is_under_attack):
           moves.append((current_tile, ColorsTile.GREY)) # if nothing is there and nothing attack this square can move there
-        else:
+        else: 
           moves.append((current_tile, ColorsTile.RED)) # if nothing is there but somthing is attacking this square you cant move it 
-  
+  ### THIS MIGHT BE A PROBLEM LATER AS BOTH SIDES CAN ATTACK THE TILES  << !!!!!
 
 #This is firstly made withou en-passant << !
-def pawnSpecificMoves(logical_map : Board, x: int, y: int, moves: List[Tuple[Tile, ColorsTile]], origin: Tile):
+
   
-  # One Square in front of the pawn 
-  current_tile : Tile = logical_map.chess_board[y - 1][x]
 
-  if(current_tile.is_occupied()):
-    moves.append((current_tile, ColorsTile.RED)) # CANT MOVE, something is in front of the pawn 
+  
 
-    ## FINISH THIS 
+  
+
+
+
+
+
+
+
   
 
 

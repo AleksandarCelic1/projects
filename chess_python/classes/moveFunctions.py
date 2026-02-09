@@ -1,8 +1,7 @@
 from .board import Board
 from .tile import Tile
-from .piece import Piece
 from . import constants
-from .constants import ColorsPieces, ColorsTile
+from .constants import ColorsTile
 
 from typing import List, Tuple
 
@@ -137,7 +136,7 @@ def knightViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile
       else:
         moves.append((current_tile, ColorsTile.GREY))
         
-  return moves
+  
 
 def isInsideOfBounds(x: int, y: int) -> bool:
   placeholder = ((constants.MAP_LOWER_BOUND <= x <= constants.MAP_UPPER_BOUND) and (constants.MAP_LOWER_BOUND <= y <= constants.MAP_UPPER_BOUND))

@@ -17,6 +17,8 @@ class Piece(ABC):
         self.y = y
         self.player_id = player_id
         self.is_protected = False
+        self.should_be_captured = False # This is intended to be True only when its taken so we can render easier using this variable
+        self.is_selected = False # when someone presses on the piece its now selected and we retrieve all possible moves 
 
     @abstractmethod
     def getMoves(self, logic_map: "Board", x: int, y: int):

@@ -3,6 +3,8 @@ from .tile import Tile
 
 
 
+
+
 class Board:
   def __init__(self, deque_of_pieces, size_width : int, size_height : int):
     

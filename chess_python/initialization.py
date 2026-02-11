@@ -7,11 +7,15 @@ from .classes.knight import Knight
 from .classes.board import Board
 from .classes.tile import Tile
 from .classes.piece import Piece
-from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT
+from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures
 # check for circual imports
 
 from typing import Deque
 from collections import deque
+
+import pygame
+
+hash_map_for_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
 
 def initializingAllPieces() -> Deque[Piece]:
   all_pieces : Deque[Piece] = deque() # all pieces will be here << !
@@ -100,7 +104,45 @@ def initializingBoard(all_pieces_in_dq : Deque[Piece], width_board: int, height_
   return main_logic_board
 
 def initializingWindowAndRenderer():
+  pass
+
+
+def initAllImages():
   
+  black_bishop = pygame.image.load("classes/photos_/BlackBishop.png").convert_alpha()
+  black_horse  = pygame.image.load("classes/photos_/BlackHorse.png").convert_alpha()
+  black_king   = pygame.image.load("classes/photos_/BlackKing.png").convert_alpha()
+  black_pawn   = pygame.image.load("classes/photos_/BlackPawn.png").convert_alpha()
+  black_queen  = pygame.image.load("classes/photos_/BlackQueen.png").convert_alpha()
+  black_rook   = pygame.image.load("classes/photos_/BlackRook.png").convert_alpha()
+
+  board_img    = pygame.image.load("classes/photos_/board.png").convert_alpha()
+
+  white_bishop = pygame.image.load("classes/photos_/WhiteBishop.png").convert_alpha()
+  white_horse  = pygame.image.load("classes/photos_/WhiteHorse.png").convert_alpha()
+  white_king   = pygame.image.load("classes/photos_/WhiteKing.png").convert_alpha()
+  white_pawn   = pygame.image.load("classes/photos_/WhitePawn.png").convert_alpha()
+  white_queen  = pygame.image.load("classes/photos_/WhiteQueen.png").convert_alpha()
+  white_rook   = pygame.image.load("classes/photos_/WhiteRook.png").convert_alpha()
+
+  hash_map_for_pictures: dict[HashKeyForPictures, pygame.Surface] = {}
+
+  hash_map_for_pictures[HashKeyForPictures.BLACK_PAWN] = black_pawn
+  hash_map_for_pictures[HashKeyForPictures.BLACK_KING] = black_king
+  hash_map_for_pictures[HashKeyForPictures.BLACK_QUEEN] = black_queen
+  hash_map_for_pictures[HashKeyForPictures.BLACK_BISHOP] = black_bishop
+  hash_map_for_pictures[HashKeyForPictures.BLACK_KNIGHT] = black_horse 
+  hash_map_for_pictures[HashKeyForPictures.BLACK_ROOK] = black_rook
+
+  hash_map_for_pictures[HashKeyForPictures.WHITE_PAWN] = white_pawn
+  hash_map_for_pictures[HashKeyForPictures.WHITE_KING] = white_king
+  hash_map_for_pictures[HashKeyForPictures.WHITE_QUEEN] = white_queen
+  hash_map_for_pictures[HashKeyForPictures.WHITE_BISHOP] = white_bishop
+  hash_map_for_pictures[HashKeyForPictures.WHITE_KNIGHT] = white_horse  
+  hash_map_for_pictures[HashKeyForPictures.WHITE_ROOK] = white_rook
+
+
+
 
 
 

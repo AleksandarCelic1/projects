@@ -13,7 +13,6 @@ class Bishop(Piece):
     
   def getMoves(self, logic_map: "Board", x: int, y: int):
     placeholder = diagonalMoves(logic_map, x, y) # check if this works in python
-    self.is_selected = True
 
 
     return placeholder

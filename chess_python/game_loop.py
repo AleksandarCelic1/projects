@@ -1,7 +1,6 @@
 import pygame
 
-FPS = 60
-FRAME_DELAY = 1000 / FPS
+
 
 
 
@@ -11,8 +10,13 @@ def gameLoop():
   program_running = True
 
   #cap fps
+  last_frame = pygame.time.get_ticks()
   #pool events
   while program_running:
+
+    frame_start = pygame.time.get_ticks()
+    # Here coems delta time handling // calculation of it, if it was to be needed in this project
+    last_frame = frame_start
 
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -26,6 +30,7 @@ def gameLoop():
           # call dispatcher 
           # THERE WILL BE A GLOBAL IS A PIECE SELECTED THAT WILL BE ON AND OFF when playing << !
 
+  #call controlFPS
         
 
 
@@ -34,6 +39,8 @@ def gameLoop():
   #render
 
   pass
+
+
 
 
 

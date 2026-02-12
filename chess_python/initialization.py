@@ -104,7 +104,14 @@ def initializingBoard(all_pieces_in_dq : Deque[Piece], width_board: int, height_
   return main_logic_board
 
 def initializingWindowAndRenderer():
-  pass
+  SCREEN_WIDTH = 800
+  SCREEN_HEIGHT = 1200
+
+  main_window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+  pygame.display.set_caption("Cela's Chess <3")
+
+  
+
 
 
 def initAllImages():

@@ -101,7 +101,7 @@ def initializingAllPieces() -> Deque[Piece]:
 
   return all_pieces
 
-def initializingBoard(all_pieces_in_dq : Deque[Piece], width_board: int, height_board: int):
+def initializingBoard(all_pieces_in_dq : Deque[Piece]):
   main_logic_board = Board(all_pieces_in_dq, MAP_WIDTH, MAP_HEIGHT)
 
   return main_logic_board
@@ -110,6 +110,8 @@ def initializingWindowAndRenderer():
 
   main_window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   pygame.display.set_caption("Cela's Chess <3")
+
+  return main_window
 
 def initAllImages():
   

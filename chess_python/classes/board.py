@@ -74,8 +74,13 @@ class Board:
 
     for index in range(len(list_of_legal_moves)):
       
-      placeholder : Tile = list_of_legal_moves[0][0]
-      #FINSIH TIHS LATER TOMMOROW << !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      placeholder : Tile = list_of_legal_moves[index][0]
+
+      colored_tile = pygame.Surface((TILE_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT), pygame.SRCALPHA)
+      colored_tile.fill(hash_map_for_rgba_tiles[list_of_legal_moves[index][1]])
+
+      window_renderer.blit(colored_tile, placeholder.x_axis, placeholder.y_axis)
+      
 
 
 

@@ -9,6 +9,8 @@ from .classes.tile import Tile
 from .classes.piece import Piece
 from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT
 from .classes.constants import SCALING_FACTOR_FOUR
+from .classes.player import Player
+from .classes.tools import Tools
 # check for circual imports
 
 from typing import Deque, Tuple, Optional
@@ -106,13 +108,6 @@ def initializingBoard(all_pieces_in_dq : Deque[Piece]):
 
   return main_logic_board
 
-def initializingWindowAndRenderer():
-
-  main_window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-  pygame.display.set_caption("Cela's Chess <3")
-
-  return main_window
-
 def initAllImages():
   
 
@@ -182,7 +177,21 @@ def initAllImages():
   #787878 Natural Grey
   hash_map_for_rgba_tiles[ColorsTile.GREY] = (120, 120, 120, 120) # alpha is freely by "hand" chosen 
 
+def initPlayersAndTools():
 
+  player_one: Player = Player(PlayerID.PLAYER_ONE_WHITE)
+  player_two: Player = Player(PlayerID.PLAYER_TWO_BLACK)
+
+  main_window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+  pygame.display.set_caption("Cela's Chess <3")
+
+  tools: Tools = Tools(player_one, player_two, main_window)
+
+  return tools
+
+
+
+  
 
 
 

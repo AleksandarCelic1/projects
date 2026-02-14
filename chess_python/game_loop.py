@@ -1,15 +1,15 @@
 from .classes.constants import PlayerID, MOVE_TAKEN, IS_A_PIECE_SELECTED
-from .gameFunctions import dispatcher, controlFPS
+from .gameFunctions import dispatcher, controlFPS, validatingLastMove
 from .classes.board import Board
+from .classes.tools import Tools, GameState
 
 import pygame
 
 
 
-def gameLoop(main_renderer_and_window: pygame.Surface, main_board: Board):
+def gameLoop(main_tools: Tools):
 
   global MOVE_TAKEN
-  player_playing = PlayerID.PLAYER_ONE_WHITE
   program_running = True
 
 
@@ -24,41 +24,40 @@ def gameLoop(main_renderer_and_window: pygame.Surface, main_board: Board):
         program_running = False # This is when we exit via "X" of the window
 
       
-      if event.type == pygame.MOUSEBUTTONDOWN:
+      if event.type == pygame.MOUSEBUTTONDOWN and main_tools.game_state == GameState.PLAYING:
         if event.button == 1 or event.button == 3: # 1 = left click 2 = middle clikc? i guess scroll 3 = right click
           button_x, button_y = event.pos
 
-          legal_moves = dispatcher(main_board, button_x, button_y, player_playing)
+          legal_moves = dispatcher(main_tools.chess_board, button_x, button_y, main_tools.player_playing)
 
           if(MOVE_TAKEN):
-            pass
+            validatingLastMove(main_tools, legal_moves)
             # logic func to check if its a valid more
-          
-
-
-          # call dispatcher 
-          # THERE WILL BE A GLOBAL IS A PIECE SELECTED THAT WILL BE ON AND OFF when playing << !
+      else:
+        continue
 
   
-  #logic
+    #logic
 
-  #render
-  main_board.print_background(main_renderer_and_window)
-  main_board.print_pieces(main_renderer_and_window)
+    #render
+    main_tools.chess_board.print_background(main_tools.window_and_renderer)
+    main_tools.chess_board.print_pieces(main_tools.window_and_renderer)
 
-  if(IS_A_PIECE_SELECTED and not MOVE_TAKEN):
-    main_board.print_legal_moves(main_renderer_and_window, legal_moves)
+    if(IS_A_PIECE_SELECTED and not MOVE_TAKEN):
+      main_tools.chess_board.print_legal_moves(main_tools.window_and_renderer, legal_moves)
+
+    if(main_tools.game_state == GameState.PERFORMING_LERP):
+      pass
+      #call function that will render LERP and complete the engine where when finished the player playing is changed and gamestate is updated
+      # as we alreadt take no input while its lerping 
+
+    pygame.display.flip() # this "presents" what we drew 
 
 
-
-  # handle FPS
-  controlFPS(frame_start)
+    # handle FPS
+    controlFPS(frame_start)
 
   
-
-
-
-  pass
 
 
 

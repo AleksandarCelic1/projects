@@ -4,11 +4,12 @@ from .classes.board import Board
 from .classes.constants import FPS, FRAME_DELAY, IS_A_PIECE_SELECTED, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, MOVE_TAKEN, CURRENT_TILE_TO_INSPECT, ColorsTile, LERP
 from .classes.moveFunctions import isInsideOfBounds
 from .classes.tile import Tile
+from .classes.tools import Tools, GameState
 
 from typing import List, Tuple
 #make game dispatcher for x,y of mouse to get what piece shall be moved 
 
-def dispatcher(board: Board, mouse_x: int, mouse_y: int, player_id: PlayerID):
+def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int, player_id: PlayerID):
   
   global IS_A_PIECE_SELECTED
   global MOVE_TAKEN
@@ -25,7 +26,7 @@ def dispatcher(board: Board, mouse_x: int, mouse_y: int, player_id: PlayerID):
     if(not isInsideOfBounds(clicked_column, clicked_row)):
       return
     
-    placeholder : Tile = board.chess_board[clicked_row][clicked_column]
+    placeholder : Tile = main_tools.chess_board.chess_board[clicked_row][clicked_column]
 
     if(not placeholder.is_occupied()):
       IS_A_PIECE_SELECTED = False
@@ -43,14 +44,15 @@ def dispatcher(board: Board, mouse_x: int, mouse_y: int, player_id: PlayerID):
 
 
     IS_A_PIECE_SELECTED = True
-    array_of_legal_moves = current_piece.getMoves(board, clicked_column, clicked_row)
+    main_tools.current_players_selected_tile = placeholder
+    array_of_legal_moves = current_piece.getMoves(main_tools.chess_board, clicked_column, clicked_row)
 
     return array_of_legal_moves
   
 
-def validatingLastMove(board: Board, array_of_legal_moves: List[Tuple[Tile, ColorsTile]]):
+def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile, ColorsTile]]):
 
-  global LERP
+
   global IS_A_PIECE_SELECTED
   global MOVE_TAKEN
   for index in range(len(array_of_legal_moves)):
@@ -58,8 +60,8 @@ def validatingLastMove(board: Board, array_of_legal_moves: List[Tuple[Tile, Colo
     if(CURRENT_TILE_TO_INSPECT.x == array_of_legal_moves[index][0].x 
     and CURRENT_TILE_TO_INSPECT.y == array_of_legal_moves[index][0].y
     and array_of_legal_moves[index][1] != ColorsTile.RED):
-      LERP = True
-      return True
+      main_tools.game_state = GameState.PERFORMING_LERP
+      break
     
   
   IS_A_PIECE_SELECTED = False

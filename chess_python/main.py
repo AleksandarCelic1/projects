@@ -1,18 +1,27 @@
 import pygame
-from initialization import initAllImages, initializingAllPieces, initializingBoard, initializingWindowAndRenderer
+from initialization import initAllImages, initializingAllPieces, initializingBoard, initializingWindowAndRenderer, initPlayersAndTools
+from .game_loop import gameLoop
+
 
 
 def main():
   pygame.init() #Only once is sufficient, from here I will call all other init functions
 
-
   # Init - of all necessary things << !
   initAllImages()
   dq_of_all_pieces = initializingAllPieces()
-  main_window_and_renderer = initializingWindowAndRenderer()
-  initializingBoard(dq_of_all_pieces)
+  placeholder = initializingBoard(dq_of_all_pieces)
 
-  
+  main_tools = initPlayersAndTools()
+  main_tools.chess_board = placeholder
+
+
+
+
+  #jump to event handler << !
+  gameLoop(main_tools)
+
+
 
 
 

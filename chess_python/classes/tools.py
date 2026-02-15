@@ -1,7 +1,7 @@
 from .player import Player
 from .constants import PlayerID
 from .board import Board
-from typing import Enum
+from enum import Enum # enum is imported from enum and NOT from typing << !!
 from .tile import Tile
 
 import pygame
@@ -19,8 +19,13 @@ class Tools:
     self.player_playing : PlayerID = PlayerID.PLAYER_ONE_WHITE
 
     self.window_and_renderer : pygame.Surface = wind_render
-    self.chess_board: Board = None
+    self.main_board: Board = None
     self.current_players_selected_tile: Tile = None
+    self.current_players_target_tile: Tile = None
+
+    self.is_piece_selected = False
+    self.move_taken = False
+  
   
 
 

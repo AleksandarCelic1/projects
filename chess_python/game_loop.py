@@ -1,4 +1,4 @@
-from .classes.constants import PlayerID, MOVE_TAKEN, IS_A_PIECE_SELECTED
+from .classes import constants
 from .gameFunctions import dispatcher, controlFPS, validatingLastMove
 from .classes.board import Board
 from .classes.tools import Tools, GameState
@@ -9,7 +9,6 @@ import pygame
 
 def gameLoop(main_tools: Tools):
 
-  global MOVE_TAKEN
   program_running = True
 
 
@@ -28,23 +27,25 @@ def gameLoop(main_tools: Tools):
         if event.button == 1 or event.button == 3: # 1 = left click 2 = middle clikc? i guess scroll 3 = right click
           button_x, button_y = event.pos
 
-          legal_moves = dispatcher(main_tools.chess_board, button_x, button_y, main_tools.player_playing)
+          legal_moves = dispatcher(main_tools, button_x, button_y, main_tools.player_playing)
+          
 
-          if(MOVE_TAKEN):
+          if(main_tools.move_taken):
             validatingLastMove(main_tools, legal_moves)
             # logic func to check if its a valid more
       else:
         continue
 
+
   
     #logic
 
     #render
-    main_tools.chess_board.print_background(main_tools.window_and_renderer)
-    main_tools.chess_board.print_pieces(main_tools.window_and_renderer)
+    main_tools.main_board.print_background(main_tools.window_and_renderer)
+    main_tools.main_board.print_pieces(main_tools.window_and_renderer)
 
-    if(IS_A_PIECE_SELECTED and not MOVE_TAKEN):
-      main_tools.chess_board.print_legal_moves(main_tools.window_and_renderer, legal_moves)
+    if(main_tools.is_piece_selected and not main_tools.move_taken):
+      main_tools.main_board.print_legal_moves(main_tools.window_and_renderer, legal_moves)
 
     if(main_tools.game_state == GameState.PERFORMING_LERP):
       pass

@@ -2,6 +2,8 @@
 from enum import Enum
 from typing import List, Tuple
 
+import pygame
+
 class PieceType(Enum):
   PAWN = 1
   KNIGHT = 2
@@ -64,8 +66,8 @@ SCALING_FACTOR_FOUR = 4
 
 
 # SCREEN
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 1200
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 900
 
 BOARD_WIDTH_AND_HEIGHT = 142 * SCALING_FACTOR_FOUR # 568
 TILE_WIDTH_AND_HEIGHT = 16 * SCALING_FACTOR_FOUR
@@ -76,20 +78,24 @@ EVERY_PIECE_WIDTH_AND_HEIGHT = 16 * SCALING_FACTOR_FOUR
 BOARD_OFFSET_X_AND_Y = 7 * SCALING_FACTOR_FOUR
 BOARD_INNER_WIDTH_AND_HEIGHT = TILE_WIDTH_AND_HEIGHT * 8
 
-BOARD_X = (SCREEN_WIDTH / 2) - (BOARD_WIDTH_AND_HEIGHT / 2)
-BOARD_Y = (SCREEN_HEIGHT / 2) - (BOARD_WIDTH_AND_HEIGHT / 2) 
+BOARD_X = (SCREEN_WIDTH // 2) - (BOARD_WIDTH_AND_HEIGHT // 2)
+BOARD_Y = (SCREEN_HEIGHT // 2) - (BOARD_WIDTH_AND_HEIGHT // 2) 
 
 
 
 
 #FPS
 FPS = 60
-FRAME_DELAY = 1000 / FPS
+FRAME_DELAY = 1000 // FPS # // means FLOOR division << ! e.g. if result is 4,3 it will be 4
 
 #LOGIC DISPATCHER
 IS_A_PIECE_SELECTED = False
 MOVE_TAKEN = False
 CURRENT_TILE_TO_INSPECT = None
+
+#GLOBAL HASH TABLES
+hash_map_for_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
+hash_map_for_rgba_tiles : dict[ColorsTile, Tuple[int, int, int, int]] = {} 
 
 
 

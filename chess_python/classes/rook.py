@@ -1,5 +1,5 @@
 from .piece import Piece
-from .constants import PieceType, ColorsPieces, PlayerID, ColorsTile
+from .constants import PieceType, ColorsPieces, PlayerID, ColorsTile, HashKeyForPictures
 from typing import TYPE_CHECKING, List, Tuple
 from .tile import Tile
 
@@ -9,8 +9,8 @@ if(TYPE_CHECKING):
   from .board import Board
 
 class Rook(Piece):
-  def __init__(self, piece_type : PieceType, color : ColorsPieces, x : int, y : int, player_id : PlayerID):
-    super().__init__(piece_type, color, x, y, player_id)
+  def __init__(self, piece_type : PieceType, color : ColorsPieces, x : int, y : int, player_id : PlayerID, key: HashKeyForPictures):
+    super().__init__(piece_type, color, x, y, player_id, key)
     
   def getMoves(self, logic_map: "Board", x: int, y: int):
     a = horizontalMoves(logic_map, x, y)

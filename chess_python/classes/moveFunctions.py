@@ -7,7 +7,7 @@ from typing import List, Tuple
 
 
 KNIGHT_VIABLE_MOVES_OFFSETS= {  (-1, -2), (1, -2), (2, -1), (2, 1), (-2, -1), (-2, 1), (-1, 2), (1, 2)}
-KING_VIABLE_MOVES_OFFSETS = { (-1, -1), (0, -1), (1, -1), (-1, 0) (1, 0), (-1, 1), (0, 1), (1, 1)}
+KING_VIABLE_MOVES_OFFSETS = { (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)}
 
 
 # ALL FUNCTIONS ARE GOIGN TO BE FIRST MADE WITHOUT THE RULE OF PINNING << !
@@ -66,6 +66,7 @@ def scanHorizontal(logical_map : Board, x : int, y : int, direction_x : int, mov
     if current_tile.is_occupied():
       if current_tile.piece.player_id == origin.piece.player_id:
         moves.append((current_tile, ColorsTile.RED))
+        print(x,y)
         break
       else:
         moves.append((current_tile, ColorsTile.GREEN))
@@ -125,16 +126,22 @@ def knightViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile
     iterator_y += offset_y
     iterator_x += offset_x
 
-    if isInsideOfBounds(iterator_x, iterator_y):
-      current_tile : Tile = logical_map.chess_board[y][x]
+    print(iterator_x, iterator_y)
 
-      if(current_tile.is_occupied()):
-        if(current_tile.piece.player_id == origin.piece.player_id):
-          moves.append((current_tile, ColorsTile.RED))
-        else:
-          moves.append((current_tile, ColorsTile.GREEN))
+    if not isInsideOfBounds(iterator_x, iterator_y):
+      continue
+      
+    current_tile : Tile = logical_map.chess_board[iterator_y][iterator_x]
+
+    if(current_tile.is_occupied()):
+      if(current_tile.piece.player_id == origin.piece.player_id):
+        moves.append((current_tile, ColorsTile.RED))
       else:
-        moves.append((current_tile, ColorsTile.GREY))
+        moves.append((current_tile, ColorsTile.GREEN))
+    else:
+      moves.append((current_tile, ColorsTile.GREY))
+
+      
         
   
 
@@ -156,7 +163,7 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
     iterator_y += offset_y ### SEE IF THE LOGIC HERE IS AS IT SHOULD BE << !!
 
     if isInsideOfBounds(iterator_x, iterator_y):
-      current_tile : Tile = logical_map.chess_board[y][x]
+      current_tile : Tile = logical_map.chess_board[iterator_y][iterator_x]
 
       if(current_tile.is_occupied()):
         if(current_tile.piece.player_id == origin.piece.player_id):

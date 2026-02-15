@@ -1,6 +1,5 @@
-from .constants import ColorsTile, HashKeyForPictures, BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, TILE_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH
+from .constants import ColorsTile, HashKeyForPictures, BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, TILE_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_rgba_tiles, hash_map_for_pictures
 from .tile import Tile
-from ..initialization import hash_map_for_pictures, hash_map_for_rgba_tiles
 from typing import List, Tuple
 
 import pygame
@@ -49,7 +48,7 @@ class Board:
 
   def print_background(self, window_renderer: pygame.Surface):
     
-    window_renderer.fill(0, 0, 0) # fill black as background
+    window_renderer.fill((0, 0, 0)) # fill black as background # a mistake here they need 2 (()) for god knows what reason
 
     window_renderer.blit(hash_map_for_pictures[HashKeyForPictures.BOARD], (BOARD_X, BOARD_Y))
 
@@ -66,20 +65,22 @@ class Board:
 
         current_piece = placeholder.piece
 
-        window_renderer.blit(hash_map_for_pictures[current_piece.hash_key], placeholder.x_axis, placeholder.y_axis)
+        window_renderer.blit(hash_map_for_pictures[current_piece.hash_key], (placeholder.x_axis, placeholder.y_axis))
 
   
   def print_legal_moves(self, window_renderer: pygame.Surface, list_of_legal_moves: List[Tuple[Tile, ColorsTile]]):
     
+    if(list_of_legal_moves is None):
+      return
 
     for index in range(len(list_of_legal_moves)):
       
       placeholder : Tile = list_of_legal_moves[index][0]
 
       colored_tile = pygame.Surface((TILE_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT), pygame.SRCALPHA)
-      colored_tile.fill(hash_map_for_rgba_tiles[list_of_legal_moves[index][1]])
+      colored_tile.fill((hash_map_for_rgba_tiles[list_of_legal_moves[index][1]]))
 
-      window_renderer.blit(colored_tile, placeholder.x_axis, placeholder.y_axis)
+      window_renderer.blit(colored_tile, (placeholder.x_axis, placeholder.y_axis))
       
 
 

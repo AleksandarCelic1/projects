@@ -126,7 +126,6 @@ def knightViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile
     iterator_y += offset_y
     iterator_x += offset_x
 
-    print(iterator_x, iterator_y)
 
     if not isInsideOfBounds(iterator_x, iterator_y):
       continue

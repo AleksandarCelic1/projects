@@ -1,5 +1,5 @@
 import pygame
-from .initialization import initAllImages, initializingAllPieces, initializingBoard, initPlayersAndTools
+from .initialization import initAllImages, initializingAllPieces, initializingBoard, initPlayersAndTools, initFontAndSurfacesForScores, initAxisForAllPieces
 from .game_loop import gameLoop
 
 
@@ -14,6 +14,9 @@ def main():
   main_tools = initPlayersAndTools()
   main_tools.main_board = placeholder
   initAllImages()
+  initFontAndSurfacesForScores(main_tools)
+  initAxisForAllPieces(main_tools)
+  
 
 
 

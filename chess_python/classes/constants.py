@@ -85,8 +85,14 @@ BOARD_Y = (SCREEN_HEIGHT // 2) - (BOARD_WIDTH_AND_HEIGHT // 2)
 
 
 #FPS
+ONE_SECOND = 1000
 FPS = 60
-FRAME_DELAY = 1000 // FPS # // means FLOOR division << ! e.g. if result is 4,3 it will be 4
+FRAME_DELAY = ONE_SECOND // FPS # // means FLOOR division << ! e.g. if result is 4,3 it will be 4
+
+#LIMITS LERP
+NEAR_LIMIT = 20
+ARRIVED_EXACT_LIMIT = 0.5
+
 
 #LOGIC DISPATCHER
 IS_A_PIECE_SELECTED = False
@@ -96,6 +102,13 @@ CURRENT_TILE_TO_INSPECT = None
 #GLOBAL HASH TABLES
 hash_map_for_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
 hash_map_for_rgba_tiles : dict[ColorsTile, Tuple[int, int, int, int]] = {} 
+
+#SCORE STUFF
+WHITE_SCORE_STRING = 'SCORE (WHITE):'
+BLACK_SCORE_STRING = 'SCORE (BLACK):'
+
+
+
 
 
 

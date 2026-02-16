@@ -7,8 +7,8 @@ from .classes.knight import Knight
 from .classes.board import Board
 from .classes.tile import Tile
 from .classes.piece import Piece
-from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT, hash_map_for_pictures, hash_map_for_rgba_tiles
-from .classes.constants import SCALING_FACTOR_FOUR
+from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT, hash_map_for_pictures, hash_map_for_rgba_tiles, BLACK_SCORE_STRING, WHITE_SCORE_STRING
+from .classes.constants import SCALING_FACTOR_FOUR, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH
 from .classes.player import Player
 from .classes.tools import Tools
 # check for circual imports
@@ -45,23 +45,23 @@ def initializingAllPieces() -> Deque[Piece]:
   black_pawn_eight = Pawn(PieceType.PAWN, ColorsPieces.BLACK, 7, 1, PlayerID.PLAYER_TWO_BLACK, HashKeyForPictures.BLACK_PAWN)
 
   # White
-  white_rook_one   = Rook(PieceType.ROOK,   ColorsPieces.WHITE, 0, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_ROOK)
-  white_knight_one = Knight(PieceType.KNIGHT, ColorsPieces.WHITE, 1, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_KNIGHT)
-  white_bishop_one = Bishop(PieceType.BISHOP, ColorsPieces.WHITE, 2, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_BISHOP)
-  white_queen      = Queen(PieceType.QUEEN, ColorsPieces.WHITE, 3, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_QUEEN)
-  white_king       = King(PieceType.KING,   ColorsPieces.WHITE, 4, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_KING)
-  white_bishop_two = Bishop(PieceType.BISHOP, ColorsPieces.WHITE, 5, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_BISHOP)
-  white_knight_two = Knight(PieceType.KNIGHT, ColorsPieces.WHITE, 6, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_KNIGHT)
-  white_rook_two   = Rook(PieceType.ROOK,   ColorsPieces.WHITE, 7, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_ROOK)
+  white_rook_one   = Rook(PieceType.ROOK,   ColorsPieces.WHITE, 0, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_ROOK)
+  white_knight_one = Knight(PieceType.KNIGHT, ColorsPieces.WHITE, 1, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_KNIGHT)
+  white_bishop_one = Bishop(PieceType.BISHOP, ColorsPieces.WHITE, 2, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_BISHOP)
+  white_queen      = Queen(PieceType.QUEEN, ColorsPieces.WHITE, 3, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_QUEEN)
+  white_king       = King(PieceType.KING,   ColorsPieces.WHITE, 4, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_KING)
+  white_bishop_two = Bishop(PieceType.BISHOP, ColorsPieces.WHITE, 5, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_BISHOP)
+  white_knight_two = Knight(PieceType.KNIGHT, ColorsPieces.WHITE, 6, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_KNIGHT)
+  white_rook_two   = Rook(PieceType.ROOK,   ColorsPieces.WHITE, 7, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_ROOK)
 
-  white_pawn_one   = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 0, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_two   = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 1, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_three = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 2, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_four  = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 3, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_five  = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 4, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_six   = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 5, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_seven = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 6, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
-  white_pawn_eight = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 7, 7, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_one   = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 0, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_two   = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 1, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_three = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 2, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_four  = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 3, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_five  = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 4, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_six   = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 5, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_seven = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 6, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
+  white_pawn_eight = Pawn(PieceType.PAWN, ColorsPieces.WHITE, 7, 6, PlayerID.PLAYER_ONE_WHITE, HashKeyForPictures.WHITE_PAWN)
 
   all_pieces.append(black_rook_one)
   all_pieces.append(black_knight_one)
@@ -190,6 +190,40 @@ def initPlayersAndTools():
 
   return tools
 
+def initFontAndSurfacesForScores(main_tools: Tools):
+
+  main_tools.font = pygame.font.Font("chess_python/classes/fonts/PressStart2P-Regular.ttf", 12)
+
+  main_tools.white_src = main_tools.font.render(WHITE_SCORE_STRING, True,  (255, 255, 255))
+  main_tools.black_src = main_tools.font.render(BLACK_SCORE_STRING, True, (255, 255, 255))
+
+  main_tools.white_rect = main_tools.white_src.get_rect()
+  main_tools.black_rect = main_tools.black_src.get_rect()
+
+  #axis
+  main_tools.black_rect.x = BOARD_X 
+  main_tools.black_rect.y = BOARD_Y - BOARD_OFFSET_X_AND_Y
+
+  main_tools.white_rect.x = BOARD_X
+  main_tools.white_rect.y = BOARD_Y + BOARD_WIDTH_AND_HEIGHT + BOARD_OFFSET_X_AND_Y
+
+  main_tools.player_white.compute_score(main_tools)
+  main_tools.player_black.compute_score(main_tools)
+
+def initAxisForAllPieces(main_tools: Tools):
+
+  for index in range(MAP_HEIGHT):
+    for inner in range(MAP_WIDTH):
+
+      current_tile: Tile = main_tools.main_board.chess_board[index][inner]
+
+      if(not current_tile.is_occupied()):
+        continue
+
+      placeholder_piece: Piece = current_tile.piece
+
+      placeholder_piece.x_axis = current_tile.x_axis
+      placeholder_piece.y_axis = current_tile.y_axis
 
 
   

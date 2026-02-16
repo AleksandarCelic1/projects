@@ -65,7 +65,7 @@ class Board:
 
         current_piece = placeholder.piece
 
-        window_renderer.blit(hash_map_for_pictures[current_piece.hash_key], (placeholder.x_axis, placeholder.y_axis))
+        window_renderer.blit(hash_map_for_pictures[current_piece.hash_key], (current_piece.x_axis, current_piece.y_axis))
 
   
   def print_legal_moves(self, window_renderer: pygame.Surface, list_of_legal_moves: List[Tuple[Tile, ColorsTile]]):

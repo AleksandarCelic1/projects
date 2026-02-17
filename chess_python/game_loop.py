@@ -18,7 +18,7 @@ def gameLoop(main_tools: Tools):
   while program_running:
 
     frame_start = pygame.time.get_ticks()
-    calculateDeltaTime(frame_start, last_frame)
+    delta_time = calculateDeltaTime(frame_start, last_frame)
     last_frame = frame_start
 
     for event in pygame.event.get():
@@ -45,7 +45,6 @@ def gameLoop(main_tools: Tools):
   
     #logic
     if(main_tools.game_state == GameState.PERFORMING_LERP):
-      print('inside lerp')
       updateLerp(main_tools, delta_time)
       #call function that will render LERP and complete the engine where when finished the player playing is changed and gamestate is updated
       # as we alreadt take no input while its lerping 
@@ -59,6 +58,7 @@ def gameLoop(main_tools: Tools):
 
     #UI
     main_tools.renderScores()
+    main_tools.renderGraveyardPieces()
 
     pygame.display.flip() # this "presents" what we drew 
 

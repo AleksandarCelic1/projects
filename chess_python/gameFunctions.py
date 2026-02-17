@@ -2,11 +2,12 @@ import pygame
 
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY
-from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT
+from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType
 from .classes.moveFunctions import isInsideOfBounds
 from .classes.tile import Tile
 from .classes.tools import Tools, GameState
 from .classes.piece import Piece
+from .classes.pawn import Pawn
 
 from typing import List, Tuple
 #make game dispatcher for x,y of mouse to get what piece shall be moved 
@@ -71,15 +72,16 @@ def lerp(A: float, B: float, T:float):
 def updateLerp(main_tools: Tools, delta_time: float):
 
   time: float = 10.0 * delta_time
-  if time < 1.0:
+
+  if time > 1.0:
     time = 1.0
+
 
   source: Piece = main_tools.current_players_selected_tile.piece
   #source_tile: Tile = main_tools.current_players_selected_tile
   #target: Piece = main_tools.current_players_target_tile.piece
   target_tile: Tile = main_tools.current_players_target_tile
 
-  print(source.x, source.y, target_tile.x, target_tile.y)
 
 
   source.x_axis = lerp(source.x_axis, target_tile.x_axis, time)
@@ -120,9 +122,14 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
 
   source.x = target.x
   source.y = target.y
-  
+
   current : Tile = board.chess_board[source.y][source.x]
   current.piece = source
+
+  if(source.type == PieceType.PAWN):
+    placeholder : Pawn = source
+    placeholder.did_i_move_already = True
+  
   return
 
 

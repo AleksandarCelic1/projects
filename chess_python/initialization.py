@@ -8,7 +8,7 @@ from .classes.board import Board
 from .classes.tile import Tile
 from .classes.piece import Piece
 from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT, hash_map_for_pictures, hash_map_for_rgba_tiles, BLACK_SCORE_STRING, WHITE_SCORE_STRING
-from .classes.constants import SCALING_FACTOR_FOUR, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH
+from .classes.constants import SCALING_FACTOR_FOUR, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_graveyard_pictures, EVERY_PIECE_W_H_FOR_GRAVEYARD
 from .classes.player import Player
 from .classes.tools import Tools
 # check for circual imports
@@ -113,40 +113,51 @@ def initAllImages():
   
 
   black_bishop = pygame.image.load("chess_python/classes/photos_/BlackBishop.png").convert_alpha()
-  black_bishop = pygame.transform.smoothscale(black_bishop, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
-
-  black_horse = pygame.image.load("chess_python/classes/photos_/BlackHorse.png").convert_alpha()
-  black_horse = pygame.transform.smoothscale(black_horse, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
-
-  black_king = pygame.image.load("chess_python/classes/photos_/BlackKing.png").convert_alpha()
-  black_king = pygame.transform.smoothscale(black_king, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
-
-  black_pawn = pygame.image.load("chess_python/classes/photos_/BlackPawn.png").convert_alpha()
-  black_pawn = pygame.transform.smoothscale(black_pawn, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
-
-  black_queen = pygame.image.load("chess_python/classes/photos_/BlackQueen.png").convert_alpha()
-  black_queen = pygame.transform.smoothscale(black_queen, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
-
-  black_rook = pygame.image.load("chess_python/classes/photos_/BlackRook.png").convert_alpha()
-  black_rook = pygame.transform.smoothscale(black_rook, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_horse  = pygame.image.load("chess_python/classes/photos_/BlackHorse.png").convert_alpha()
+  black_king   = pygame.image.load("chess_python/classes/photos_/BlackKing.png").convert_alpha()
+  black_pawn   = pygame.image.load("chess_python/classes/photos_/BlackPawn.png").convert_alpha()
+  black_queen  = pygame.image.load("chess_python/classes/photos_/BlackQueen.png").convert_alpha()
+  black_rook   = pygame.image.load("chess_python/classes/photos_/BlackRook.png").convert_alpha()
 
   white_bishop = pygame.image.load("chess_python/classes/photos_/WhiteBishop.png").convert_alpha()
-  white_bishop = pygame.transform.smoothscale(white_bishop, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_horse  = pygame.image.load("chess_python/classes/photos_/WhiteHorse.png").convert_alpha()
+  white_king   = pygame.image.load("chess_python/classes/photos_/WhiteKing.png").convert_alpha()
+  white_pawn   = pygame.image.load("chess_python/classes/photos_/WhitePawn.png").convert_alpha()
+  white_queen  = pygame.image.load("chess_python/classes/photos_/WhiteQueen.png").convert_alpha()
+  white_rook   = pygame.image.load("chess_python/classes/photos_/WhiteRook.png").convert_alpha()
 
-  white_horse = pygame.image.load("chess_python/classes/photos_/WhiteHorse.png").convert_alpha()
-  white_horse = pygame.transform.smoothscale(white_horse, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_bishop_playing = pygame.transform.smoothscale(black_bishop, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_horse_playing  = pygame.transform.smoothscale(black_horse,  (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_king_playing   = pygame.transform.smoothscale(black_king,   (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_pawn_playing   = pygame.transform.smoothscale(black_pawn,   (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_queen_playing  = pygame.transform.smoothscale(black_queen,  (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_rook_playing   = pygame.transform.smoothscale(black_rook,   (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
 
-  white_king = pygame.image.load("chess_python/classes/photos_/WhiteKing.png").convert_alpha()
-  white_king = pygame.transform.smoothscale(white_king, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_bishop_playing = pygame.transform.smoothscale(white_bishop, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_horse_playing  = pygame.transform.smoothscale(white_horse,  (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_king_playing   = pygame.transform.smoothscale(white_king,   (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_pawn_playing   = pygame.transform.smoothscale(white_pawn,   (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_queen_playing  = pygame.transform.smoothscale(white_queen,  (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_rook_playing   = pygame.transform.smoothscale(white_rook,   (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
 
-  white_pawn = pygame.image.load("chess_python/classes/photos_/WhitePawn.png").convert_alpha()
-  white_pawn = pygame.transform.smoothscale(white_pawn, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  #Graveyard smaller Scalings
 
-  white_queen = pygame.image.load("chess_python/classes/photos_/WhiteQueen.png").convert_alpha()
-  white_queen = pygame.transform.smoothscale(white_queen, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  black_bishop_graveyard = pygame.transform.smoothscale(black_bishop, (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  black_horse_graveyard  = pygame.transform.smoothscale(black_horse,  (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  black_king_graveyard   = pygame.transform.smoothscale(black_king,   (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  black_pawn_graveyard   = pygame.transform.smoothscale(black_pawn,   (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  black_queen_graveyard  = pygame.transform.smoothscale(black_queen,  (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  black_rook_graveyard   = pygame.transform.smoothscale(black_rook,   (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
 
-  white_rook = pygame.image.load("chess_python/classes/photos_/WhiteRook.png").convert_alpha()
-  white_rook = pygame.transform.smoothscale(white_rook, (EVERY_PIECE_WIDTH_AND_HEIGHT, EVERY_PIECE_WIDTH_AND_HEIGHT))
+  white_bishop_graveyard = pygame.transform.smoothscale(white_bishop, (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  white_horse_graveyard  = pygame.transform.smoothscale(white_horse,  (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  white_king_graveyard   = pygame.transform.smoothscale(white_king,   (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  white_pawn_graveyard   = pygame.transform.smoothscale(white_pawn,   (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  white_queen_graveyard  = pygame.transform.smoothscale(white_queen,  (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+  white_rook_graveyard   = pygame.transform.smoothscale(white_rook,   (EVERY_PIECE_W_H_FOR_GRAVEYARD, EVERY_PIECE_W_H_FOR_GRAVEYARD))
+
+
+
 
   map_board = pygame.image.load("chess_python/classes/photos_/board.png").convert_alpha()
   map_board = pygame.transform.smoothscale(map_board, (map_board.get_width() * SCALING_FACTOR_FOUR, map_board.get_height() * SCALING_FACTOR_FOUR))
@@ -154,19 +165,35 @@ def initAllImages():
 
   #hash_map_for_pictures: dict[HashKeyForPictures, pygame.Surface] = {}
 
-  hash_map_for_pictures[HashKeyForPictures.BLACK_PAWN] = black_pawn
-  hash_map_for_pictures[HashKeyForPictures.BLACK_KING] = black_king
-  hash_map_for_pictures[HashKeyForPictures.BLACK_QUEEN] = black_queen
-  hash_map_for_pictures[HashKeyForPictures.BLACK_BISHOP] = black_bishop
-  hash_map_for_pictures[HashKeyForPictures.BLACK_KNIGHT] = black_horse 
-  hash_map_for_pictures[HashKeyForPictures.BLACK_ROOK] = black_rook
+  hash_map_for_pictures[HashKeyForPictures.BLACK_PAWN]   = black_pawn_playing
+  hash_map_for_pictures[HashKeyForPictures.BLACK_KING]   = black_king_playing
+  hash_map_for_pictures[HashKeyForPictures.BLACK_QUEEN]  = black_queen_playing
+  hash_map_for_pictures[HashKeyForPictures.BLACK_BISHOP] = black_bishop_playing
+  hash_map_for_pictures[HashKeyForPictures.BLACK_KNIGHT] = black_horse_playing
+  hash_map_for_pictures[HashKeyForPictures.BLACK_ROOK]   = black_rook_playing
 
-  hash_map_for_pictures[HashKeyForPictures.WHITE_PAWN] = white_pawn
-  hash_map_for_pictures[HashKeyForPictures.WHITE_KING] = white_king
-  hash_map_for_pictures[HashKeyForPictures.WHITE_QUEEN] = white_queen
-  hash_map_for_pictures[HashKeyForPictures.WHITE_BISHOP] = white_bishop
-  hash_map_for_pictures[HashKeyForPictures.WHITE_KNIGHT] = white_horse  
-  hash_map_for_pictures[HashKeyForPictures.WHITE_ROOK] = white_rook
+  hash_map_for_pictures[HashKeyForPictures.WHITE_PAWN]   = white_pawn_playing
+  hash_map_for_pictures[HashKeyForPictures.WHITE_KING]   = white_king_playing
+  hash_map_for_pictures[HashKeyForPictures.WHITE_QUEEN]  = white_queen_playing
+  hash_map_for_pictures[HashKeyForPictures.WHITE_BISHOP] = white_bishop_playing
+  hash_map_for_pictures[HashKeyForPictures.WHITE_KNIGHT] = white_horse_playing
+  hash_map_for_pictures[HashKeyForPictures.WHITE_ROOK]   = white_rook_playing
+
+  #Hashing the graveyard ones
+  hash_map_for_graveyard_pictures[HashKeyForPictures.BLACK_PAWN]   = black_pawn_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.BLACK_KING]   = black_king_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.BLACK_QUEEN]  = black_queen_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.BLACK_BISHOP] = black_bishop_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.BLACK_KNIGHT] = black_horse_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.BLACK_ROOK]   = black_rook_graveyard
+
+  hash_map_for_graveyard_pictures[HashKeyForPictures.WHITE_PAWN]   = white_pawn_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.WHITE_KING]   = white_king_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.WHITE_QUEEN]  = white_queen_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.WHITE_BISHOP] = white_bishop_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.WHITE_KNIGHT] = white_horse_graveyard
+  hash_map_for_graveyard_pictures[HashKeyForPictures.WHITE_ROOK]   = white_rook_graveyard
+
 
   hash_map_for_pictures[HashKeyForPictures.BOARD] = map_board
 

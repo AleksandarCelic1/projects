@@ -1,5 +1,5 @@
 from .player import Player
-from .constants import PlayerID
+from .constants import PlayerID, hash_map_for_graveyard_pictures
 from .board import Board
 from enum import Enum # enum is imported from enum and NOT from typing << !!
 from .tile import Tile
@@ -62,13 +62,27 @@ class Tools:
     graveyard_white: List[Piece] = self.player_white.graveyard
     graveyard_black: List[Piece] = self.player_black.graveyard
 
-    white_x = self.player_white.score_rect.x + self.player_white.score.w
+    white_x = self.player_white.score_rect.x + self.player_white.score_rect.w
     white_y = self.player_white.score_rect.y
 
+    black_x = self.player_black.score_rect.x + self.player_black.score_rect.w
+    black_y = self.player_black.score_rect.y
+
+    print(black_y, white_y, self.black_rect.y, self.white_rect.y)
+    iterator = 0
 
     for index in range(len(graveyard_white)):
-      pass # tommorow 
+      iterator = white_y
+      iterator -= (hash_map_for_graveyard_pictures[graveyard_white[index].hash_key].get_rect().h) / 2
+      self.window_and_renderer.blit(hash_map_for_graveyard_pictures[graveyard_white[index].hash_key], (white_x, iterator))
+      white_x += hash_map_for_graveyard_pictures[graveyard_white[index].hash_key].get_width()
 
+    for inner in range(len(graveyard_black)):
+      iterator = black_y
+      iterator -= (hash_map_for_graveyard_pictures[graveyard_black[inner].hash_key].get_rect().h) / 2
+      self.window_and_renderer.blit(hash_map_for_graveyard_pictures[graveyard_black[inner].hash_key], (black_x, iterator))
+      black_x += hash_map_for_graveyard_pictures[graveyard_black[inner].hash_key].get_width()
+    
 
 
 

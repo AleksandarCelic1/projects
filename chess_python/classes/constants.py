@@ -72,6 +72,7 @@ SCREEN_HEIGHT = 900
 BOARD_WIDTH_AND_HEIGHT = 142 * SCALING_FACTOR_FOUR # 568
 TILE_WIDTH_AND_HEIGHT = 16 * SCALING_FACTOR_FOUR
 EVERY_PIECE_WIDTH_AND_HEIGHT = 16 * SCALING_FACTOR_FOUR
+EVERY_PIECE_W_H_FOR_GRAVEYARD = 16 * SCALING_FACTOR_TWO
 
 
 #Now our board is centered in the 
@@ -102,6 +103,7 @@ CURRENT_TILE_TO_INSPECT = None
 #GLOBAL HASH TABLES
 hash_map_for_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
 hash_map_for_rgba_tiles : dict[ColorsTile, Tuple[int, int, int, int]] = {} 
+hash_map_for_graveyard_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
 
 #SCORE STUFF
 WHITE_SCORE_STRING = 'SCORE (WHITE):'

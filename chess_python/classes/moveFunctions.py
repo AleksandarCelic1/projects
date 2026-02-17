@@ -38,6 +38,7 @@ def scanVertical(logical_map : Board, x : int, y : int, direction_y : int, moves
         break
       else:
         moves.append((current_tile, ColorsTile.GREEN))
+        break
     else:
       moves.append((current_tile, ColorsTile.GREY))
 
@@ -66,10 +67,10 @@ def scanHorizontal(logical_map : Board, x : int, y : int, direction_x : int, mov
     if current_tile.is_occupied():
       if current_tile.piece.player_id == origin.piece.player_id:
         moves.append((current_tile, ColorsTile.RED))
-        print(x,y)
         break
       else:
         moves.append((current_tile, ColorsTile.GREEN))
+        break
     else:
       moves.append((current_tile, ColorsTile.GREY))
 
@@ -107,6 +108,7 @@ def scanDiagonals(logical_map : Board, x : int, y : int, direction_x : int, dire
         break
       else:
         moves.append((current_tile, ColorsTile.GREEN))
+        break
     else:
       moves.append((current_tile, ColorsTile.GREY))
 

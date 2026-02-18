@@ -63,6 +63,16 @@ SCALING_FACTOR_TWO = 2
 SCALING_FACTOR_THREE = 3
 SCALING_FACTOR_FOUR = 4
 
+#Pawn En Passant Specific
+
+BLACK_PAWN_EN_PASSANT_Y = 4
+WHITE_PAWN_EN_PASSANT_Y = 3 
+X_OFFSETS_FOR_EN_PASSANT = (-1, 1)
+
+# special case for en-passant in lerp finishing logic << !
+BLACK_PAWN_INITIAL_Y = 1
+WHITE_PAWN_INITIAL_Y = 6
+
 
 
 # SCREEN

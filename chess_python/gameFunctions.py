@@ -1,8 +1,9 @@
 import pygame
 
 from .classes.board import Board
-from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY
-from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType
+from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
+from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y, X_OFFSETS_FOR_EN_PASSANT
+from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y
 from .classes.moveFunctions import isInsideOfBounds
 from .classes.tile import Tile
 from .classes.tools import Tools, GameState
@@ -91,16 +92,18 @@ def updateLerp(main_tools: Tools, delta_time: float):
   if(not main_tools.is_near_the_destination):
 
     if(abs(source.x_axis - target_tile.x_axis) < NEAR_LIMIT and abs(source.y_axis - target_tile.y_axis) < NEAR_LIMIT):
-      print('1')
       main_tools.is_near_the_destination = True
 
       if(target_tile.is_occupied()):
         capturePiece(main_tools, target_tile)
+      elif(not target_tile.is_occupied() and source.type == PieceType.PAWN):
 
-  
-  
+        pawn_placeholder: Pawn = source
+        tile: Tile = specialCaseEnPassant(main_tools, pawn_placeholder, target_tile)
+        if(tile is not None):
+          capturePiece(main_tools, tile)
+
   if(abs(source.x_axis - target_tile.x_axis) < ARRIVED_EXACT_LIMIT and abs(source.y_axis - target_tile.y_axis) < ARRIVED_EXACT_LIMIT):
-    print('2')
     finishLerp(main_tools, source, target_tile)
 
   return
@@ -120,23 +123,50 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   current : Tile = board.chess_board[source.y][source.x]
   current.piece = None
 
+  if(source.type == PieceType.PAWN):
+    pawn: Pawn = source
+    specialCaseForPawn(pawn, target)
+
   source.x = target.x
   source.y = target.y
 
   current : Tile = board.chess_board[source.y][source.x]
   current.piece = source
 
-  if(source.type == PieceType.PAWN):
-    placeholder : Pawn = source
-    placeholder.did_i_move_already = True
+  
+
+    
   
   return
 
+def specialCaseForPawn(source: Pawn, target: Tile):
+  if(not source.did_i_move_already):
+    source.did_i_move_already = True
+
+    if(source.y == WHITE_PAWN_INITIAL_Y and source.color == ColorsPieces.WHITE and target.y == BLACK_PAWN_EN_PASSANT_Y):
+      source.vunerable_to_en_passant = True 
+    elif(source.y == BLACK_PAWN_INITIAL_Y and source.color == ColorsPieces.BLACK and target.y == WHITE_PAWN_EN_PASSANT_Y):
+      source.vunerable_to_en_passant = True
+  
+  elif(source.did_i_move_already and source.vunerable_to_en_passant):
+    source.vunerable_to_en_passant = False
+
+def specialCaseEnPassant(main_tools: Tools, source: Pawn, target: Tile):
+  
+  if(source.x == target.x):
+    return None
+  
+  current_tile : Tile = None
+  if((source.color == ColorsPieces.WHITE and source.y == WHITE_PAWN_EN_PASSANT_Y)
+  or (source.color == ColorsPieces.BLACK and source.y == BLACK_PAWN_EN_PASSANT_Y)):
+    current_tile = main_tools.main_board.chess_board[source.y][target.x]
+
+  return current_tile
+  
 
 def capturePiece(main_tools: Tools, target_tile: Tile):
   placeholder: Piece = target_tile.piece
   
-  print('hehehehe')
   if(placeholder.player_id == PlayerID.PLAYER_ONE_WHITE):
     main_tools.player_black.graveyard.append(placeholder)
   else:

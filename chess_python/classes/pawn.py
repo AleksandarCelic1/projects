@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING, List, Tuple
 from .tile import Tile
 from .piece import Piece
-from .constants import PieceType, ColorsPieces, PlayerID, ColorsTile, HashKeyForPictures
+from .constants import PieceType, ColorsPieces, PlayerID, ColorsTile, HashKeyForPictures, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y, X_OFFSETS_FOR_EN_PASSANT, TILE_WIDTH_AND_HEIGHT
 from .moveFunctions import isInsideOfBounds
 
 
@@ -9,10 +9,14 @@ if TYPE_CHECKING:
   from .board import Board
 
 
+
+# If the white pawn is on y3 he will check his x-1 x+1 coords to find if there are pawn of opposite color that are vunerable_to_en_passant 
+
 class Pawn(Piece):
   def __init__(self, piece_type : PieceType, color : ColorsPieces, x : int, y : int, player_id : PlayerID, key: HashKeyForPictures):
     super().__init__(piece_type, color, x, y, player_id, key)
     self.did_i_move_already = False # USED FOR GET MOVES, as it will be used to check if
+    self.vunerable_to_en_passant = False
     # one can jump for 2 fields << !
     # Super() calls the base class in our case Piece CTOR (constructor)
 
@@ -26,6 +30,30 @@ class Pawn(Piece):
     else:
       direction = 1 # its black and its going down << !
 
+    #En Passant << !
+
+    for index in X_OFFSETS_FOR_EN_PASSANT:
+      if(not isInsideOfBounds(self.x + index, self.y)):
+        continue
+        
+      current_tile : Tile = logic_map.chess_board[self.y][self.x + index]
+      if(not current_tile.is_occupied()):
+        continue
+
+      placeholder_piece: Piece = current_tile.piece
+      if(placeholder_piece.type == PieceType.PAWN):
+
+        placeholders_pawn: Pawn = placeholder_piece
+        if(placeholders_pawn.vunerable_to_en_passant and self.color != placeholders_pawn.color):
+          if(placeholders_pawn.color == ColorsPieces.BLACK and self.y == WHITE_PAWN_EN_PASSANT_Y):
+            current_tile = logic_map.chess_board[self.y - 1][self.x + index]
+
+          elif(placeholders_pawn.color == ColorsPieces.WHITE and self.y == BLACK_PAWN_EN_PASSANT_Y):
+            current_tile = logic_map.chess_board[self.y + 1][self.x + index]
+
+          moves.append((current_tile, ColorsTile.GREEN))
+          # FINISH THE SPECIAL CASE IN DISPATCHER THAT WILL SENSOR THE EN PASSANT OF PAWNS  << !!!!
+          
 
     #Diagonal Captures << !
     array_of_x_offsets = []

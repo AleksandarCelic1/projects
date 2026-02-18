@@ -43,8 +43,6 @@ class Tools:
     self.lerp_timer: float = 0.0
     self.is_animating: bool = False
     
-
-
   def renderScores(self):
 
     self.window_and_renderer.blit(self.black_src, self.black_rect)
@@ -68,7 +66,6 @@ class Tools:
     black_x = self.player_black.score_rect.x + self.player_black.score_rect.w
     black_y = self.player_black.score_rect.y
 
-    print(black_y, white_y, self.black_rect.y, self.white_rect.y)
     iterator = 0
 
     for index in range(len(graveyard_white)):

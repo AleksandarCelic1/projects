@@ -1,6 +1,7 @@
 import pygame
-from .initialization import initAllImages, initializingAllPieces, initializingBoard, initPlayersAndTools, initFontAndSurfacesForScores, initAxisForAllPieces
+from .initialization import initAllImages, initializingAllPieces, initializingBoard, initPlayersAndTools, initFontAndSurfacesForScores, initAxisForAllPieces, assignKingsToTools
 from .game_loop import gameLoop
+from .classes.constants import X_INDEX_OF_BOTH_KINGS_INITIALLY, Y_INDEX_OF_BLACK, Y_INDEX_OF_WHITE
 
 
 
@@ -13,6 +14,8 @@ def main():
 
   main_tools = initPlayersAndTools()
   main_tools.main_board = placeholder
+  assignKingsToTools(main_tools, 
+  placeholder.chess_board[Y_INDEX_OF_WHITE][X_INDEX_OF_BOTH_KINGS_INITIALLY], placeholder.chess_board[Y_INDEX_OF_BLACK][X_INDEX_OF_BOTH_KINGS_INITIALLY])
   initAllImages()
   initFontAndSurfacesForScores(main_tools)
   initAxisForAllPieces(main_tools)

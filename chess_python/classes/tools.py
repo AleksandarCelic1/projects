@@ -5,12 +5,14 @@ from enum import Enum # enum is imported from enum and NOT from typing << !!
 from .tile import Tile
 from .piece import Piece
 from typing import List
+from .king import King
 
 import pygame
 
 class GameState(Enum):
   PERFORMING_LERP = 1,
-  PLAYING = 2
+  PLAYING = 2,
+  CHECK = 3
 
 
 class Tools:
@@ -30,6 +32,11 @@ class Tools:
     self.move_taken = False
     self.was_graveyard_changed = False
     self.is_near_the_destination = False
+    
+    #Check / Checkmate
+
+    self.black_king: King = None
+    self.white_king: King = None
 
     #Regarding font and score rendering
     self.white_src: pygame.Surface = None
@@ -38,10 +45,6 @@ class Tools:
     self.black_rect: pygame.Rect = None
 
     self.font: pygame.font.Font = None
-
-    #lerp 
-    self.lerp_timer: float = 0.0
-    self.is_animating: bool = False
     
   def renderScores(self):
 

@@ -1,13 +1,16 @@
 from .board import Board
 from .tile import Tile
 from . import constants
-from .constants import ColorsTile
-
+from .constants import ColorsTile, ColorsPieces, PieceType, HORIZONTAL_STRING, VERTICAL_STRING, DiagonalDirection
 from typing import List, Tuple
+from .piece import Piece
 
 
 KNIGHT_VIABLE_MOVES_OFFSETS= {  (-1, -2), (1, -2), (2, -1), (2, 1), (-2, -1), (-2, 1), (-1, 2), (1, 2)}
 KING_VIABLE_MOVES_OFFSETS = { (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)}
+BLACK_PAWNS_ATTACKING_WHITE_OFFSET = {(-1, -1), (1, -1)}
+WHITE_PAWNS_ATTACKING_BLACK_OFFSET = ((1, 1), (-1, 1))
+
 
 
 # ALL FUNCTIONS ARE GOIGN TO BE FIRST MADE WITHOUT THE RULE OF PINNING << !
@@ -141,10 +144,7 @@ def knightViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile
         moves.append((current_tile, ColorsTile.GREEN))
     else:
       moves.append((current_tile, ColorsTile.GREY))
-
-      
-        
-  
+ 
 
 def isInsideOfBounds(x: int, y: int) -> bool:
   placeholder = ((constants.MAP_LOWER_BOUND <= x <= constants.MAP_UPPER_BOUND) and (constants.MAP_LOWER_BOUND <= y <= constants.MAP_UPPER_BOUND))
@@ -169,18 +169,205 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
       if(current_tile.is_occupied()):
         if(current_tile.piece.player_id == origin.piece.player_id):
           moves.append((current_tile, ColorsTile.RED)) # cant eat your own stuff << !
-        elif((current_tile.piece.player_id != origin.piece.player_id ) and ( not current_tile.piece.is_protected)):
-          moves.append((current_tile, ColorsTile.GREEN)) # can eaet something next to the king as its not protected
-        elif ((current_tile.piece.player_id != origin.piece.player_id) and (current_tile.piece.is_protected)):
-          moves.append((current_tile, ColorsTile.RED)) # cant eat something next to king because its protected
+        else:
+          protected = is_attacked(logical_map, current_tile, origin.piece.color)
+          
+          if(current_tile.piece.player_id != origin.piece.player_id and not protected):
+            moves.append((current_tile, ColorsTile.GREEN))
+          elif(current_tile.piece.player_id != origin.piece.player_id and protected):
+            moves.append((current_tile, ColorsTile.RED))
       else:
-        if(not current_tile.is_under_attack):
-          moves.append((current_tile, ColorsTile.GREY)) # if nothing is there and nothing attack this square can move there
+        if(is_attacked(logical_map, current_tile, origin.piece.color)):
+          moves.append((current_tile, ColorsTile.RED)) # if nothing is there and nothing attack this square can move there
         else: 
-          moves.append((current_tile, ColorsTile.RED)) # if nothing is there but somthing is attacking this square you cant move it 
-  ### THIS MIGHT BE A PROBLEM LATER AS BOTH SIDES CAN ATTACK THE TILES  << !!!!!
+          moves.append((current_tile, ColorsTile.GREY)) # if nothing is there but somthing is attacking this square you cant move it 
 
-#This is firstly made withou en-passant << !
+# Core function for all following rules : Check, Checkmate, Castle, Pin
+def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces) -> bool:
+  
+  #Check each direction to see if a opposing color figure is attack this tile << !
+  if(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, HORIZONTAL_STRING)): return True
+  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, HORIZONTAL_STRING)): return True
+  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, VERTICAL_STRING)): return True
+  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, VERTICAL_STRING)): return True
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.TOP_LEFT)): return True
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.TOP_RIGHT)): return True
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_LEFT)): return True
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_RIGHT)): return True
+  elif(knight_is_attacking(logical_map, source_tile, source_color)): return True
+  elif(kings_is_attacking(logical_map, source_tile, source_color)): return True
+
+  if(source_color == ColorsPieces.WHITE):
+    if(pawn_is_attacking(logical_map, source_tile, source_color, BLACK_PAWNS_ATTACKING_WHITE_OFFSET)): return True
+  else:
+    if(pawn_is_attacking(logical_map, source_tile, source_color, WHITE_PAWNS_ATTACKING_BLACK_OFFSET)): return True
+
+  return False
+
+
+def horizontal_or_vertical_is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces, offset: int, which_direction: str):
+
+  if(which_direction == VERTICAL_STRING):
+    iterator = source_tile.y + offset
+  elif(which_direction == HORIZONTAL_STRING):
+    iterator = source_tile.x + offset
+
+
+  while constants.MAP_LOWER_BOUND <= iterator <= constants.MAP_UPPER_BOUND:
+
+    if(which_direction == HORIZONTAL_STRING):
+      current_tile: Tile = logical_map.chess_board[source_tile.y][iterator]
+    elif(which_direction == VERTICAL_STRING):
+      current_tile: Tile = logical_map.chess_board[iterator][source_tile.x]
+
+    if(not current_tile.is_occupied()):
+      iterator += offset
+      continue
+
+    placeholder_piece: Piece = current_tile.piece
+
+    if((placeholder_piece.type == PieceType.QUEEN or placeholder_piece.type == PieceType.ROOK) and placeholder_piece.color != source_color):
+      return True
+    else:
+      return False
+    
+
+  return False
+
+def diagonal_is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces, which_direction: DiagonalDirection):
+  
+  offset_x, offset_y = switch_for_diagonal_offsets(which_direction)
+
+  iterator_x = source_tile.x + offset_x
+  iterator_y = source_tile.y + offset_y
+
+  while constants.MAP_LOWER_BOUND <= iterator_x <= constants.MAP_UPPER_BOUND and constants.MAP_LOWER_BOUND <= iterator_y <= constants.MAP_UPPER_BOUND:
+    
+    current_tile: Tile = logical_map.chess_board[iterator_y][iterator_x]
+
+    if(not current_tile.is_occupied()):
+      iterator_x += offset_x
+      iterator_y += offset_y
+      continue
+
+    placeholder_piece: Piece = current_tile.piece
+
+    if((placeholder_piece.type == PieceType.QUEEN or placeholder_piece.type == PieceType.BISHOP)
+    and placeholder_piece.color != source_color):
+      return True
+    else:
+      return False
+
+    
+  return False
+
+def knight_is_attacking(logical_map: Board, source_tile: Tile, source_color: ColorsPieces):
+  iterator_x :int = source_tile.x
+  iterator_y :int = source_tile.y
+
+  for offset_x, offset_y in KNIGHT_VIABLE_MOVES_OFFSETS:
+    iterator_x = source_tile.x
+    iterator_y = source_tile.y
+
+    iterator_y += offset_y
+    iterator_x += offset_x
+
+    if not isInsideOfBounds(iterator_x, iterator_y):
+      continue
+
+    current_tile: Tile = logical_map.chess_board[iterator_y][iterator_x]
+
+    if(not current_tile.is_occupied()):
+      continue
+
+    placeholder_pawn: Piece = current_tile.piece
+
+    if(placeholder_pawn.type == PieceType.KNIGHT and placeholder_pawn.color != source_color):
+      return True
+    
+  return False
+
+def switch_for_diagonal_offsets(desired_direction: DiagonalDirection):
+
+  match desired_direction:
+    case DiagonalDirection.DOWN_LEFT:
+      return (-1, 1)
+    case DiagonalDirection.DOWN_RIGHT:
+      return (1, 1)
+    case DiagonalDirection.TOP_LEFT:
+      return (-1, -1)
+    case DiagonalDirection.TOP_RIGHT:
+      return (1, -1)
+    case _:
+      print('usro sam se << !')
+      return None
+    
+def pawn_is_attacking(logical_map: Board, source_tile: Tile, source_color: ColorsPieces, moves: List[Tuple[int ,int ]]):
+
+
+  iterator_x = source_tile.x
+  iterator_y = source_tile.y
+
+
+  for offset_x, offset_y in moves:
+    iterator_x = source_tile.x
+    iterator_y = source_tile.y
+
+    iterator_x += offset_x
+    iterator_y += offset_y
+
+    if(not isInsideOfBounds(iterator_x, iterator_y)):
+      continue
+
+    current_tile: Tile = logical_map.chess_board[iterator_y][iterator_x]
+
+    if(not current_tile.is_occupied()):
+      continue
+
+    placeholder_piece: Piece = current_tile.piece
+
+    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN):
+      return True
+    
+
+  return False
+
+def kings_is_attacking(logical_map: Board, source_tile: Tile, source_color: ColorsPieces):
+  
+  iterator_x = source_tile.x
+  iterator_y = source_tile.y
+
+  for offset_x, offset_y in KING_VIABLE_MOVES_OFFSETS:
+    iterator_x = source_tile.x
+    iterator_y = source_tile.y
+
+    iterator_x += offset_x
+    iterator_y += offset_y
+
+    if(not isInsideOfBounds(iterator_x, iterator_y)):
+      continue
+    
+    current_tile: Tile = logical_map.chess_board[iterator_y][iterator_x]
+
+    if(not current_tile.is_occupied()):
+      continue
+
+    placeholder_piece: Piece = current_tile.piece
+
+    if(placeholder_piece.type == PieceType.KING and placeholder_piece.color != source_color):
+      return True
+    
+
+  return False
+
+
+
+
+
+
+
+
+  
 
   
 

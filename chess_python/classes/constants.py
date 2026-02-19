@@ -51,13 +51,19 @@ class HashKeyForPictures(Enum):
   WHITE_ROOK = 11
   BOARD = 12
 
+class DiagonalDirection(Enum):
+  TOP_LEFT = 0
+  TOP_RIGHT = 1
+  DOWN_LEFT = 2
+  DOWN_RIGHT = 3
 
 
 
+# constants used for map scanning 
 MAP_WIDTH = 8
 MAP_HEIGHT = 8
 MAP_UPPER_BOUND = 7
-MAP_LOWER_BOUND = 0 # constants used for map scanning 
+MAP_LOWER_BOUND = 0
 
 SCALING_FACTOR_TWO = 2
 SCALING_FACTOR_THREE = 3
@@ -72,6 +78,16 @@ X_OFFSETS_FOR_EN_PASSANT = (-1, 1)
 # special case for en-passant in lerp finishing logic << !
 BLACK_PAWN_INITIAL_Y = 1
 WHITE_PAWN_INITIAL_Y = 6
+
+#Check
+HORIZONTAL_STRING = 'HORIZONTAL'
+VERTICAL_STRING = 'VERTICAL'
+
+#King XY
+
+X_INDEX_OF_BOTH_KINGS_INITIALLY = 4
+Y_INDEX_OF_WHITE = 7
+Y_INDEX_OF_BLACK = 0
 
 
 

@@ -1,14 +1,17 @@
 import pygame
+import copy
 
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y, X_OFFSETS_FOR_EN_PASSANT
 from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y
-from .classes.moveFunctions import isInsideOfBounds
+from .classes.moveFunctions import isInsideOfBounds, is_attacked
 from .classes.tile import Tile
 from .classes.tools import Tools, GameState
 from .classes.piece import Piece
 from .classes.pawn import Pawn
+from .classes.king import King
+
 
 from typing import List, Tuple
 #make game dispatcher for x,y of mouse to get what piece shall be moved 
@@ -53,7 +56,14 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
     if(main_tools.current_players_target_tile.x== array_of_legal_moves[index][0].x 
     and main_tools.current_players_target_tile.y == array_of_legal_moves[index][0].y
     and array_of_legal_moves[index][1] != ColorsTile.RED):
-      main_tools.game_state = GameState.PERFORMING_LERP
+      
+      if(main_tools.game_state != GameState.CHECK):
+        main_tools.game_state = GameState.PERFORMING_LERP
+      else:
+        if():
+          pass # << !!!!!
+
+
       break
     
   
@@ -113,7 +123,7 @@ def updateLerp(main_tools: Tools, delta_time: float):
 def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   main_tools.is_near_the_destination = False
   main_tools.game_state = GameState.PLAYING
-  main_tools.player_playing = PlayerID.PLAYER_ONE_WHITE if main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK else PlayerID.PLAYER_TWO_BLACK
+  
 
   source.x_axis = target.x_axis
   source.y_axis = target.y_axis
@@ -133,11 +143,29 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   current : Tile = board.chess_board[source.y][source.x]
   current.piece = source
 
+  specialCaseForKingsCheck(main_tools)
+  main_tools.player_playing = PlayerID.PLAYER_ONE_WHITE if main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK else PlayerID.PLAYER_TWO_BLACK
+
   
 
     
   
   return
+
+def specialCaseForKingsCheck(main_tools: Tools):
+
+  board_reference : Board = main_tools.main_board
+
+  if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+    if(is_attacked(board_reference, board_reference.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)):
+      main_tools.game_state = GameState.CHECK
+      main_tools.black_king.am_i_in_check = True
+  elif(main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK):
+    if(is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)):
+      main_tools.game_state = GameState.CHECK
+      main_tools.white_king.am_i_in_check = True
+
+
 
 def specialCaseForPawn(source: Pawn, target: Tile):
   if(not source.did_i_move_already):

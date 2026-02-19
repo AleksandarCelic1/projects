@@ -252,6 +252,11 @@ def initAxisForAllPieces(main_tools: Tools):
       placeholder_piece.x_axis = current_tile.x_axis
       placeholder_piece.y_axis = current_tile.y_axis
 
+def assignKingsToTools(main_tools: Tools, king_white_tile: Tile, king_black_tile: Tile):
+
+  main_tools.black_king = king_black_tile.piece
+  main_tools.white_king = king_white_tile.piece
+
 
   
 

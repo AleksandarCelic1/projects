@@ -26,7 +26,7 @@ def gameLoop(main_tools: Tools):
         program_running = False # This is when we exit via "X" of the window
 
       
-      if event.type == pygame.MOUSEBUTTONDOWN and main_tools.game_state == GameState.PLAYING:
+      if event.type == pygame.MOUSEBUTTONDOWN and (main_tools.game_state == GameState.PLAYING or main_tools.game_state == GameState.CHECK):
         if event.button == 1 or event.button == 3: # 1 = left click 2 = middle clikc? i guess scroll 3 = right click
           button_x, button_y = event.pos
 

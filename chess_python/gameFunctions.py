@@ -59,12 +59,36 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
       
       if(main_tools.game_state != GameState.CHECK):
         main_tools.game_state = GameState.PERFORMING_LERP
+        break
       else:
-        if():
-          pass # << !!!!!
+        
+        if main_tools.current_players_selected_tile.piece.type == PieceType.KING:
+          main_tools.game_state = GameState.PERFORMING_LERP
+          break
+        else:
+          
+          print('cela peder')
 
+          board_copy: Board = copy.deepcopy(main_tools.main_board)
 
-      break
+          target_tile: Tile = board_copy.chess_board[main_tools.current_players_target_tile.y][main_tools.current_players_target_tile.x]
+          target_tile.piece = main_tools.current_players_selected_tile.piece
+
+          origin_tile: Tile = board_copy.chess_board[main_tools.current_players_selected_tile.y][main_tools.current_players_selected_tile.x]
+          origin_tile.piece = None
+
+          if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+            if(not is_attacked(board_copy, board_copy.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)):
+              main_tools.game_state = GameState.PERFORMING_LERP
+              break
+          else:
+            if(not is_attacked(board_copy, board_copy.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)):
+              main_tools.game_state = GameState.PERFORMING_LERP
+              break
+        
+
+        
+      
     
   
   main_tools.is_piece_selected = False
@@ -156,15 +180,28 @@ def specialCaseForKingsCheck(main_tools: Tools):
 
   board_reference : Board = main_tools.main_board
 
-  if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+  if(main_tools.white_king.am_i_in_check):
+    main_tools.white_king.am_i_in_check = False
+    main_tools.game_state = GameState.PLAYING
+  elif(main_tools.black_king.am_i_in_check):
+    main_tools.black_king.am_i_in_check = False
+    main_tools.game_state = GameState.PLAYING
+
+  if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE and not main_tools.white_king.am_i_in_check):
     if(is_attacked(board_reference, board_reference.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)):
+      print('BLACK KING ATTACKED')
       main_tools.game_state = GameState.CHECK
       main_tools.black_king.am_i_in_check = True
-  elif(main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK):
+  elif(main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK and not main_tools.black_king.am_i_in_check):
     if(is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)):
+      print('WHITE KING ATTACKED')
       main_tools.game_state = GameState.CHECK
       main_tools.white_king.am_i_in_check = True
 
+  
+
+
+  
 
 
 def specialCaseForPawn(source: Pawn, target: Tile):

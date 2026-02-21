@@ -58,8 +58,11 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
     and array_of_legal_moves[index][1] != ColorsTile.RED):
       
       if(main_tools.game_state != GameState.CHECK):
-        main_tools.game_state = GameState.PERFORMING_LERP
-        break
+        
+        if(not isPinned(main_tools)):
+          main_tools.game_state = GameState.PERFORMING_LERP
+          break
+
       else:
         
         if main_tools.current_players_selected_tile.piece.type == PieceType.KING:
@@ -67,30 +70,28 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
           break
         else:
           
-          print('cela peder')
 
           board_copy: Board = copy.deepcopy(main_tools.main_board)
 
           target_tile: Tile = board_copy.chess_board[main_tools.current_players_target_tile.y][main_tools.current_players_target_tile.x]
           target_tile.piece = main_tools.current_players_selected_tile.piece
 
+          # im not changing the XY of the target PIECE << ! just in case it would be needed in future
+
           origin_tile: Tile = board_copy.chess_board[main_tools.current_players_selected_tile.y][main_tools.current_players_selected_tile.x]
           origin_tile.piece = None
 
           if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
-            if(not is_attacked(board_copy, board_copy.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)):
+            if(is_attacked(board_copy, board_copy.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE) == 0):
               main_tools.game_state = GameState.PERFORMING_LERP
               break
           else:
-            if(not is_attacked(board_copy, board_copy.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)):
+            if(is_attacked(board_copy, board_copy.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK) == 0):
               main_tools.game_state = GameState.PERFORMING_LERP
               break
         
 
         
-      
-    
-  
   main_tools.is_piece_selected = False
   main_tools.move_taken = False # in case if nothing is found everything is reset 
     
@@ -188,21 +189,33 @@ def specialCaseForKingsCheck(main_tools: Tools):
     main_tools.game_state = GameState.PLAYING
 
   if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE and not main_tools.white_king.am_i_in_check):
-    if(is_attacked(board_reference, board_reference.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)):
-      print('BLACK KING ATTACKED')
-      main_tools.game_state = GameState.CHECK
-      main_tools.black_king.am_i_in_check = True
+    amount_of_attackers = is_attacked(board_reference, board_reference.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)
+    
+    if(amount_of_attackers == 0):
+      return
+
+    
+    
+    print('BLACK KING ATTACKED')
+    main_tools.game_state = GameState.CHECK
+    main_tools.black_king.am_i_in_check = True
   elif(main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK and not main_tools.black_king.am_i_in_check):
-    if(is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)):
-      print('WHITE KING ATTACKED')
-      main_tools.game_state = GameState.CHECK
-      main_tools.white_king.am_i_in_check = True
+    amount_of_attackers = is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)
+
+    if(amount_of_attackers == 0):
+      return
+    
+    print('WHITE KING ATTACKED')
+    main_tools.game_state = GameState.CHECK
+    main_tools.white_king.am_i_in_check = True
 
   
 
 
-  
+def specialCaseForCheckmate(main_tools: Tools):
+  pass
 
+  
 
 def specialCaseForPawn(source: Pawn, target: Tile):
   if(not source.did_i_move_already):
@@ -243,3 +256,21 @@ def capturePiece(main_tools: Tools, target_tile: Tile):
 def calculateDeltaTime(current_frame: float, last_frame: float):
   return (current_frame - last_frame) / ONE_SECOND
   
+def isPinned(main_tools: Tools):
+
+  board_reference: Board = copy.deepcopy(main_tools.main_board)
+
+  target_tile: Tile = board_reference.chess_board[main_tools.current_players_target_tile.y][main_tools.current_players_target_tile.x]
+  source_tile: Tile = board_reference.chess_board[main_tools.current_players_selected_tile.y][main_tools.current_players_selected_tile.x]
+
+  target_tile.piece = source_tile.piece
+  source_tile.piece = None
+
+  if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+    if(is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE) != 0):
+      return True
+  else: 
+    if(is_attacked(board_reference, board_reference.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK) != 0):
+      return True
+
+  return False

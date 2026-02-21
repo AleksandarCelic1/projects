@@ -57,6 +57,8 @@ def gameLoop(main_tools: Tools):
       main_tools.main_board.print_legal_moves(main_tools.window_and_renderer, current_legal_moves)
 
     #UI
+    main_tools.renderPlayerPlaying()
+    main_tools.renderGamestateStatus()
     main_tools.renderScores()
     main_tools.renderGraveyardPieces()
 

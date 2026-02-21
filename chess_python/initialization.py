@@ -8,7 +8,7 @@ from .classes.board import Board
 from .classes.tile import Tile
 from .classes.piece import Piece
 from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT, hash_map_for_pictures, hash_map_for_rgba_tiles, BLACK_SCORE_STRING, WHITE_SCORE_STRING
-from .classes.constants import SCALING_FACTOR_FOUR, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_graveyard_pictures, EVERY_PIECE_W_H_FOR_GRAVEYARD
+from .classes.constants import SCALING_FACTOR_FOUR, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_graveyard_pictures, EVERY_PIECE_W_H_FOR_GRAVEYARD, hash_map_for_scores_and_text, RenderingTextEnums, OFFSET_FOR_TEXT
 from .classes.player import Player
 from .classes.tools import Tools
 # check for circual imports
@@ -223,6 +223,57 @@ def initFontAndSurfacesForScores(main_tools: Tools):
 
   main_tools.white_src = main_tools.font.render(WHITE_SCORE_STRING, True,  (255, 255, 255))
   main_tools.black_src = main_tools.font.render(BLACK_SCORE_STRING, True, (255, 255, 255))
+
+
+  ## under construciton 
+  player_playing_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.PLAYER_PLAYING_TEXT.value, True, (255, 255, 255))
+  black_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.BLACK_TEXT.value, True, (255, 255, 255))
+  white_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.WHITE_TEXT.value, True, (255, 255, 255))
+  gamestate_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_TEXT.value, True, (255, 255, 255))
+  gamestate_playing_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_PLAYING.value, True, (255, 255, 255))
+  gamestate_check_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_CHECK.value, True, (255, 255, 255))
+  checkmate_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE.value, True, (255, 255, 255))
+
+
+  player_playing_dst = player_playing_src.get_rect()
+  black_text_dst = black_text_src.get_rect()
+  white_text_dst = white_text_src.get_rect()
+  gamestate_text_dst = gamestate_text_src.get_rect()
+  gamestate_playing_text_dst = gamestate_playing_text_src.get_rect()
+  gamestate_check_text_dst = gamestate_check_text_src.get_rect()
+  checkmate_text_dst = checkmate_text_src.get_rect()
+
+  player_playing_dst.y = OFFSET_FOR_TEXT
+  player_playing_dst.x = SCREEN_WIDTH / 4 - player_playing_dst.w / 2
+
+  black_text_dst.y = OFFSET_FOR_TEXT
+  black_text_dst.x = player_playing_dst.w + player_playing_dst.x
+
+  white_text_dst.y = OFFSET_FOR_TEXT
+  white_text_dst.x = player_playing_dst.w + player_playing_dst.x
+
+
+  gamestate_text_dst.y = OFFSET_FOR_TEXT
+  gamestate_text_dst.x = (SCREEN_WIDTH / 4 + SCREEN_WIDTH / 2) - gamestate_text_dst.w # 3/4 of the screen's X 
+
+  gamestate_check_text_dst.y = OFFSET_FOR_TEXT
+  gamestate_check_text_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
+
+  gamestate_playing_text_dst.y = OFFSET_FOR_TEXT
+  gamestate_playing_text_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
+
+  checkmate_text_dst.y = OFFSET_FOR_TEXT
+  checkmate_text_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
+
+
+  hash_map_for_scores_and_text[RenderingTextEnums.PLAYER_PLAYING_TEXT] = (player_playing_src, player_playing_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.BLACK_TEXT] = (black_text_src, black_text_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.WHITE_TEXT] = (white_text_src, white_text_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_TEXT] = (gamestate_text_src, gamestate_text_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_CHECK] = (gamestate_check_text_src, gamestate_check_text_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING] = (gamestate_playing_text_src, gamestate_playing_text_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE] = (checkmate_text_src, checkmate_text_dst)
+    #under construction 
 
   main_tools.white_rect = main_tools.white_src.get_rect()
   main_tools.black_rect = main_tools.black_src.get_rect()

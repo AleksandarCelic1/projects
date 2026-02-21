@@ -57,6 +57,18 @@ class DiagonalDirection(Enum):
   DOWN_LEFT = 2
   DOWN_RIGHT = 3
 
+class RenderingTextEnums(Enum):
+  BLACK_SCORE = "SCORE (BLACK):"
+  WHITE_SCORE = "SCORE (WHITE):"
+  GAME_STATE_TEXT = "GAMESTATE:"
+  GAME_STATE_PLAYING = "PLAYING"
+  GAME_STATE_CHECK = "CHECK"
+  GAME_STATE_FINISH = "FINISH"
+  PLAYER_PLAYING_TEXT = "PLAYER PLAYING:"
+  WHITE_TEXT = "WHITE"
+  BLACK_TEXT = "BLACK"
+  CHECK_MATE = "CHECKMATED IS:"
+
 
 
 # constants used for map scanning 
@@ -121,19 +133,20 @@ NEAR_LIMIT = 20
 ARRIVED_EXACT_LIMIT = 0.5
 
 
-#LOGIC DISPATCHER
-IS_A_PIECE_SELECTED = False
-MOVE_TAKEN = False
-CURRENT_TILE_TO_INSPECT = None
-
 #GLOBAL HASH TABLES
 hash_map_for_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
 hash_map_for_rgba_tiles : dict[ColorsTile, Tuple[int, int, int, int]] = {} 
 hash_map_for_graveyard_pictures : dict[HashKeyForPictures, pygame.Surface] = {}
+hash_map_for_scores_and_text : dict[RenderingTextEnums, Tuple[pygame.Surface, pygame.Rect]] = {}
 
 #SCORE STUFF
 WHITE_SCORE_STRING = 'SCORE (WHITE):'
 BLACK_SCORE_STRING = 'SCORE (BLACK):'
+
+#RENDERING OFFSET FOR GAMESTATE AND PLAYERPLAYING
+OFFSET_FOR_TEXT = 10 # used for gamestate rendering and playerplaying and so on
+
+
 
 
 

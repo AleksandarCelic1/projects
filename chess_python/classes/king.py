@@ -13,11 +13,12 @@ class King(Piece):
     super().__init__(piece_type, color, x, y, player_id, key)
     self.did_i_move_already = False
     self.am_i_in_check = False
+    self.total_legal_moves = 0
     
   def getMoves(self, logic_map: "Board", x: int, y: int):
     placeholder : List[Tuple[Tile, ColorsTile]] = []
     origin : Tile = logic_map.chess_board[y][x]
 
-    kingViableMoves(logic_map, x, y, placeholder, origin)
+    kingViableMoves(logic_map, x, y, placeholder, origin, self.total_legal_moves)
 
     return placeholder

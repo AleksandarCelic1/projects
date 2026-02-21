@@ -1,5 +1,5 @@
 from .player import Player
-from .constants import PlayerID, hash_map_for_graveyard_pictures
+from .constants import PlayerID, hash_map_for_graveyard_pictures, hash_map_for_scores_and_text, RenderingTextEnums
 from .board import Board
 from enum import Enum # enum is imported from enum and NOT from typing << !!
 from .tile import Tile
@@ -58,6 +58,23 @@ class Tools:
 
     self.window_and_renderer.blit(self.player_black.score_src, self.player_black.score_rect)
     self.window_and_renderer.blit(self.player_white.score_src, self.player_white.score_rect)
+
+
+  def renderPlayerPlaying(self):
+
+    self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.PLAYER_PLAYING_TEXT][0], hash_map_for_scores_and_text[RenderingTextEnums.PLAYER_PLAYING_TEXT][1])
+    if(self.player_playing == PlayerID.PLAYER_ONE_WHITE):
+      self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.WHITE_TEXT][0], hash_map_for_scores_and_text[RenderingTextEnums.WHITE_TEXT][1])
+    else:
+      self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.BLACK_TEXT][0], hash_map_for_scores_and_text[RenderingTextEnums.BLACK_TEXT][1])
+
+
+  def renderGamestateStatus(self):
+    self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_TEXT][0], hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_TEXT][1])
+    if(self.game_state == GameState.PLAYING or self.game_state == GameState.PERFORMING_LERP):
+      self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING][0], hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING][1])
+    else:
+      self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_CHECK][0], hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_CHECK][1])
 
   def renderGraveyardPieces(self):
     graveyard_white: List[Piece] = self.player_white.graveyard

@@ -150,10 +150,12 @@ def isInsideOfBounds(x: int, y: int) -> bool:
   placeholder = ((constants.MAP_LOWER_BOUND <= x <= constants.MAP_UPPER_BOUND) and (constants.MAP_LOWER_BOUND <= y <= constants.MAP_UPPER_BOUND))
   return placeholder
 
-def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, ColorsTile]], origin: Tile):
+def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, ColorsTile]], origin: Tile, total_legal_moves: int):
   
   iterator_x = x
   iterator_y = y
+
+  total_legal_moves = 0
 
   for offset_x, offset_y in KING_VIABLE_MOVES_OFFSETS:
 
@@ -172,37 +174,40 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
         else:
           protected = is_attacked(logical_map, current_tile, origin.piece.color)
           
-          if(current_tile.piece.player_id != origin.piece.player_id and not protected):
+          if(current_tile.piece.player_id != origin.piece.player_id and protected == 0):
             moves.append((current_tile, ColorsTile.GREEN))
-          elif(current_tile.piece.player_id != origin.piece.player_id and protected):
+            total_legal_moves += 1
+          elif(current_tile.piece.player_id != origin.piece.player_id and protected != 0):
             moves.append((current_tile, ColorsTile.RED))
       else:
         if(is_attacked(logical_map, current_tile, origin.piece.color)):
           moves.append((current_tile, ColorsTile.RED)) # if nothing is there and nothing attack this square can move there
         else: 
           moves.append((current_tile, ColorsTile.GREY)) # if nothing is there but somthing is attacking this square you cant move it 
+          total_legal_moves += 1
 
 # Core function for all following rules : Check, Checkmate, Castle, Pin
 def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces) -> bool:
   
+  amount_of_pieces_attacking_this = 0
   #Check each direction to see if a opposing color figure is attack this tile << !
-  if(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, HORIZONTAL_STRING)): return True
-  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, HORIZONTAL_STRING)): return True
-  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, VERTICAL_STRING)): return True
-  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, VERTICAL_STRING)): return True
-  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.TOP_LEFT)): return True
-  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.TOP_RIGHT)): return True
-  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_LEFT)): return True
-  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_RIGHT)): return True
-  elif(knight_is_attacking(logical_map, source_tile, source_color)): return True
-  elif(kings_is_attacking(logical_map, source_tile, source_color)): return True
+  if(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, HORIZONTAL_STRING)): amount_of_pieces_attacking_this += 1
+  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, HORIZONTAL_STRING)): amount_of_pieces_attacking_this += 1
+  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, VERTICAL_STRING)): amount_of_pieces_attacking_this += 1
+  elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, VERTICAL_STRING)): amount_of_pieces_attacking_this += 1
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.TOP_LEFT)): amount_of_pieces_attacking_this += 1
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.TOP_RIGHT)): amount_of_pieces_attacking_this += 1
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_LEFT)): amount_of_pieces_attacking_this += 1
+  elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_RIGHT)): amount_of_pieces_attacking_this += 1
+  elif(knight_is_attacking(logical_map, source_tile, source_color)): amount_of_pieces_attacking_this += 1
+  elif(kings_is_attacking(logical_map, source_tile, source_color)): amount_of_pieces_attacking_this += 1
 
   if(source_color == ColorsPieces.WHITE):
-    if(pawn_is_attacking(logical_map, source_tile, source_color, BLACK_PAWNS_ATTACKING_WHITE_OFFSET)): return True
+    if(pawn_is_attacking(logical_map, source_tile, source_color, BLACK_PAWNS_ATTACKING_WHITE_OFFSET)): amount_of_pieces_attacking_this += 1
   else:
-    if(pawn_is_attacking(logical_map, source_tile, source_color, WHITE_PAWNS_ATTACKING_BLACK_OFFSET)): return True
+    if(pawn_is_attacking(logical_map, source_tile, source_color, WHITE_PAWNS_ATTACKING_BLACK_OFFSET)): amount_of_pieces_attacking_this += 1
 
-  return False
+  return amount_of_pieces_attacking_this
 
 
 def horizontal_or_vertical_is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces, offset: int, which_direction: str):

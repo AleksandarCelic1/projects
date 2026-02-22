@@ -13,6 +13,7 @@ class GameState(Enum):
   PERFORMING_LERP = 1,
   PLAYING = 2,
   CHECK = 3
+  CHECKMATE = 4
 
 
 class Tools:
@@ -37,6 +38,9 @@ class Tools:
 
     self.black_king: King = None
     self.white_king: King = None
+
+    #Win
+    self.player_who_won: PlayerID = None
 
     #Regarding font and score rendering
     self.white_src: pygame.Surface = None
@@ -73,8 +77,15 @@ class Tools:
     self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_TEXT][0], hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_TEXT][1])
     if(self.game_state == GameState.PLAYING or self.game_state == GameState.PERFORMING_LERP):
       self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING][0], hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING][1])
-    else:
+    elif(self.game_state == GameState.CHECK):
       self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_CHECK][0], hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_CHECK][1])
+    elif(self.game_state == GameState.CHECKMATE):
+      
+      if(self.player_who_won == PlayerID.PLAYER_ONE_WHITE):
+        self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_WHITE][0], hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_WHITE][1])
+      else:
+        self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_BLACK][0], hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_BLACK][1])
+
 
   def renderGraveyardPieces(self):
     graveyard_white: List[Piece] = self.player_white.graveyard

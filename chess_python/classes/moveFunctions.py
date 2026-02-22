@@ -190,6 +190,7 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
 def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces) -> bool:
   
   amount_of_pieces_attacking_this = 0
+  constants.CURRENT_ATTACKER.clear()
   #Check each direction to see if a opposing color figure is attack this tile << !
   if(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, -1, HORIZONTAL_STRING)): amount_of_pieces_attacking_this += 1
   elif(horizontal_or_vertical_is_attacked(logical_map, source_tile, source_color, 1, HORIZONTAL_STRING)): amount_of_pieces_attacking_this += 1
@@ -232,6 +233,7 @@ def horizontal_or_vertical_is_attacked(logical_map: Board, source_tile: Tile, so
     placeholder_piece: Piece = current_tile.piece
 
     if((placeholder_piece.type == PieceType.QUEEN or placeholder_piece.type == PieceType.ROOK) and placeholder_piece.color != source_color):
+      constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     else:
       return False
@@ -259,6 +261,7 @@ def diagonal_is_attacked(logical_map: Board, source_tile: Tile, source_color: Co
 
     if((placeholder_piece.type == PieceType.QUEEN or placeholder_piece.type == PieceType.BISHOP)
     and placeholder_piece.color != source_color):
+      constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     else:
       return False
@@ -285,9 +288,10 @@ def knight_is_attacking(logical_map: Board, source_tile: Tile, source_color: Col
     if(not current_tile.is_occupied()):
       continue
 
-    placeholder_pawn: Piece = current_tile.piece
+    placeholder_piece: Piece = current_tile.piece
 
-    if(placeholder_pawn.type == PieceType.KNIGHT and placeholder_pawn.color != source_color):
+    if(placeholder_piece.type == PieceType.KNIGHT and placeholder_piece.color != source_color):
+      constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     
   return False
@@ -332,6 +336,7 @@ def pawn_is_attacking(logical_map: Board, source_tile: Tile, source_color: Color
     placeholder_piece: Piece = current_tile.piece
 
     if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN):
+      constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     
 
@@ -360,6 +365,7 @@ def kings_is_attacking(logical_map: Board, source_tile: Tile, source_color: Colo
     placeholder_piece: Piece = current_tile.piece
 
     if(placeholder_piece.type == PieceType.KING and placeholder_piece.color != source_color):
+      constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     
 

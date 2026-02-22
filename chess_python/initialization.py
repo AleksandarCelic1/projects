@@ -225,14 +225,15 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   main_tools.black_src = main_tools.font.render(BLACK_SCORE_STRING, True, (255, 255, 255))
 
 
-  ## under construciton 
   player_playing_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.PLAYER_PLAYING_TEXT.value, True, (255, 255, 255))
   black_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.BLACK_TEXT.value, True, (255, 255, 255))
   white_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.WHITE_TEXT.value, True, (255, 255, 255))
   gamestate_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_TEXT.value, True, (255, 255, 255))
   gamestate_playing_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_PLAYING.value, True, (255, 255, 255))
   gamestate_check_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_CHECK.value, True, (255, 255, 255))
-  checkmate_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE.value, True, (255, 255, 255))
+  checkmate_text_white_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE_WHITE.value, True, (255, 255, 255))
+  checkmate_text_black_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE_BLACK.value, True, (255, 255, 255))
+  
 
 
   player_playing_dst = player_playing_src.get_rect()
@@ -241,7 +242,8 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   gamestate_text_dst = gamestate_text_src.get_rect()
   gamestate_playing_text_dst = gamestate_playing_text_src.get_rect()
   gamestate_check_text_dst = gamestate_check_text_src.get_rect()
-  checkmate_text_dst = checkmate_text_src.get_rect()
+  checkmate_text_white_dst = checkmate_text_white_src.get_rect()
+  checkmate_text_black_dst = checkmate_text_black_src.get_rect()
 
   player_playing_dst.y = OFFSET_FOR_TEXT
   player_playing_dst.x = SCREEN_WIDTH / 4 - player_playing_dst.w / 2
@@ -262,8 +264,11 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   gamestate_playing_text_dst.y = OFFSET_FOR_TEXT
   gamestate_playing_text_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
 
-  checkmate_text_dst.y = OFFSET_FOR_TEXT
-  checkmate_text_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
+  checkmate_text_white_dst.y = OFFSET_FOR_TEXT
+  checkmate_text_white_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
+  
+  checkmate_text_black_dst.y = OFFSET_FOR_TEXT
+  checkmate_text_black_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
 
 
   hash_map_for_scores_and_text[RenderingTextEnums.PLAYER_PLAYING_TEXT] = (player_playing_src, player_playing_dst)
@@ -272,8 +277,8 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_TEXT] = (gamestate_text_src, gamestate_text_dst)
   hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_CHECK] = (gamestate_check_text_src, gamestate_check_text_dst)
   hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING] = (gamestate_playing_text_src, gamestate_playing_text_dst)
-  hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE] = (checkmate_text_src, checkmate_text_dst)
-    #under construction 
+  hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_WHITE] = (checkmate_text_white_src, checkmate_text_white_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_BLACK] = (checkmate_text_black_src, checkmate_text_black_dst)
 
   main_tools.white_rect = main_tools.white_src.get_rect()
   main_tools.black_rect = main_tools.black_src.get_rect()

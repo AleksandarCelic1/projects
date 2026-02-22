@@ -1,10 +1,12 @@
 import pygame
 import copy
+import classes.constants as constants
 
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y, X_OFFSETS_FOR_EN_PASSANT
 from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y
+
 from .classes.moveFunctions import isInsideOfBounds, is_attacked
 from .classes.tile import Tile
 from .classes.tools import Tools, GameState
@@ -59,7 +61,7 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
       
       if(main_tools.game_state != GameState.CHECK):
         
-        if(not isPinned(main_tools)):
+        if(not isPinned(main_tools, main_tools.current_players_target_tile, main_tools.current_players_selected_tile, main_tools.player_playing)):
           main_tools.game_state = GameState.PERFORMING_LERP
           break
 
@@ -193,27 +195,91 @@ def specialCaseForKingsCheck(main_tools: Tools):
     
     if(amount_of_attackers == 0):
       return
+    else:
+      print('BLACK KING ATTACKED')
+      main_tools.game_state = GameState.CHECK
+      main_tools.black_king.am_i_in_check = True
 
-    
-    
-    print('BLACK KING ATTACKED')
-    main_tools.game_state = GameState.CHECK
-    main_tools.black_king.am_i_in_check = True
+      specialCaseForCheckmate(main_tools, amount_of_attackers, main_tools.black_king)
   elif(main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK and not main_tools.black_king.am_i_in_check):
     amount_of_attackers = is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)
 
     if(amount_of_attackers == 0):
       return
-    
-    print('WHITE KING ATTACKED')
-    main_tools.game_state = GameState.CHECK
-    main_tools.white_king.am_i_in_check = True
+    else:
+      print('WHITE KING ATTACKED')
+      main_tools.game_state = GameState.CHECK
+      main_tools.white_king.am_i_in_check = True
 
+      specialCaseForCheckmate(main_tools, amount_of_attackers, main_tools.white_king)
+
+ 
+
+
+def specialCaseForCheckmate(main_tools: Tools, amount_of_attackers: int, current_king: King):
+
+  current_king.getMoves() # Current king is attacked << !
+
+  if(current_king.total_legal_moves == 0): 
+
+    if(amount_of_attackers > 1):
+      main_tools.game_state = GameState.CHECKMATE
+      main_tools.player_who_won = PlayerID.PLAYER_ONE_WHITE if (current_king.player_id == PlayerID.PLAYER_TWO_BLACK) else PlayerID.PLAYER_TWO_BLACK
+
+    else: # amount_of_attackers == 1   
+      if(checkmateConfirmer()):
+        main_tools.game_state = GameState.CHECKMATE
+        main_tools.player_who_won = PlayerID.PLAYER_ONE_WHITE if (current_king.player_id == PlayerID.PLAYER_TWO_BLACK) else PlayerID.PLAYER_TWO_BLACK
+
+  else:
+    return
   
 
+def checkmateConfirmer(main_tools: Tools, current_king: King):
 
-def specialCaseForCheckmate(main_tools: Tools):
+  copy_of_current_attacker: Piece = copy.deepcopy(constants.CURRENT_ATTACKER[0]) # there must be at least one according to the ALGO
+  placeholder_type = earlyCheckForAttacker(copy_of_current_attacker)
+
+  if(placeholder_type is not None):
+    amount_of_attackers = is_attacked(main_tools.main_board,
+    main_tools.main_board[copy_of_current_attacker.y][copy_of_current_attacker.x], copy_of_current_attacker.color)
+
+    if(amount_of_attackers == 0):
+      return True
+    
+    elif(amount_of_attackers == 1): 
+      if(isPinned(main_tools, main_tools.main_board[copy_of_current_attacker.y][copy_of_current_attacker.x],
+      main_tools.main_board[constants.CURRENT_ATTACKER[0].y][constants.CURRENT_ATTACKER[0].x])):
+        return True 
+      else:
+        return False
+      
+    elif(amount_of_attackers > 1):
+
+      copy_of_all_attackers : List[Piece] = copy.deepcopy(constants.CURRENT_ATTACKER)
+
+      for index in range(len(constants.CURRENT_ATTACKER)):
+        if(not isPinned(main_tools, main_tools.main_board[copy_of_current_attacker.y][copy_of_current_attacker.x],
+        main_tools.main_board[copy_of_all_attackers[index].y][copy_of_all_attackers[index].x])):
+          return False
+        
+      return True
+    
+
+def checkmateCoordsCalculator() -> bool:
   pass
+
+
+def earlyCheckForAttacker(current_attacker: Piece) -> PieceType:
+  type = current_attacker.type
+
+  if(type == PieceType.KNIGHT):
+    return PieceType.KNIGHT
+  elif(type == PieceType.PAWN):
+    return PieceType.PAWN
+  
+  return None
+
 
   
 
@@ -256,17 +322,17 @@ def capturePiece(main_tools: Tools, target_tile: Tile):
 def calculateDeltaTime(current_frame: float, last_frame: float):
   return (current_frame - last_frame) / ONE_SECOND
   
-def isPinned(main_tools: Tools):
+def isPinned(main_tools: Tools, target_tile_origin: Tile, source_tile_origin: Tile, king_id: PlayerID): # source goes to target and then we see if king is attacked 
 
   board_reference: Board = copy.deepcopy(main_tools.main_board)
 
-  target_tile: Tile = board_reference.chess_board[main_tools.current_players_target_tile.y][main_tools.current_players_target_tile.x]
-  source_tile: Tile = board_reference.chess_board[main_tools.current_players_selected_tile.y][main_tools.current_players_selected_tile.x]
+  target_tile: Tile = board_reference.chess_board[target_tile_origin.y][target_tile_origin.x]
+  source_tile: Tile = board_reference.chess_board[source_tile_origin.y][source_tile_origin.x]
 
   target_tile.piece = source_tile.piece
   source_tile.piece = None
 
-  if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+  if(king_id == PlayerID.PLAYER_ONE_WHITE): # True means Corresponding King is still in check after simulating this move << ! 
     if(is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE) != 0):
       return True
   else: 

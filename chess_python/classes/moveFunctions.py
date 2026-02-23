@@ -189,6 +189,8 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
 # Core function for all following rules : Check, Checkmate, Castle, Pin
 def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces) -> bool:
   
+  # source tile is whats being attacked << ! checking for that << !
+
   amount_of_pieces_attacking_this = 0
   constants.CURRENT_ATTACKER.clear()
   #Check each direction to see if a opposing color figure is attack this tile << !

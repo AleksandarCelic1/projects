@@ -19,6 +19,7 @@ class King(Piece):
     placeholder : List[Tuple[Tile, ColorsTile]] = []
     origin : Tile = logic_map.chess_board[y][x]
 
-    kingViableMoves(logic_map, x, y, placeholder, origin, self.total_legal_moves)
+    
+    self.total_legal_moves = kingViableMoves(logic_map, x, y, placeholder, origin)
 
     return placeholder

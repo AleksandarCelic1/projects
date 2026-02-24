@@ -1,6 +1,8 @@
+#import chess_python.classes.constants as constants
+
+from . import constants
 from .board import Board
 from .tile import Tile
-from . import constants
 from .constants import ColorsTile, ColorsPieces, PieceType, HORIZONTAL_STRING, VERTICAL_STRING, DiagonalDirection
 from typing import List, Tuple
 from .piece import Piece
@@ -150,7 +152,7 @@ def isInsideOfBounds(x: int, y: int) -> bool:
   placeholder = ((constants.MAP_LOWER_BOUND <= x <= constants.MAP_UPPER_BOUND) and (constants.MAP_LOWER_BOUND <= y <= constants.MAP_UPPER_BOUND))
   return placeholder
 
-def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, ColorsTile]], origin: Tile, total_legal_moves: int):
+def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, ColorsTile]], origin: Tile):
   
   iterator_x = x
   iterator_y = y
@@ -186,9 +188,13 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
           moves.append((current_tile, ColorsTile.GREY)) # if nothing is there but somthing is attacking this square you cant move it 
           total_legal_moves += 1
 
+
+
+  return total_legal_moves
+
 # Core function for all following rules : Check, Checkmate, Castle, Pin
 def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces) -> bool:
-  
+
   # source tile is whats being attacked << ! checking for that << !
 
   amount_of_pieces_attacking_this = 0
@@ -203,7 +209,7 @@ def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPiece
   elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_LEFT)): amount_of_pieces_attacking_this += 1
   elif(diagonal_is_attacked(logical_map, source_tile, source_color, DiagonalDirection.DOWN_RIGHT)): amount_of_pieces_attacking_this += 1
   elif(knight_is_attacking(logical_map, source_tile, source_color)): amount_of_pieces_attacking_this += 1
-  elif(kings_is_attacking(logical_map, source_tile, source_color)): amount_of_pieces_attacking_this += 1
+  elif(kings_is_attacking(logical_map, source_tile, source_color)): amount_of_pieces_attacking_this += 1  # << HERE IS THE THING ABOUT KINGS CHECK THIS OUT 
 
   if(source_color == ColorsPieces.WHITE):
     if(pawn_is_attacking(logical_map, source_tile, source_color, BLACK_PAWNS_ATTACKING_WHITE_OFFSET)): amount_of_pieces_attacking_this += 1
@@ -216,9 +222,10 @@ def is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPiece
 def horizontal_or_vertical_is_attacked(logical_map: Board, source_tile: Tile, source_color: ColorsPieces, offset: int, which_direction: str):
 
   if(which_direction == VERTICAL_STRING):
-    iterator = source_tile.y + offset
+    iterator = source_tile.y
   elif(which_direction == HORIZONTAL_STRING):
-    iterator = source_tile.x + offset
+    iterator = source_tile.x
+
 
 
   while constants.MAP_LOWER_BOUND <= iterator <= constants.MAP_UPPER_BOUND:
@@ -235,8 +242,13 @@ def horizontal_or_vertical_is_attacked(logical_map: Board, source_tile: Tile, so
     placeholder_piece: Piece = current_tile.piece
 
     if((placeholder_piece.type == PieceType.QUEEN or placeholder_piece.type == PieceType.ROOK) and placeholder_piece.color != source_color):
+
+      # somehow king calls this and sees its a queen and we have to tell him that he cant it << ! we made a helper function
       constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
+    elif(placeholder_piece.type == PieceType.KING):
+      iterator += offset
+      continue
     else:
       return False
     
@@ -247,8 +259,11 @@ def diagonal_is_attacked(logical_map: Board, source_tile: Tile, source_color: Co
   
   offset_x, offset_y = switch_for_diagonal_offsets(which_direction)
 
-  iterator_x = source_tile.x + offset_x
-  iterator_y = source_tile.y + offset_y
+  #iterator_x = source_tile.x + offset_x
+  #iterator_y = source_tile.y + offset_y
+  
+  iterator_x = source_tile.x 
+  iterator_y = source_tile.y
 
   while constants.MAP_LOWER_BOUND <= iterator_x <= constants.MAP_UPPER_BOUND and constants.MAP_LOWER_BOUND <= iterator_y <= constants.MAP_UPPER_BOUND:
     
@@ -263,8 +278,13 @@ def diagonal_is_attacked(logical_map: Board, source_tile: Tile, source_color: Co
 
     if((placeholder_piece.type == PieceType.QUEEN or placeholder_piece.type == PieceType.BISHOP)
     and placeholder_piece.color != source_color):
+      
       constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
+    elif(placeholder_piece.type == PieceType.KING):
+      iterator_x += offset_x
+      iterator_y += offset_y
+      continue
     else:
       return False
 
@@ -310,7 +330,6 @@ def switch_for_diagonal_offsets(desired_direction: DiagonalDirection):
     case DiagonalDirection.TOP_RIGHT:
       return (1, -1)
     case _:
-      print('usro sam se << !')
       return None
     
 def pawn_is_attacking(logical_map: Board, source_tile: Tile, source_color: ColorsPieces, moves: List[Tuple[int ,int ]]):
@@ -337,7 +356,7 @@ def pawn_is_attacking(logical_map: Board, source_tile: Tile, source_color: Color
 
     placeholder_piece: Piece = current_tile.piece
 
-    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN):
+    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN): # MODIFT THIS FOR PAWN ATTACKING CHEKC TILE OCCPIED BEFORE APPENDING << ! 
       constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     
@@ -367,11 +386,19 @@ def kings_is_attacking(logical_map: Board, source_tile: Tile, source_color: Colo
     placeholder_piece: Piece = current_tile.piece
 
     if(placeholder_piece.type == PieceType.KING and placeholder_piece.color != source_color):
-      constants.CURRENT_ATTACKER.append(placeholder_piece)
-      return True
+      if(quickCheckIfKingCanTakeThis(logical_map, source_tile, ColorsTile.GREEN, placeholder_piece)): #  Queen tile  
+        constants.CURRENT_ATTACKER.append(placeholder_piece)
+        return True
     
 
   return False
+
+def quickCheckIfKingCanTakeThis(logical_map: Board, source_tile: Tile, source_color: ColorsTile, king: Piece):
+  moves: List[Tuple[Tile, ColorsTile]] = []
+  moves = king.getMoves(logical_map, king.x, king.y)
+
+  return (source_tile, source_color) in moves
+    
 
 
 

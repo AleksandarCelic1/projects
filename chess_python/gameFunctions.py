@@ -264,10 +264,7 @@ def canBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece,
   board_reference.chess_board[tile_between_attacker_and_king[1]][tile_between_attacker_and_king[0]], current_attacker.color)
   print(amount_of_attackers)
 
-  if(constants.CURRENT_ATTACKER[0].type == PieceType.PAWN):
-    if(constants.CURRENT_ATTACKER[0].x % 2 != tile_between_attacker_and_king[0] % 2):
-      if()
-      pass
+  
 
   if(amount_of_attackers == 0):
     return False
@@ -317,13 +314,9 @@ def canBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece,
 
 def checkIfAnyTileCanBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece, moves: List[Tuple[int, int]]):
   
-
-
   for index in range(len(moves)):
     print(moves[index][0], moves[index][1])
     if(canBeBlocked(main_tools, current_king, current_attacker, (moves[index][0], moves[index][1]))):
-
-      print('blocked')
       return True # means a tile between them can be blocked and thats NOT a checkmate << !
     
   return False

@@ -174,7 +174,13 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
         if(current_tile.piece.player_id == origin.piece.player_id):
           moves.append((current_tile, ColorsTile.RED)) # cant eat your own stuff << !
         else:
-          protected = is_attacked(logical_map, current_tile, origin.piece.color)
+
+          protected = is_attacked(logical_map, current_tile, origin.piece.color) 
+
+          #if(origin.piece.color == ColorsPieces.BLACK):
+          #  protected = is_attacked(logical_map, current_tile, ColorsPieces.WHITE) 
+          #else: 
+          #  protected = is_attacked(logical_map, current_tile, ColorsPieces.BLACK)
           
           if(current_tile.piece.player_id != origin.piece.player_id and protected == 0):
             moves.append((current_tile, ColorsTile.GREEN))
@@ -356,7 +362,7 @@ def pawn_is_attacking(logical_map: Board, source_tile: Tile, source_color: Color
 
     placeholder_piece: Piece = current_tile.piece
 
-    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN): # MODIFT THIS FOR PAWN ATTACKING CHEKC TILE OCCPIED BEFORE APPENDING << ! 
+    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN and source_tile.is_occupied()): 
       constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
     

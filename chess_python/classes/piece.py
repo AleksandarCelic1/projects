@@ -14,6 +14,9 @@ class Piece(ABC):
         self.color = color
         self.can_move = True
 
+        # Moving
+        self.did_i_move_already = False
+
         #indexes
         self.x = x 
         self.y = y

@@ -2,6 +2,8 @@ import pygame
 import copy
 import chess_python.classes.constants as constants
 
+from typing import Optional
+
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y
@@ -13,6 +15,7 @@ from .classes.tools import Tools, GameState
 from .classes.piece import Piece
 from .classes.pawn import Pawn
 from .classes.king import King
+from .classes.rook import Rook
 
 
 from typing import List, Tuple
@@ -162,6 +165,9 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   if(source.type == PieceType.PAWN):
     pawn: Pawn = source
     specialCaseForPawn(pawn, target)
+  elif(not source.did_i_move_already):
+    source.did_i_move_already = True
+
 
   source.x = target.x
   source.y = target.y
@@ -262,7 +268,7 @@ def canBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece,
 
   amount_of_attackers = is_attacked(board_reference, 
   board_reference.chess_board[tile_between_attacker_and_king[1]][tile_between_attacker_and_king[0]], current_attacker.color)
-  print(amount_of_attackers)
+  #print(amount_of_attackers)
 
   
 
@@ -272,27 +278,6 @@ def canBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece,
   elif(amount_of_attackers == 1): 
     # one piece can block this there must be isPinned as e.g. rook pins queen to hers king, and then bishop gives check 
     # queen can block but only if its not pinned << !
-    attacker_type = constants.CURRENT_ATTACKER[0].type
-
-    if attacker_type == PieceType.PAWN:
-      print(constants.CURRENT_ATTACKER[0].x, constants.CURRENT_ATTACKER[0].y)
-      print("Attacker is PAWN")
-
-    elif attacker_type == PieceType.KNIGHT:
-          print("Attacker is KNIGHT")
-
-    elif attacker_type == PieceType.QUEEN:
-          print("Attacker is QUEEN")
-
-    elif attacker_type == PieceType.KING:
-          print("Attacker is KING")
-
-    elif attacker_type == PieceType.BISHOP:
-          print("Attacker is BISHOP")
-
-    elif attacker_type == PieceType.ROOK:
-          print("Attacker is ROOK")
-
     if(not isPinned(main_tools, board_reference.chess_board[tile_between_attacker_and_king[1]][tile_between_attacker_and_king[0]],
     board_reference.chess_board[constants.CURRENT_ATTACKER[0].y][constants.CURRENT_ATTACKER[0].x], current_king.player_id)):
       
@@ -314,6 +299,10 @@ def canBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece,
 
 def checkIfAnyTileCanBeBlocked(main_tools: Tools, current_king: King, current_attacker: Piece, moves: List[Tuple[int, int]]):
   
+
+  if(moves is None):
+    return False
+  
   for index in range(len(moves)):
     print(moves[index][0], moves[index][1])
     if(canBeBlocked(main_tools, current_king, current_attacker, (moves[index][0], moves[index][1]))):
@@ -325,10 +314,8 @@ def checkIfAnyTileCanBeBlocked(main_tools: Tools, current_king: King, current_at
 def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_attacker: Piece):
 
  
-
   amount_of_attackers = is_attacked(main_tools.main_board, 
   main_tools.main_board.chess_board[current_attacker.y][current_attacker.x], current_attacker.color)
-  print(amount_of_attackers) # something is wrong here idk what << !
 
   if(amount_of_attackers == 0):
     return False # False means it cant be eaten which indicates a Checkmate
@@ -418,6 +405,11 @@ def specialCaseForPawn(source: Pawn, target: Tile):
   
   elif(source.did_i_move_already and source.vunerable_to_en_passant):
     source.vunerable_to_en_passant = False
+
+
+
+
+
 
 def specialCaseEnPassant(main_tools: Tools, source: Pawn, target: Tile):
   

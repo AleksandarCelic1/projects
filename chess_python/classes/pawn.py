@@ -15,7 +15,6 @@ if TYPE_CHECKING:
 class Pawn(Piece):
   def __init__(self, piece_type : PieceType, color : ColorsPieces, x : int, y : int, player_id : PlayerID, key: HashKeyForPictures):
     super().__init__(piece_type, color, x, y, player_id, key)
-    self.did_i_move_already = False # USED FOR GET MOVES, as it will be used to check if
     self.vunerable_to_en_passant = False
     # one can jump for 2 fields << !
     # Super() calls the base class in our case Piece CTOR (constructor)

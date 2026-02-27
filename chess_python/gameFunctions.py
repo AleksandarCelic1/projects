@@ -7,7 +7,7 @@ from typing import Optional
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y
-from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y
+from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y, KING_SIDE_ROOK_X, QUEEN_SIDE_ROOK_X
 
 from .classes.moveFunctions import isInsideOfBounds, is_attacked
 from .classes.tile import Tile
@@ -65,12 +65,14 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
       if(main_tools.game_state != GameState.CHECK):
         if(not isPinned(main_tools, main_tools.current_players_target_tile, main_tools.current_players_selected_tile, main_tools.player_playing)):
           main_tools.game_state = GameState.PERFORMING_LERP
+          didCastleOccur(main_tools)
           break
         
       else:
         
         if main_tools.current_players_selected_tile.piece.type == PieceType.KING:
           main_tools.game_state = GameState.PERFORMING_LERP
+          didCastleOccur(main_tools)
           break
         else:
           
@@ -88,17 +90,34 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
           if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
             if(is_attacked(board_copy, board_copy.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE) == 0):
               main_tools.game_state = GameState.PERFORMING_LERP
+              didCastleOccur(main_tools)
               break
           else:
             if(is_attacked(board_copy, board_copy.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK) == 0):
               main_tools.game_state = GameState.PERFORMING_LERP
+              didCastleOccur(main_tools)
               break
         
 
         
   main_tools.is_piece_selected = False
   main_tools.move_taken = False # in case if nothing is found everything is reset 
-    
+
+def didCastleOccur(main_tools: Tools):
+
+  selected_piece: Piece = main_tools.current_players_selected_tile.piece
+  target_tile: Tile = main_tools.current_players_target_tile
+
+  if(selected_piece.type == PieceType.KING):
+
+    if((selected_piece.x == target_tile.x + 2)):
+      main_tools.castle_being_performed = True
+      main_tools.which_rook = KING_SIDE_ROOK_X
+
+    elif(selected_piece.x == target_tile.x - 2):
+      main_tools.castle_being_performed = True
+      main_tools.which_rook = QUEEN_SIDE_ROOK_X
+
 
 def controlFPS(frame_start: int):
   current_frame_time = pygame.time.get_ticks() - frame_start
@@ -176,6 +195,7 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   current.piece = source
 
   specialCaseForKingsCheck(main_tools)
+  # KEEP HIM IN PERFOMRING_LERP_JUST SWITCH THE SELECTED AND TARGET TILE << !<!!<!<!<!<<
   main_tools.player_playing = PlayerID.PLAYER_ONE_WHITE if main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK else PlayerID.PLAYER_TWO_BLACK
 
   

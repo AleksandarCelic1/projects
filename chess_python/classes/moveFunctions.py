@@ -10,8 +10,8 @@ from .piece import Piece
 
 KNIGHT_VIABLE_MOVES_OFFSETS= {  (-1, -2), (1, -2), (2, -1), (2, 1), (-2, -1), (-2, 1), (-1, 2), (1, 2)}
 KING_VIABLE_MOVES_OFFSETS = { (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)}
-KING_CASTLE_QUEEN_SIDE = {-1, -2}
-KING_CASTLE_KING_SIDE = {1, 2}
+KING_CASTLE_QUEEN_SIDE = (-1, -2)
+KING_CASTLE_KING_SIDE = (1, 2)
 BLACK_PAWNS_ATTACKING_WHITE_OFFSET = {(-1, -1), (1, -1)}
 WHITE_PAWNS_ATTACKING_BLACK_OFFSET = ((1, 1), (-1, 1))
 
@@ -195,7 +195,7 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
   
   placeholder: Piece = origin.piece
   if(not placeholder.did_i_move_already):
-    isCastlePossible(logical_map, moves, origin)
+    total_legal_moves += isCastlePossible(logical_map, moves, origin)
 
   return total_legal_moves
 
@@ -205,9 +205,43 @@ def isCastlePossible(logic_map: Board, moves: List[Tuple[Tile, ColorsTile]], ori
 
    # make another function let this be a mini dispatcher for kings and queens castle here we can do error check and then if 
    # sufficient we do the kings/queens castle to see if its viable 
+  total_moves = 0
+
+  kings_rook_tile: Tile = logic_map.chess_board[origin.y][KING_SIDE_ROOK_X]
+  queens_rook_tile: Tile = logic_map.chess_board[origin.y][QUEEN_SIDE_ROOK_X]
+
+  if(not kings_rook_tile.piece.did_i_move_already):
+    total_moves += castleHelperFunction(logic_map, moves, origin.piece, KING_CASTLE_KING_SIDE)
+
+
+  if(not queens_rook_tile.piece.did_i_move_already):
+    total_moves += castleHelperFunction(logic_map, moves, origin.piece, KING_CASTLE_QUEEN_SIDE)
+
+  return total_moves
+
+
+def castleHelperFunction(logic_map: Board, moves: List[Tuple[Tile, ColorsTile]], origin_piece: Piece, offsets: List[int]):
+
+  validator = 0
+  
+  for index in range(len(offsets)):
+
+    current_tile: Tile = logic_map.chess_board[origin_piece.y][origin_piece.x + offsets[index]]
+
+    if(not current_tile.is_occupied() and not is_attacked(logic_map, current_tile, origin_piece.color)):
+      validator += 1
   
 
-  pass
+
+  new_valid_move: Tile = logic_map.chess_board[origin_piece.y][origin_piece.x + offsets[1]]
+  if(validator == 2):
+    moves.append((new_valid_move, ColorsTile.GREY))
+    return validator - 1
+  
+  
+  
+  return 0
+
 
 
 # Core function for all following rules : Check, Checkmate, Castle, Pin

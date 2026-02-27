@@ -33,6 +33,11 @@ class Tools:
     self.move_taken = False
     self.was_graveyard_changed = False
     self.is_near_the_destination = False
+
+    #Castle
+
+    self.castle_being_performed = False
+    self.which_rook = 0 # we would essentially just pass the Y and then we can see 
     
     #Check / Checkmate
 

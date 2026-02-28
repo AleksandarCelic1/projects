@@ -194,7 +194,7 @@ def kingViableMoves(logical_map: Board, x: int, y: int, moves: List[Tuple[Tile, 
 
   
   placeholder: Piece = origin.piece
-  if(not placeholder.did_i_move_already):
+  if(not placeholder.did_i_move_already and hasattr(placeholder, "am_i_in_check") and not placeholder.am_i_in_check):
     total_legal_moves += isCastlePossible(logical_map, moves, origin)
 
   return total_legal_moves

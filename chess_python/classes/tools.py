@@ -37,7 +37,7 @@ class Tools:
     #Castle
 
     self.castle_being_performed = False
-    self.which_rook = 0 # we would essentially just pass the Y and then we can see 
+    self.which_rook = 0 # we would essentially just pass the X and then we can see 
     
     #Check / Checkmate
 

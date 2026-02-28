@@ -7,7 +7,7 @@ from typing import Optional
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y
-from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y, KING_SIDE_ROOK_X, QUEEN_SIDE_ROOK_X
+from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y, KING_SIDE_ROOK_X, QUEEN_SIDE_ROOK_X, ROOK_OFFSET_AFTER_QUEEN_CASTLE, ROOK_OFFSET_AFTER_KING_CASTLE
 
 from .classes.moveFunctions import isInsideOfBounds, is_attacked
 from .classes.tile import Tile
@@ -111,12 +111,14 @@ def didCastleOccur(main_tools: Tools):
   if(selected_piece.type == PieceType.KING):
 
     if((selected_piece.x == target_tile.x + 2)):
-      main_tools.castle_being_performed = True
-      main_tools.which_rook = KING_SIDE_ROOK_X
-
-    elif(selected_piece.x == target_tile.x - 2):
+      print("KINGSIDE")
       main_tools.castle_being_performed = True
       main_tools.which_rook = QUEEN_SIDE_ROOK_X
+
+    elif(selected_piece.x == target_tile.x - 2):
+      print("QUEENSIDE")
+      main_tools.castle_being_performed = True
+      main_tools.which_rook = KING_SIDE_ROOK_X
 
 
 def controlFPS(frame_start: int):
@@ -194,15 +196,30 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   current : Tile = board.chess_board[source.y][source.x]
   current.piece = source
 
-  specialCaseForKingsCheck(main_tools)
-  # KEEP HIM IN PERFOMRING_LERP_JUST SWITCH THE SELECTED AND TARGET TILE << !<!!<!<!<!<<
-  main_tools.player_playing = PlayerID.PLAYER_ONE_WHITE if main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK else PlayerID.PLAYER_TWO_BLACK
+  handleEndOfLerpLogic(main_tools)
 
-  
-
-    
-  
   return
+
+def handleEndOfLerpLogic(main_tools: Tools):
+
+  if(main_tools.castle_being_performed):
+    main_tools.game_state = GameState.PERFORMING_LERP
+    main_tools.castle_being_performed = False
+    main_tools.is_near_the_destination = False
+    offset = ROOK_OFFSET_AFTER_KING_CASTLE if main_tools.which_rook == KING_SIDE_ROOK_X else ROOK_OFFSET_AFTER_QUEEN_CASTLE
+    if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+      main_tools.current_players_selected_tile = main_tools.main_board.chess_board[main_tools.white_king.y][main_tools.which_rook]
+      main_tools.current_players_target_tile = main_tools.main_board.chess_board[main_tools.white_king.y][main_tools.which_rook + offset]
+    else:
+      main_tools.current_players_selected_tile = main_tools.main_board.chess_board[main_tools.black_king.y][main_tools.which_rook]
+      main_tools.current_players_target_tile = main_tools.main_board.chess_board[main_tools.black_king.y][main_tools.which_rook + offset]
+
+  else:
+    specialCaseForKingsCheck(main_tools)
+    main_tools.player_playing = PlayerID.PLAYER_ONE_WHITE if main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK else PlayerID.PLAYER_TWO_BLACK
+
+
+  pass
 
 def specialCaseForKingsCheck(main_tools: Tools):
 
@@ -238,9 +255,6 @@ def specialCaseForKingsCheck(main_tools: Tools):
 
       specialCaseForCheckmate(main_tools, amount_of_attackers, main_tools.white_king)
 
- 
-
-
 def specialCaseForCheckmate(main_tools: Tools, amount_of_attackers: int, current_king: King):
 
   current_king.getMoves(main_tools.main_board, current_king.x, current_king.y) # Current king is attacked << !
@@ -263,7 +277,6 @@ def specialCaseForCheckmate(main_tools: Tools, amount_of_attackers: int, current
   
   return None
   
-
 def checkmateConfirmer(main_tools: Tools, current_king: King):
 
   if(constants.CURRENT_ATTACKER):
@@ -330,7 +343,6 @@ def checkIfAnyTileCanBeBlocked(main_tools: Tools, current_king: King, current_at
     
   return False
 
-
 def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_attacker: Piece):
 
  
@@ -362,7 +374,6 @@ def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_att
   print('[ERROR] CHECKIFATTACKERCANBEEATEN 5')
   return False
   
-
 def checkmateCoordsCalculator(current_attacker: Piece, current_king: King):
 
   # How do i go from king to attacker << ! if we wanted vice versa just turn the variables around << !
@@ -426,11 +437,6 @@ def specialCaseForPawn(source: Pawn, target: Tile):
   elif(source.did_i_move_already and source.vunerable_to_en_passant):
     source.vunerable_to_en_passant = False
 
-
-
-
-
-
 def specialCaseEnPassant(main_tools: Tools, source: Pawn, target: Tile):
   
   if(source.x == target.x):
@@ -443,7 +449,6 @@ def specialCaseEnPassant(main_tools: Tools, source: Pawn, target: Tile):
 
   return current_tile
   
-
 def capturePiece(main_tools: Tools, target_tile: Tile):
   placeholder: Piece = target_tile.piece
   

@@ -56,11 +56,18 @@ def gameLoop(main_tools: Tools):
     if(main_tools.is_piece_selected and not main_tools.move_taken):
       main_tools.main_board.print_legal_moves(main_tools.window_and_renderer, current_legal_moves)
 
+    
+
     #UI
     main_tools.renderPlayerPlaying()
     main_tools.renderGamestateStatus()
     main_tools.renderScores()
     main_tools.renderGraveyardPieces()
+
+    #I'll put promotion here just for now then later we'll figure out where is the best place for it 
+
+    if(main_tools.pawn_being_promoted):
+      main_tools.renderPawnPromotionUI()
 
     pygame.display.flip() # this "presents" what we drew 
 

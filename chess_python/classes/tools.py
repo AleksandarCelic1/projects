@@ -34,6 +34,11 @@ class Tools:
     self.was_graveyard_changed = False
     self.is_near_the_destination = False
 
+    # Pawn Promotion
+
+    self.pawn_being_promoted = False
+    self.alpha_for_dimming_the_brightness = 140
+
     #Castle
 
     self.castle_being_performed = False
@@ -116,6 +121,13 @@ class Tools:
       self.window_and_renderer.blit(hash_map_for_graveyard_pictures[graveyard_black[inner].hash_key], (black_x, iterator))
       black_x += hash_map_for_graveyard_pictures[graveyard_black[inner].hash_key].get_width()
     
+  def renderPawnPromotionUI(self):
+
+    dim = pygame.Surface(self.window_and_renderer.get_size(), pygame.SRCALPHA)
+    
+    dim.fill((0, 0, 0, self.alpha_for_dimming_the_brightness))
+    self.window_and_renderer.blit(dim, (0, 0))
+
 
 
 

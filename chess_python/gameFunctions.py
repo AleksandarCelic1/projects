@@ -2,12 +2,11 @@ import pygame
 import copy
 import chess_python.classes.constants as constants
 
-from typing import Optional
-
 from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y
 from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y, KING_SIDE_ROOK_X, QUEEN_SIDE_ROOK_X, ROOK_OFFSET_AFTER_QUEEN_CASTLE, ROOK_OFFSET_AFTER_KING_CASTLE
+from .classes.constants import BLACK_PROMOTION_Y, WHITE_PROMOTION_Y
 
 from .classes.moveFunctions import isInsideOfBounds, is_attacked
 from .classes.tile import Tile
@@ -15,7 +14,6 @@ from .classes.tools import Tools, GameState
 from .classes.piece import Piece
 from .classes.pawn import Pawn
 from .classes.king import King
-from .classes.rook import Rook
 
 
 from typing import List, Tuple
@@ -111,12 +109,12 @@ def didCastleOccur(main_tools: Tools):
   if(selected_piece.type == PieceType.KING):
 
     if((selected_piece.x == target_tile.x + 2)):
-      print("KINGSIDE")
+      print("QUEENSIDE")
       main_tools.castle_being_performed = True
       main_tools.which_rook = QUEEN_SIDE_ROOK_X
 
     elif(selected_piece.x == target_tile.x - 2):
-      print("QUEENSIDE")
+      print("KINGSIDE")
       main_tools.castle_being_performed = True
       main_tools.which_rook = KING_SIDE_ROOK_X
 
@@ -189,9 +187,12 @@ def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   elif(not source.did_i_move_already):
     source.did_i_move_already = True
 
-
   source.x = target.x
   source.y = target.y
+
+  if(source.type == PieceType.PAWN):
+    pawnPromotionDetecter(main_tools, source)
+  
 
   current : Tile = board.chess_board[source.y][source.x]
   current.piece = source
@@ -220,6 +221,17 @@ def handleEndOfLerpLogic(main_tools: Tools):
 
 
   pass
+
+def pawnPromotionDetecter(main_tools: Tools, source: Pawn):
+
+  if(source.color == ColorsPieces.WHITE and source.y == WHITE_PROMOTION_Y):
+    print('white guy came to:', WHITE_PROMOTION_Y)
+    main_tools.pawn_being_promoted = True
+  elif(source.color == ColorsPieces.BLACK and source.y == BLACK_PROMOTION_Y):
+    print('black guy came to:', BLACK_PROMOTION_Y)
+    main_tools.pawn_being_promoted = True
+
+
 
 def specialCaseForKingsCheck(main_tools: Tools):
 

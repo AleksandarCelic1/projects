@@ -9,6 +9,7 @@ from .classes.tile import Tile
 from .classes.piece import Piece
 from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT, hash_map_for_pictures, hash_map_for_rgba_tiles, BLACK_SCORE_STRING, WHITE_SCORE_STRING
 from .classes.constants import SCALING_FACTOR_FOUR, BOARD_OFFSET_X_AND_Y, BOARD_X, BOARD_Y, BOARD_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_graveyard_pictures, EVERY_PIECE_W_H_FOR_GRAVEYARD, hash_map_for_scores_and_text, RenderingTextEnums, OFFSET_FOR_TEXT
+from .classes.constants import PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_HEIGHT
 from .classes.player import Player
 from .classes.tools import Tools
 # check for circual imports
@@ -162,9 +163,21 @@ def initAllImages():
   map_board = pygame.image.load("chess_python/classes/photos_/board.png").convert_alpha()
   map_board = pygame.transform.smoothscale(map_board, (map_board.get_width() * SCALING_FACTOR_FOUR, map_board.get_height() * SCALING_FACTOR_FOUR))
 
+  # Promotion images << !
+  black_promotion = pygame.image.load("chess_python/classes/photos_/blackPawnPromotionFinal.png").convert_alpha()
+  black_promotion = pygame.transform.smoothscale(black_promotion, (PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_HEIGHT))
 
-  #hash_map_for_pictures: dict[HashKeyForPictures, pygame.Surface] = {}
+  white_promotion = pygame.image.load("chess_python/classes/photos_/whitePawnPromotionFinal.png").convert_alpha()
+  white_promotion = pygame.transform.smoothscale(white_promotion, (PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_HEIGHT))
 
+  hash_map_for_pictures[HashKeyForPictures.PROMOTION_BLACK] = black_promotion
+  hash_map_for_pictures[HashKeyForPictures.PROMOTION_WHITE] = white_promotion
+
+
+
+
+
+  # Pieces
   hash_map_for_pictures[HashKeyForPictures.BLACK_PAWN]   = black_pawn_playing
   hash_map_for_pictures[HashKeyForPictures.BLACK_KING]   = black_king_playing
   hash_map_for_pictures[HashKeyForPictures.BLACK_QUEEN]  = black_queen_playing

@@ -1,5 +1,6 @@
 from .player import Player
-from .constants import PlayerID, hash_map_for_graveyard_pictures, hash_map_for_scores_and_text, RenderingTextEnums
+from .constants import PlayerID, hash_map_for_graveyard_pictures, hash_map_for_scores_and_text, RenderingTextEnums, hash_map_for_pictures, HashKeyForPictures
+from .constants import PROMOTION_PICTURES_X, PROMOTION_PICTURES_Y
 from .board import Board
 from enum import Enum # enum is imported from enum and NOT from typing << !!
 from .tile import Tile
@@ -126,7 +127,15 @@ class Tools:
     dim = pygame.Surface(self.window_and_renderer.get_size(), pygame.SRCALPHA)
     
     dim.fill((0, 0, 0, self.alpha_for_dimming_the_brightness))
+
     self.window_and_renderer.blit(dim, (0, 0))
+
+    if(self.player_playing == PlayerID.PLAYER_ONE_WHITE):
+      self.window_and_renderer.blit(hash_map_for_pictures[HashKeyForPictures.PROMOTION_WHITE], (PROMOTION_PICTURES_X, PROMOTION_PICTURES_Y))
+    elif(self.player_playing == PlayerID.PLAYER_TWO_BLACK):
+      self.window_and_renderer.blit(hash_map_for_pictures[HashKeyForPictures.PROMOTION_BLACK], (PROMOTION_PICTURES_X, PROMOTION_PICTURES_Y))
+
+
 
 
 

@@ -4,7 +4,7 @@ from .classes.queen import Queen
 from .classes.rook import Rook
 from .classes.pawn import Pawn
 from .classes.knight import Knight
-from .classes.board import Board
+from .classes.board import Board 
 from .classes.tile import Tile
 from .classes.piece import Piece
 from .classes.constants import PieceType, ColorsPieces, ColorsTile, PlayerID, MAP_WIDTH, MAP_HEIGHT, HashKeyForPictures, SCREEN_HEIGHT, SCREEN_WIDTH, EVERY_PIECE_WIDTH_AND_HEIGHT, hash_map_for_pictures, hash_map_for_rgba_tiles, BLACK_SCORE_STRING, WHITE_SCORE_STRING
@@ -164,10 +164,10 @@ def initAllImages():
   map_board = pygame.transform.smoothscale(map_board, (map_board.get_width() * SCALING_FACTOR_FOUR, map_board.get_height() * SCALING_FACTOR_FOUR))
 
   # Promotion images << !
-  black_promotion = pygame.image.load("chess_python/classes/photos_/blackPawnPromotionFinal.png").convert_alpha()
+  black_promotion = pygame.image.load("chess_python/classes/photos_/blackPawnPromotionCorrect.png").convert_alpha()
   black_promotion = pygame.transform.smoothscale(black_promotion, (PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_HEIGHT))
 
-  white_promotion = pygame.image.load("chess_python/classes/photos_/whitePawnPromotionFinal.png").convert_alpha()
+  white_promotion = pygame.image.load("chess_python/classes/photos_/whitePawnPromotionCorrect.png").convert_alpha()
   white_promotion = pygame.transform.smoothscale(white_promotion, (PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_HEIGHT))
 
   hash_map_for_pictures[HashKeyForPictures.PROMOTION_BLACK] = black_promotion

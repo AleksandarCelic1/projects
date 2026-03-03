@@ -6,7 +6,7 @@ from .classes.board import Board
 from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
 from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y
 from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y, KING_SIDE_ROOK_X, QUEEN_SIDE_ROOK_X, ROOK_OFFSET_AFTER_QUEEN_CASTLE, ROOK_OFFSET_AFTER_KING_CASTLE
-from .classes.constants import BLACK_PROMOTION_Y, WHITE_PROMOTION_Y
+from .classes.constants import BLACK_PROMOTION_Y, WHITE_PROMOTION_Y, PROMOTION_PICTURES_HEIGHT, PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_X, PROMOTION_PICTURES_Y, EACH_BOX_IN_PROMOTION_H, EACH_BOX_IN_PROMOTION_W
 
 from .classes.moveFunctions import isInsideOfBounds, is_attacked
 from .classes.tile import Tile
@@ -21,7 +21,6 @@ from typing import List, Tuple
 
 def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int, player_id: PlayerID):
   
-
   if(mouse_x >= BOARD_X + BOARD_OFFSET_X_AND_Y 
   and mouse_x <= BOARD_X + BOARD_OFFSET_X_AND_Y + BOARD_INNER_WIDTH_AND_HEIGHT
   and mouse_y >= BOARD_Y + BOARD_OFFSET_X_AND_Y
@@ -100,6 +99,35 @@ def validatingLastMove(main_tools: Tools, array_of_legal_moves: List[Tuple[Tile,
         
   main_tools.is_piece_selected = False
   main_tools.move_taken = False # in case if nothing is found everything is reset 
+
+def specialDispatcherForPromotion(main_tools: Tools, mouse_x: int, mouse_y: int):
+
+  if(mouse_x >= PROMOTION_PICTURES_X and
+     mouse_x <= PROMOTION_PICTURES_X + PROMOTION_PICTURES_WIDTH and
+     mouse_y >= PROMOTION_PICTURES_Y and
+     mouse_y <= PROMOTION_PICTURES_Y + PROMOTION_PICTURES_HEIGHT):
+    
+
+    clicked_column = (mouse_x - PROMOTION_PICTURES_X) // EACH_BOX_IN_PROMOTION_W
+
+    # row probably not needed as we dont really have much rows only 1 constantly chekcing rows means nothing << !
+    clicked_row = (mouse_y - PROMOTION_PICTURES_Y) // EACH_BOX_IN_PROMOTION_H
+
+
+    if(clicked_column < 0 or clicked_column > 3):
+      return None
+    
+    # will need the PROMOTION PAWN in tools so we can replace him with the selected chocie
+    # also put this function in gameloop as when its only promotion hes not going to take input other than this << !
+    
+
+
+    pass
+
+
+  pass
+
+
 
 def didCastleOccur(main_tools: Tools):
 
@@ -215,6 +243,9 @@ def handleEndOfLerpLogic(main_tools: Tools):
       main_tools.current_players_selected_tile = main_tools.main_board.chess_board[main_tools.black_king.y][main_tools.which_rook]
       main_tools.current_players_target_tile = main_tools.main_board.chess_board[main_tools.black_king.y][main_tools.which_rook + offset]
 
+  elif(main_tools.game_state == GameState.PROMOTION):
+    return # im not going to check for CHECKS before the player chose the desired piece to turn his pawn into and 
+    # i will not change player playing as the turn for the current player didn't change << !
   else:
     specialCaseForKingsCheck(main_tools)
     main_tools.player_playing = PlayerID.PLAYER_ONE_WHITE if main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK else PlayerID.PLAYER_TWO_BLACK
@@ -224,12 +255,8 @@ def handleEndOfLerpLogic(main_tools: Tools):
 
 def pawnPromotionDetecter(main_tools: Tools, source: Pawn):
 
-  if(source.color == ColorsPieces.WHITE and source.y == WHITE_PROMOTION_Y):
-    print('white guy came to:', WHITE_PROMOTION_Y)
-    main_tools.pawn_being_promoted = True
-  elif(source.color == ColorsPieces.BLACK and source.y == BLACK_PROMOTION_Y):
-    print('black guy came to:', BLACK_PROMOTION_Y)
-    main_tools.pawn_being_promoted = True
+  if((source.color == ColorsPieces.WHITE and source.y == WHITE_PROMOTION_Y) or (source.color == ColorsPieces.BLACK and source.y == BLACK_PROMOTION_Y)):
+    main_tools.game_state = GameState.PROMOTION
 
 
 

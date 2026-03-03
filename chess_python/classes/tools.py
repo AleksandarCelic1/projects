@@ -15,6 +15,7 @@ class GameState(Enum):
   PLAYING = 2,
   CHECK = 3
   CHECKMATE = 4
+  PROMOTION = 5
 
 
 class Tools:
@@ -36,8 +37,6 @@ class Tools:
     self.is_near_the_destination = False
 
     # Pawn Promotion
-
-    self.pawn_being_promoted = False
     self.alpha_for_dimming_the_brightness = 140
 
     #Castle

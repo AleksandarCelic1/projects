@@ -299,9 +299,9 @@ def horizontal_or_vertical_is_attacked(logical_map: Board, source_tile: Tile, so
 
       constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
-    elif(placeholder_piece.type == PieceType.KING):
-      iterator += offset
-      continue
+    #elif(placeholder_piece.type == PieceType.KING):
+    #  iterator += offset
+    #  continue
     else:
       return False
     
@@ -334,10 +334,10 @@ def diagonal_is_attacked(logical_map: Board, source_tile: Tile, source_color: Co
       
       constants.CURRENT_ATTACKER.append(placeholder_piece)
       return True
-    elif(placeholder_piece.type == PieceType.KING):
-      iterator_x += offset_x
-      iterator_y += offset_y
-      continue
+    #elif(placeholder_piece.type == PieceType.KING):
+    #  iterator_x += offset_x
+    #  iterator_y += offset_y
+    #  continue
     else:
       return False
 

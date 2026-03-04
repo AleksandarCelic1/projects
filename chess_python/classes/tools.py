@@ -38,6 +38,7 @@ class Tools:
 
     # Pawn Promotion
     self.alpha_for_dimming_the_brightness = 140
+    self.source_pawn: Piece = None
 
     #Castle
 

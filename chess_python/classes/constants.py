@@ -1,6 +1,6 @@
 # Constants used for the project << !
 from enum import Enum
-from typing import List, Tuple
+from typing import Tuple
 
 import pygame
 
@@ -31,6 +31,12 @@ class ColorsTile(Enum):
 class ColorsPieces(Enum):
   WHITE = 1
   BLACK = 2
+
+class PromotionSelection(Enum):
+  QUEEN = 0
+  ROOK = 1
+  KNIGHT = 2
+  BISHOP = 3 
 
 class PlayerID(Enum):
   PLAYER_ONE_WHITE = 1

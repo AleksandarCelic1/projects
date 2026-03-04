@@ -3,8 +3,8 @@ import copy
 import chess_python.classes.constants as constants
 
 from .classes.board import Board
-from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces
-from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y
+from .classes.constants import BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, BOARD_INNER_WIDTH_AND_HEIGHT, TILE_WIDTH_AND_HEIGHT, PlayerID, ColorsTile, FRAME_DELAY, ColorsPieces, HashKeyForPictures
+from .classes.constants import ONE_SECOND, NEAR_LIMIT, ARRIVED_EXACT_LIMIT, PieceType, BLACK_PAWN_EN_PASSANT_Y, WHITE_PAWN_EN_PASSANT_Y, PromotionSelection
 from .classes.constants import BLACK_PAWN_INITIAL_Y, WHITE_PAWN_INITIAL_Y, KING_SIDE_ROOK_X, QUEEN_SIDE_ROOK_X, ROOK_OFFSET_AFTER_QUEEN_CASTLE, ROOK_OFFSET_AFTER_KING_CASTLE
 from .classes.constants import BLACK_PROMOTION_Y, WHITE_PROMOTION_Y, PROMOTION_PICTURES_HEIGHT, PROMOTION_PICTURES_WIDTH, PROMOTION_PICTURES_X, PROMOTION_PICTURES_Y, EACH_BOX_IN_PROMOTION_H, EACH_BOX_IN_PROMOTION_W
 
@@ -14,6 +14,10 @@ from .classes.tools import Tools, GameState
 from .classes.piece import Piece
 from .classes.pawn import Pawn
 from .classes.king import King
+from .classes.queen import Queen
+from .classes.bishop import Bishop
+from .classes.knight import Knight
+from .classes.rook import Rook
 
 
 from typing import List, Tuple
@@ -117,8 +121,11 @@ def specialDispatcherForPromotion(main_tools: Tools, mouse_x: int, mouse_y: int)
     if(clicked_column < 0 or clicked_column > 3):
       return None
     
-    # will need the PROMOTION PAWN in tools so we can replace him with the selected chocie
-    # also put this function in gameloop as when its only promotion hes not going to take input other than this << !
+
+    changePawnToSelectedPiece(main_tools, clicked_column)
+    main_tools.game_state = GameState.PLAYING
+
+    # NEED TO CALL CHECK CHECKER AFTER THIS SOMEHOW << !
     
 
 
@@ -128,6 +135,37 @@ def specialDispatcherForPromotion(main_tools: Tools, mouse_x: int, mouse_y: int)
   pass
 
 
+
+def changePawnToSelectedPiece(main_tools: Tools, choice_clicked: int):
+
+  board_reference: Board = main_tools.main_board
+  src_pawn: Pawn = main_tools.source_pawn
+  placeholder: Piece = None
+
+  if(choice_clicked == PromotionSelection.QUEEN.value):
+    placeholder = Queen(PieceType.QUEEN, src_pawn.color, src_pawn.x, src_pawn.y, src_pawn.player_id,
+    HashKeyForPictures.BLACK_QUEEN if (src_pawn.color == ColorsPieces.BLACK) else HashKeyForPictures.WHITE_QUEEN)
+  
+  elif(choice_clicked == PromotionSelection.ROOK.value):
+    placeholder = Rook(PieceType.ROOK, src_pawn.color, src_pawn.x, src_pawn.y, src_pawn.player_id,
+    HashKeyForPictures.BLACK_ROOK if (src_pawn.color == ColorsPieces.BLACK) else HashKeyForPictures.WHITE_ROOK)
+  
+  elif(choice_clicked == PromotionSelection.KNIGHT.value):
+    placeholder = Knight(PieceType.KNIGHT, src_pawn.color, src_pawn.x, src_pawn.y, src_pawn.player_id,
+    HashKeyForPictures.BLACK_KNIGHT if (src_pawn.color == ColorsPieces.BLACK) else HashKeyForPictures.WHITE_KNIGHT)
+  
+  elif(choice_clicked == PromotionSelection.BISHOP.value):
+    placeholder = Bishop(PieceType.BISHOP, src_pawn.color, src_pawn.x, src_pawn.y, src_pawn.player_id,
+    HashKeyForPictures.BLACK_BISHOP if (src_pawn.color == ColorsPieces.BLACK) else HashKeyForPictures.WHITE_BISHOP)
+  else:
+    return None
+  
+  placeholder.x_axis = src_pawn.x_axis
+  placeholder.y_axis = src_pawn.y_axis
+
+
+  current_tile: Tile = board_reference.chess_board[src_pawn.y][src_pawn.x]
+  current_tile.piece = placeholder
 
 def didCastleOccur(main_tools: Tools):
 
@@ -146,12 +184,10 @@ def didCastleOccur(main_tools: Tools):
       main_tools.castle_being_performed = True
       main_tools.which_rook = KING_SIDE_ROOK_X
 
-
 def controlFPS(frame_start: int):
   current_frame_time = pygame.time.get_ticks() - frame_start
   if(current_frame_time < FRAME_DELAY):
     pygame.time.delay(FRAME_DELAY - current_frame_time)
-
 
 def lerp(A: float, B: float, T:float):
   return A + (B - A) * T
@@ -193,8 +229,6 @@ def updateLerp(main_tools: Tools, delta_time: float):
     finishLerp(main_tools, source, target_tile)
 
   return
-
-
 
 def finishLerp(main_tools: Tools, source: Piece, target: Tile):
   main_tools.is_near_the_destination = False
@@ -257,8 +291,7 @@ def pawnPromotionDetecter(main_tools: Tools, source: Pawn):
 
   if((source.color == ColorsPieces.WHITE and source.y == WHITE_PROMOTION_Y) or (source.color == ColorsPieces.BLACK and source.y == BLACK_PROMOTION_Y)):
     main_tools.game_state = GameState.PROMOTION
-
-
+    main_tools.source_pawn = source
 
 def specialCaseForKingsCheck(main_tools: Tools):
 
@@ -323,7 +356,7 @@ def checkmateConfirmer(main_tools: Tools, current_king: King):
     moves_between_king_and_attacker: List[Tuple[int, int]] = checkmateCoordsCalculator(copy_of_current_attacker, current_king)
 
   
-
+    # CHECKMATE ALOG STARTED MAKING BUGS AGAIN :(
 
   if(not checkIfAttackerCanBeEaten(main_tools, current_king, copy_of_current_attacker)
   and not checkIfAnyTileCanBeBlocked(main_tools, current_king, copy_of_current_attacker, moves_between_king_and_attacker)):
@@ -384,7 +417,6 @@ def checkIfAnyTileCanBeBlocked(main_tools: Tools, current_king: King, current_at
 
 def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_attacker: Piece):
 
- 
   amount_of_attackers = is_attacked(main_tools.main_board, 
   main_tools.main_board.chess_board[current_attacker.y][current_attacker.x], current_attacker.color)
 
@@ -392,6 +424,27 @@ def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_att
     return False # False means it cant be eaten which indicates a Checkmate
   
   elif(amount_of_attackers == 1):
+    t = constants.CURRENT_ATTACKER[0].type
+
+    if t == PieceType.KING:
+        print("attacker is KING")
+    elif t == PieceType.QUEEN:
+        
+        print("attacker is QUEEN")
+        if(constants.CURRENT_ATTACKER[0].color == ColorsPieces.BLACK):
+          print("how in the hell")
+
+    elif t == PieceType.ROOK:
+        print("attacker is ROOK")
+    elif t == PieceType.BISHOP:
+        print("attacker is BISHOP")
+    elif t == PieceType.KNIGHT:
+        print("attacker is KNIGHT")
+    elif t == PieceType.PAWN:
+        print("attacker is PAWN")
+    else:
+        print("unknown piece type:", t)
+
     if(isPinned(main_tools, main_tools.main_board.chess_board[current_attacker.y][current_attacker.x],
     main_tools.main_board.chess_board[constants.CURRENT_ATTACKER[0].y][constants.CURRENT_ATTACKER[0].x], current_king.player_id)):
       # for id we can alos use current attackers ID

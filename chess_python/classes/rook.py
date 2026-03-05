@@ -19,5 +19,7 @@ class Rook(Piece):
     placeholder : List[Tuple[Tile, ColorsTile]] = []
     placeholder = a + b
     
+    if(placeholder is not None):
+      self.total_legal_moves = len(placeholder)
 
     return placeholder

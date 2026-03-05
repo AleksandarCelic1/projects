@@ -82,24 +82,35 @@ class Pawn(Piece):
 
     #Forward moves << !
     if(not isInsideOfBounds(x, y + direction)):
-      return moves # does this work i didnt declare to return anything > ?
+      if(moves is not None):
+        self.total_legal_moves = len(moves)
+      return moves
     
     tile_tile : Tile = logic_map.chess_board[y + direction][x]
 
     if(tile_tile.is_occupied()):
+      if(moves is not None):
+        self.total_legal_moves = len(moves)
       return moves
     else:
       moves.append((tile_tile, ColorsTile.GREY))
 
       if(not isInsideOfBounds(x, y + direction + direction) or self.did_i_move_already):
+        if(moves is not None):
+          self.total_legal_moves = len(moves)
         return moves
       
       two_sqares_infront_tile : Tile = logic_map.chess_board[y + direction + direction][x]
 
       if(two_sqares_infront_tile.is_occupied()):
+        if(moves is not None):
+          self.total_legal_moves = len(moves)
         return moves
       else:
         moves.append((two_sqares_infront_tile, ColorsTile.GREY))
     
+    if(moves is not None):
+      self.total_legal_moves = len(moves)
+
     return moves
     

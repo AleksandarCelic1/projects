@@ -10,9 +10,9 @@ def main():
 
   # Init - of all necessary things << !
   dq_of_all_pieces = initializingAllPieces()
-  placeholder = initializingBoard(dq_of_all_pieces)
-
   main_tools = initPlayersAndTools()
+  placeholder = initializingBoard(main_tools.player_white, main_tools.player_black, dq_of_all_pieces)
+
   main_tools.main_board = placeholder
   assignKingsToTools(main_tools, 
   placeholder.chess_board[Y_INDEX_OF_WHITE][X_INDEX_OF_BOTH_KINGS_INITIALLY], placeholder.chess_board[Y_INDEX_OF_BLACK][X_INDEX_OF_BOTH_KINGS_INITIALLY])

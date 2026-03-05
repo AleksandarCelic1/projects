@@ -32,6 +32,9 @@ class Piece(ABC):
         self.is_protected = False
         self.should_be_captured = False # This is intended to be True only when its taken so we can render easier using this variable
 
+        # Regarding Stalemate I must have total legal moves counter from getMoves for each piece
+        self.total_legal_moves = 0
+
     @abstractmethod
     def getMoves(self, logic_map: "Board", x: int, y: int):
         pass

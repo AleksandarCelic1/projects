@@ -10,6 +10,9 @@ import pygame
 class Player:
   def __init__(self, player_id: PlayerID):
     self.graveyard : List[Piece] = []
+    self.my_graveyard_changed: bool = False
+
+    self.troops: List[Piece] = [] # USED FOR STALEMATE
     self.score = 0 # Keeping the score of all captured pieces
     self.player_id = player_id
 
@@ -32,8 +35,16 @@ class Player:
     if(self.player_id == PlayerID.PLAYER_ONE_WHITE):
       self.score_rect.x = main_tools.white_rect.x + main_tools.white_rect.w
       self.score_rect.y = main_tools.white_rect.y
+
+      if((len(self.graveyard))):
+        main_tools.player_black.troops.remove(self.graveyard[-1])
     else:
       self.score_rect.x = main_tools.black_rect.x + main_tools.black_rect.w
       self.score_rect.y = main_tools.black_rect.y
-  
+
+      if((len(self.graveyard))):
+        main_tools.player_white.troops.remove(self.graveyard[-1])
+
+    
+     
       

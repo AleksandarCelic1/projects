@@ -1,7 +1,9 @@
-from .constants import ColorsTile, HashKeyForPictures, BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, TILE_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_rgba_tiles, hash_map_for_pictures
+from .constants import ColorsTile, HashKeyForPictures, BOARD_X, BOARD_Y, BOARD_OFFSET_X_AND_Y, TILE_WIDTH_AND_HEIGHT, MAP_HEIGHT, MAP_WIDTH, hash_map_for_rgba_tiles, hash_map_for_pictures, ColorsPieces, PieceType
 from .tile import Tile
-from typing import List, Tuple
+from .player import Player
 
+
+from typing import List, Tuple
 import pygame
 
 
@@ -9,11 +11,12 @@ import pygame
 
 
 class Board:
-  def __init__(self, deque_of_pieces, size_width : int, size_height : int):
+  def __init__(self, player_white: Player, player_black: Player, deque_of_pieces, size_width : int, size_height : int):
     
     self.chess_board = []
 
     remove_piece_this_iteration = True
+    placeholder_piece = None
     current_color = ColorsTile.WHITE
 
     
@@ -21,9 +24,7 @@ class Board:
 
     for y in range(size_height):
       row = [] # outer index // index // y in python you must make rows 
-
       y_axis = BOARD_Y + BOARD_OFFSET_X_AND_Y + TILE_WIDTH_AND_HEIGHT * y
-      
 
       for x in range(size_width):
         
@@ -33,14 +34,24 @@ class Board:
 
 
         if remove_piece_this_iteration == True:
-          row.append(Tile(current_color, deque_of_pieces.popleft(), x, y, x_axis, y_axis))
+          placeholder_piece = deque_of_pieces.popleft()
+
+          # already ensured that they are Pieces << ! 
+          if(placeholder_piece.type != PieceType.KING):
+            if(placeholder_piece.color == ColorsPieces.BLACK):
+              player_black.troops.append(placeholder_piece)
+            elif(placeholder_piece.color == ColorsPieces.WHITE):
+              player_white.troops.append(placeholder_piece)
+
+
+          row.append(Tile(current_color, placeholder_piece, x, y, x_axis, y_axis))
         else:
           row.append(Tile(current_color, None, x, y, x_axis, y_axis))
 
         if current_color == ColorsTile.BLACK:
           current_color = ColorsTile.WHITE
         else:  
-          current_color = ColorsTile.BLACK # check this out later << possible bug !
+          current_color = ColorsTile.BLACK 
 
         remove_piece_this_iteration = True
 

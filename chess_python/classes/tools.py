@@ -16,6 +16,7 @@ class GameState(Enum):
   CHECK = 3
   CHECKMATE = 4
   PROMOTION = 5
+  STALEMATE = 6
 
 
 class Tools:
@@ -33,7 +34,6 @@ class Tools:
     #BOOLEAN
     self.is_piece_selected = False
     self.move_taken = False
-    self.was_graveyard_changed = False
     self.is_near_the_destination = False
 
     # Pawn Promotion
@@ -66,10 +66,13 @@ class Tools:
     self.window_and_renderer.blit(self.black_src, self.black_rect)
     self.window_and_renderer.blit(self.white_src, self.white_rect)
 
-    if(self.was_graveyard_changed):
+    if(self.player_black.my_graveyard_changed):
       self.player_black.compute_score(self)
+      self.player_black.my_graveyard_changed = False
+    elif(self.player_white.my_graveyard_changed):
       self.player_white.compute_score(self)
-      self.was_graveyard_changed = False
+      self.player_white.my_graveyard_changed = False
+
 
     self.window_and_renderer.blit(self.player_black.score_src, self.player_black.score_rect)
     self.window_and_renderer.blit(self.player_white.score_src, self.player_white.score_rect)
@@ -96,7 +99,8 @@ class Tools:
         self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_WHITE][0], hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_WHITE][1])
       else:
         self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_BLACK][0], hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_BLACK][1])
-
+    elif(self.game_state == GameState.STALEMATE):
+      self.window_and_renderer.blit(hash_map_for_scores_and_text[RenderingTextEnums.STALEMATE][0], hash_map_for_scores_and_text[RenderingTextEnums.STALEMATE][1])
 
   def renderGraveyardPieces(self):
     graveyard_white: List[Piece] = self.player_white.graveyard

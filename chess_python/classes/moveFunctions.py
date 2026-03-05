@@ -210,12 +210,13 @@ def isCastlePossible(logic_map: Board, moves: List[Tuple[Tile, ColorsTile]], ori
   kings_rook_tile: Tile = logic_map.chess_board[origin.y][KING_SIDE_ROOK_X]
   queens_rook_tile: Tile = logic_map.chess_board[origin.y][QUEEN_SIDE_ROOK_X]
 
-  if(not kings_rook_tile.piece.did_i_move_already):
-    total_moves += castleHelperFunction(logic_map, moves, origin.piece, KING_CASTLE_KING_SIDE)
+  if(kings_rook_tile.piece is not None):
+    if(not kings_rook_tile.piece.did_i_move_already):
+      total_moves += castleHelperFunction(logic_map, moves, origin.piece, KING_CASTLE_KING_SIDE)
 
-
-  if(not queens_rook_tile.piece.did_i_move_already):
-    total_moves += castleHelperFunction(logic_map, moves, origin.piece, KING_CASTLE_QUEEN_SIDE)
+  if(queens_rook_tile.piece is not None):
+    if(not queens_rook_tile.piece.did_i_move_already):
+      total_moves += castleHelperFunction(logic_map, moves, origin.piece, KING_CASTLE_QUEEN_SIDE)
 
   return total_moves
 
@@ -440,7 +441,7 @@ def kings_is_attacking(logical_map: Board, source_tile: Tile, source_color: Colo
 
     if(placeholder_piece.type == PieceType.KING and placeholder_piece.color != source_color):
       if(quickCheckIfKingCanTakeThis(logical_map, source_tile, ColorsTile.GREEN, placeholder_piece)): #  Queen tile  
-        constants.CURRENT_ATTACKER.append(placeholder_piece)
+        constants.CURRENT_ATTACKER.append(placeholder_piece) # bug rises from here again
         return True
     
 

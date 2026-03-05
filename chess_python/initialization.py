@@ -105,8 +105,8 @@ def initializingAllPieces() -> Deque[Piece]:
 
   return all_pieces
 
-def initializingBoard(all_pieces_in_dq : Deque[Piece]):
-  main_logic_board = Board(all_pieces_in_dq, MAP_WIDTH, MAP_HEIGHT)
+def initializingBoard(player_white: Player, player_black: Player, all_pieces_in_dq : Deque[Piece]):
+  main_logic_board = Board(player_white, player_black, all_pieces_in_dq, MAP_WIDTH, MAP_HEIGHT)
 
   return main_logic_board
 
@@ -246,6 +246,8 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   gamestate_check_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.GAME_STATE_CHECK.value, True, (255, 255, 255))
   checkmate_text_white_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE_WHITE.value, True, (255, 255, 255))
   checkmate_text_black_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE_BLACK.value, True, (255, 255, 255))
+  stalemate_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.STALEMATE.value, True, (255, 255, 255))
+
   
 
 
@@ -257,6 +259,7 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   gamestate_check_text_dst = gamestate_check_text_src.get_rect()
   checkmate_text_white_dst = checkmate_text_white_src.get_rect()
   checkmate_text_black_dst = checkmate_text_black_src.get_rect()
+  stalemate_text_dst = stalemate_text_src.get_rect()
 
   player_playing_dst.y = OFFSET_FOR_TEXT
   player_playing_dst.x = SCREEN_WIDTH / 4 - player_playing_dst.w / 2
@@ -283,6 +286,9 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   checkmate_text_black_dst.y = OFFSET_FOR_TEXT
   checkmate_text_black_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
 
+  stalemate_text_dst.y = OFFSET_FOR_TEXT
+  stalemate_text_dst.x = gamestate_text_dst.x + gamestate_text_dst.w
+
 
   hash_map_for_scores_and_text[RenderingTextEnums.PLAYER_PLAYING_TEXT] = (player_playing_src, player_playing_dst)
   hash_map_for_scores_and_text[RenderingTextEnums.BLACK_TEXT] = (black_text_src, black_text_dst)
@@ -292,6 +298,7 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   hash_map_for_scores_and_text[RenderingTextEnums.GAME_STATE_PLAYING] = (gamestate_playing_text_src, gamestate_playing_text_dst)
   hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_WHITE] = (checkmate_text_white_src, checkmate_text_white_dst)
   hash_map_for_scores_and_text[RenderingTextEnums.CHECK_MATE_BLACK] = (checkmate_text_black_src, checkmate_text_black_dst)
+  hash_map_for_scores_and_text[RenderingTextEnums.STALEMATE] = (stalemate_text_src, stalemate_text_dst)
 
   main_tools.white_rect = main_tools.white_src.get_rect()
   main_tools.black_rect = main_tools.black_src.get_rect()

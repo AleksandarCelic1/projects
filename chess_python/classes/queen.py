@@ -20,6 +20,7 @@ class Queen(Piece):
     placeholder : List[Tuple[Tile, ColorsTile]] = []
     placeholder = a + b + c
 
-    
+    if(placeholder is not None):
+      self.total_legal_moves = len(placeholder)
 
     return placeholder

@@ -18,6 +18,7 @@ from .classes.queen import Queen
 from .classes.bishop import Bishop
 from .classes.knight import Knight
 from .classes.rook import Rook
+from .classes.player import Player
 
 
 from typing import List, Tuple
@@ -124,8 +125,9 @@ def specialDispatcherForPromotion(main_tools: Tools, mouse_x: int, mouse_y: int)
 
     changePawnToSelectedPiece(main_tools, clicked_column)
     main_tools.game_state = GameState.PLAYING
+    handleEndOfLerpLogic(main_tools) # this is called usually after the LERP is finished to evaluate logic
+    # as we didnt perform lerp we only need the logic part << !
 
-    # NEED TO CALL CHECK CHECKER AFTER THIS SOMEHOW << !
     
 
 
@@ -166,6 +168,14 @@ def changePawnToSelectedPiece(main_tools: Tools, choice_clicked: int):
 
   current_tile: Tile = board_reference.chess_board[src_pawn.y][src_pawn.x]
   current_tile.piece = placeholder
+
+  if(main_tools.player_playing == PlayerID.PLAYER_ONE_WHITE):
+    main_tools.player_white.troops.remove(src_pawn)
+    main_tools.player_white.troops.append(placeholder)
+  elif(main_tools.player_playing == PlayerID.PLAYER_TWO_BLACK):
+    main_tools.player_black.troops.remove(src_pawn)
+    main_tools.player_black.troops.append(placeholder)
+
 
 def didCastleOccur(main_tools: Tools):
 
@@ -308,7 +318,9 @@ def specialCaseForKingsCheck(main_tools: Tools):
     amount_of_attackers = is_attacked(board_reference, board_reference.chess_board[main_tools.black_king.y][main_tools.black_king.x], ColorsPieces.BLACK)
     
     if(amount_of_attackers == 0):
-      return
+      # from here you can call STALEMATE CHECKER WITH THE BLACK KING 
+      stalemateCheck(main_tools, main_tools.player_black, main_tools.player_white, main_tools.black_king)
+      
     else:
       print('BLACK KING ATTACKED')
       main_tools.game_state = GameState.CHECK
@@ -319,7 +331,7 @@ def specialCaseForKingsCheck(main_tools: Tools):
     amount_of_attackers = is_attacked(board_reference, board_reference.chess_board[main_tools.white_king.y][main_tools.white_king.x], ColorsPieces.WHITE)
 
     if(amount_of_attackers == 0):
-      return
+      stalemateCheck(main_tools, main_tools.player_white, main_tools.player_black, main_tools.white_king)
     else:
       print('WHITE KING ATTACKED')
       main_tools.game_state = GameState.CHECK
@@ -424,27 +436,6 @@ def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_att
     return False # False means it cant be eaten which indicates a Checkmate
   
   elif(amount_of_attackers == 1):
-    t = constants.CURRENT_ATTACKER[0].type
-
-    if t == PieceType.KING:
-        print("attacker is KING")
-    elif t == PieceType.QUEEN:
-        
-        print("attacker is QUEEN")
-        if(constants.CURRENT_ATTACKER[0].color == ColorsPieces.BLACK):
-          print("how in the hell")
-
-    elif t == PieceType.ROOK:
-        print("attacker is ROOK")
-    elif t == PieceType.BISHOP:
-        print("attacker is BISHOP")
-    elif t == PieceType.KNIGHT:
-        print("attacker is KNIGHT")
-    elif t == PieceType.PAWN:
-        print("attacker is PAWN")
-    else:
-        print("unknown piece type:", t)
-
     if(isPinned(main_tools, main_tools.main_board.chess_board[current_attacker.y][current_attacker.x],
     main_tools.main_board.chess_board[constants.CURRENT_ATTACKER[0].y][constants.CURRENT_ATTACKER[0].x], current_king.player_id)):
       # for id we can alos use current attackers ID
@@ -546,11 +537,12 @@ def capturePiece(main_tools: Tools, target_tile: Tile):
   
   if(placeholder.player_id == PlayerID.PLAYER_ONE_WHITE):
     main_tools.player_black.graveyard.append(placeholder)
+    main_tools.player_black.my_graveyard_changed = True
   else:
     main_tools.player_white.graveyard.append(placeholder)
+    main_tools.player_white.my_graveyard_changed = True
 
   target_tile.piece = None
-  main_tools.was_graveyard_changed = True
 
 def calculateDeltaTime(current_frame: float, last_frame: float):
   return (current_frame - last_frame) / ONE_SECOND
@@ -576,3 +568,43 @@ def isPinned(main_tools: Tools, target_tile_origin: Tile, source_tile_origin: Ti
 
   del board_reference
   return False
+
+def stalemateCheck(main_tools: Tools, player: Player, opposite_player: Player, king: King):
+
+  # player is the one that has "king"
+  king.getMoves(main_tools.main_board, king.x, king.y)
+  iterator: Piece = None
+
+  if(king.total_legal_moves == 0):
+    for iterator in range(len(player.troops)):
+    
+      #checking if individual piece can move 
+      player.troops[iterator].getMoves(main_tools.main_board, player.troops[iterator].x, player.troops[iterator].y)
+
+      if(player.troops[iterator].total_legal_moves > 0):
+        return
+      
+    main_tools.game_state = GameState.STALEMATE
+    return
+  else:
+    # king can move << !
+    if(len(player.troops) == 0 and len(opposite_player.troops) == 1):
+      
+      for iterator in range(len(opposite_player.troops)):
+
+        if(opposite_player.troops[iterator].type != PieceType.KNIGHT and opposite_player.troops[iterator].type != PieceType.BISHOP):
+          return
+
+      main_tools.game_state = GameState.STALEMATE
+      return
+
+
+    elif(len(player.troops) == 0 and len(opposite_player.troops) > 1):
+      return
+    elif(len(player.troops) == 0 and len(opposite_player.troops) == 0):
+      main_tools.game_state = GameState.STALEMATE
+      return
+
+      
+  
+  return

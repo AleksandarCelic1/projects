@@ -18,4 +18,7 @@ class Knight(Piece):
 
     knightViableMoves(logic_map, x, y, placeholder, origin)
 
+    if(placeholder is not None):
+      self.total_legal_moves = len(placeholder)
+
     return placeholder

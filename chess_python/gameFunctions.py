@@ -368,8 +368,6 @@ def checkmateConfirmer(main_tools: Tools, current_king: King):
     moves_between_king_and_attacker: List[Tuple[int, int]] = checkmateCoordsCalculator(copy_of_current_attacker, current_king)
 
   
-    # CHECKMATE ALOG STARTED MAKING BUGS AGAIN :(
-
   if(not checkIfAttackerCanBeEaten(main_tools, current_king, copy_of_current_attacker)
   and not checkIfAnyTileCanBeBlocked(main_tools, current_king, copy_of_current_attacker, moves_between_king_and_attacker)):
     print('Im checkmated <!')

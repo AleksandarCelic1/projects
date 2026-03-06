@@ -7,6 +7,8 @@ from .constants import ColorsTile, ColorsPieces, PieceType, HORIZONTAL_STRING, V
 from typing import List, Tuple
 from .piece import Piece
 
+import chess_python.classes.constants as constants
+
 
 KNIGHT_VIABLE_MOVES_OFFSETS= {  (-1, -2), (1, -2), (2, -1), (2, 1), (-2, -1), (-2, 1), (-1, 2), (1, 2)}
 KING_VIABLE_MOVES_OFFSETS = { (-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)}
@@ -409,10 +411,20 @@ def pawn_is_attacking(logical_map: Board, source_tile: Tile, source_color: Color
       continue
 
     placeholder_piece: Piece = current_tile.piece
+    # bug is here 
+    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN): 
 
-    if(placeholder_piece.color != source_color and placeholder_piece.type == PieceType.PAWN and source_tile.is_occupied()): 
-      constants.CURRENT_ATTACKER.append(placeholder_piece)
-      return True
+      
+      if(source_tile.is_occupied()):
+        constants.CURRENT_ATTACKER.append(placeholder_piece)
+        return True
+      else:
+        legal_moves: List[Tuple[Tile, ColorsTile]] = placeholder_piece.getMoves(logical_map, placeholder_piece.x, placeholder_piece.y)
+
+        if((source_tile, source_color) in legal_moves):
+          constants.CURRENT_ATTACKER.append(placeholder_piece)
+          return True
+    
     
 
   return False
@@ -440,9 +452,14 @@ def kings_is_attacking(logical_map: Board, source_tile: Tile, source_color: Colo
     placeholder_piece: Piece = current_tile.piece
 
     if(placeholder_piece.type == PieceType.KING and placeholder_piece.color != source_color):
-      if(quickCheckIfKingCanTakeThis(logical_map, source_tile, ColorsTile.GREEN, placeholder_piece)): #  Queen tile  
-        constants.CURRENT_ATTACKER.append(placeholder_piece) # bug rises from here again
+
+      if(constants.KING_CALLING):
+        constants.CURRENT_ATTACKER.append(placeholder_piece)
         return True
+      else:
+        if(quickCheckIfKingCanTakeThis(logical_map, source_tile, ColorsTile.GREEN, placeholder_piece)): #  Queen tile  
+          constants.CURRENT_ATTACKER.append(placeholder_piece) # bug rises from here again
+          return True
     
 
   return False

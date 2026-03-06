@@ -179,8 +179,9 @@ BLACK_SCORE_STRING = 'SCORE (BLACK):'
 #RENDERING OFFSET FOR GAMESTATE AND PLAYERPLAYING
 OFFSET_FOR_TEXT = 10 # used for gamestate rendering and playerplaying and so on
 
+# Global BOOL
 
-
+KING_CALLING = False
 
 
 

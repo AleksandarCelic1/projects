@@ -429,7 +429,7 @@ def checkIfAttackerCanBeEaten(main_tools: Tools, current_king: King, current_att
 
   amount_of_attackers = is_attacked(main_tools.main_board, 
   main_tools.main_board.chess_board[current_attacker.y][current_attacker.x], current_attacker.color)
-
+  
   if(amount_of_attackers == 0):
     return False # False means it cant be eaten which indicates a Checkmate
   

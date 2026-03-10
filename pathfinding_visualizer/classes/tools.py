@@ -2,6 +2,7 @@ import pygame
 
 from .matrix import Matrix
 from .mouse import Mouse
+from ..constants import AlgorithmKeys
 
 
 

@@ -1,3 +1,5 @@
+import pygame
+
 from enum import Enum
 
 class TileColors(Enum):
@@ -22,13 +24,14 @@ class AlgorithmKeys(Enum):
 
 # those are used in a main class named Tools as we are going to have a hash map that maps
 # into our algorthim object that has a Run function << ! (if the signature can be valid for all of them -- pure virtual function)
+
+class TilePicturesKeys(Enum):
+  WHITE_TILE = 0
+  BLACK_TILE = 1
+  GREEN_TILE = 2
+  RED_TILE = 3
+  LIGHT_GREY_TILE = 4
   
-
-MATRIX_WIDTH = 100
-MATRIX_HEIGHT = 100
-# The board will be N x N // logically yes but for rendering we have to still decide SCRRENWIDTH AND SCREEENHEIGHT
-
-
 ONE_SECOND = 1000
 FPS = 60
 FRAME_DELAY = ONE_SECOND // FPS
@@ -36,6 +39,22 @@ FRAME_DELAY = ONE_SECOND // FPS
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 900
+PADDING_FOR_EVERY_SIDE = 20
+
+# Screen Dimensions
+
+MATRIX_WIDTH = 100
+MATRIX_HEIGHT = 100
+
+MATIRX_WIDTH_PIXELS = 800
+MATRIX_HEIGHT_PIXELS = 800
+
+MATRIX_X_POSITION = SCREEN_WIDTH - MATIRX_WIDTH_PIXELS - PADDING_FOR_EVERY_SIDE
+MATRIX_Y_POSITION = SCREEN_HEIGHT - MATRIX_HEIGHT_PIXELS - PADDING_FOR_EVERY_SIDE
+# The board will be N x N // logically yes but for rendering we have to still decide SCRRENWIDTH AND SCREEENHEIGHT
 
 TILE_WIDTH_AND_HEIGHT = 8 # ? figure out the dimensions << !
 
+
+
+hash_map_for_tile_pictures: dict[TilePicturesKeys, pygame.Surface] = {}

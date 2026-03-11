@@ -1,11 +1,12 @@
 import pygame
 
-from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys
+from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys, FontKeys
 
 from .classes.tile import Tile
 from .classes.matrix import Matrix
 from .classes.mouse import Mouse
 from .classes.tools import Tools
+from .classes.font import FontContainer
 
 def initializeEverything() -> Tools:
 
@@ -13,8 +14,9 @@ def initializeEverything() -> Tools:
   mouse_object: Mouse = Mouse(0, 0)
   renderer_object = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   pygame.display.set_caption("Pathfinding Visualizer <3")
+  font_object = initFont()
 
-  main_tools = Tools(matrix_object, renderer_object, mouse_object)
+  main_tools = Tools(matrix_object, renderer_object, mouse_object, font_object)
 
   initializeTilePictures()
 
@@ -37,3 +39,13 @@ def initializeTilePictures():
   hash_map_for_tile_pictures[TilePicturesKeys.RED_TILE] = red_tile_src
   hash_map_for_tile_pictures[TilePicturesKeys.LIGHT_GREY_TILE] = light_grey_tile_src
 
+def initFont():
+  font_container_object : FontContainer = FontContainer()
+
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_12] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 12)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_16] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 16)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_20] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 20)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_24] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 24)
+
+  return font_container_object
+  

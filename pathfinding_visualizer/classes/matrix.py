@@ -1,5 +1,7 @@
+import pygame
+
 from .tile import Tile
-from ..constants import MATRIX_WIDTH, MATRIX_HEIGHT, TileColors, MATRIX_X_POSITION, MATRIX_Y_POSITION, TILE_WIDTH_AND_HEIGHT
+from ..constants import MATRIX_WIDTH, MATRIX_HEIGHT, TileColors, MATRIX_X_POSITION, MATRIX_Y_POSITION, TILE_WIDTH_AND_HEIGHT, hash_map_for_tile_pictures
 
 from typing import List
 
@@ -16,6 +18,7 @@ class Matrix():
     for index in range(MATRIX_HEIGHT): # y
       for inner in range(MATRIX_WIDTH): # x
         self.matrix_[index][inner] = Tile(TileColors.WHITE, inner, index)
+        self.matrix_[index][inner].setKeyAndColor(TileColors.WHITE)
 
     self.initTilesAxis(self)
 
@@ -45,6 +48,13 @@ class Matrix():
 
       y_axis += TILE_WIDTH_AND_HEIGHT
 
+  def renderTiles(self, renderer_object: pygame.Surface):
+
+    for index in range(MATRIX_HEIGHT):
+      for inner in range(MATRIX_WIDTH):
+        current_tile: Tile = self.matrix_[index][inner]
+
+        renderer_object.blit(hash_map_for_tile_pictures[current_tile.getKeyForImage()], (current_tile.getXAxis(), current_tile.getYAxis()))
 
 
 

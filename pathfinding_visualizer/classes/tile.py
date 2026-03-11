@@ -27,6 +27,12 @@ class Tile:
   def getKeyForImage(self):
     return self.key_
   
+  def getXAxis(self):
+    return self.x_axis_
+  
+  def getYAxis(self):
+    return self.y_axis_
+  
   def setKeyAndColor(self, color: TileColors):
 
     self.color_ = color
@@ -51,3 +57,4 @@ class Tile:
 
   def setYAxis(self, y: int):
     self.y_axis_ = y
+

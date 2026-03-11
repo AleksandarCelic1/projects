@@ -31,7 +31,22 @@ class TilePicturesKeys(Enum):
   GREEN_TILE = 2
   RED_TILE = 3
   LIGHT_GREY_TILE = 4
-  
+
+#Pretty self explanatory
+
+
+class FontKeys(Enum):
+  MINECRAFT_FONT_12 = 0
+  MINECRAFT_FONT_16 = 1 # 16 indicating Size
+  MINECRAFT_FONT_20 = 2
+  MINECRAFT_FONT_24 = 3
+
+class StringsAlgoEnums(Enum):
+  BFS = "BFS"
+  DFS = "DFS"
+  A_STAR = "A*"
+  DJIKSTRA = "Djikstra"
+   
 ONE_SECOND = 1000
 FPS = 60
 FRAME_DELAY = ONE_SECOND // FPS

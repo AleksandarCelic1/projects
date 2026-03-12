@@ -1,7 +1,11 @@
 import pygame
 
+from enum import Enum
 from ..constants import FontKeys
 
+class FontColor(Enum):
+  WHITE = (255, 255, 255)
+  BLACK = (0, 0, 0)
 
 class FontContainer:
   def __init__(self):

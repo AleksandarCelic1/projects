@@ -3,7 +3,7 @@ import pygame
 from .matrix import Matrix
 from .mouse import Mouse
 from .font import FontContainer
-from ..constants import AlgorithmKeys, FontKeys
+from ..constants import AlgorithmKeys, FontKeys, GameState
 
 
 
@@ -18,8 +18,13 @@ class Tools:
     self.renderer_: pygame.Surface = renderer
     self.mouse_object_: Mouse = mouse
     self.font_container_object: FontContainer = font_container
+  
+
+    # Not rendering anything at the start << in the means of pathfinding algos
+    self.game_state_: GameState = GameState.AVAILABLE
 
 
+  # Getters
   def getMatrixObject(self):
     return self.matrix_object_
   
@@ -31,3 +36,15 @@ class Tools:
   
   def getFontContainer(self):
     return self.font_container_object
+  
+  def getGameState(self):
+    return self.game_state_
+  
+
+  #Setters
+  def setGameState(self, new_game_state: GameState):
+    self.game_state_ = new_game_state
+  
+  
+  
+  

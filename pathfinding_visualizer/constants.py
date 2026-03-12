@@ -47,6 +47,14 @@ class StringsAlgoEnums(Enum):
   A_STAR = "A*"
   DJIKSTRA = "Djikstra"
    
+class GameState(Enum):
+  BUSY = 0
+  AVAILABLE = 1
+  
+
+
+
+
 ONE_SECOND = 1000
 FPS = 60
 FRAME_DELAY = ONE_SECOND // FPS
@@ -69,7 +77,5 @@ MATRIX_Y_POSITION = SCREEN_HEIGHT - MATRIX_HEIGHT_PIXELS - PADDING_FOR_EVERY_SID
 # The board will be N x N // logically yes but for rendering we have to still decide SCRRENWIDTH AND SCREEENHEIGHT
 
 TILE_WIDTH_AND_HEIGHT = 8 # ? figure out the dimensions << !
-
-
 
 hash_map_for_tile_pictures: dict[TilePicturesKeys, pygame.Surface] = {}

@@ -1,12 +1,18 @@
 import pygame
 
-from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys, FontKeys
+from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys, FontKeys, AlgorithmKeys
 
 from .classes.tile import Tile
 from .classes.matrix import Matrix
 from .classes.mouse import Mouse
 from .classes.tools import Tools
 from .classes.font import FontContainer
+
+from .algorithms_.algorithm import Algorithm
+from .algorithms_.A_star import AStarAlgorithm
+from .algorithms_.Bfs import BfsAlgorithm
+from .algorithms_.Dfs import DfsAlgorithm
+from .algorithms_.Djikstra import DjikstraAlgorithm
 
 def initializeEverything() -> Tools:
 
@@ -15,8 +21,10 @@ def initializeEverything() -> Tools:
   renderer_object = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   pygame.display.set_caption("Pathfinding Visualizer <3")
   font_object = initFont()
+  dictionary_of_algos = initAlgos()
 
-  main_tools = Tools(matrix_object, renderer_object, mouse_object, font_object)
+  main_tools = Tools(matrix_object, renderer_object, mouse_object, font_object, dictionary_of_algos)
+
 
   initializeTilePictures()
 
@@ -49,3 +57,17 @@ def initFont():
 
   return font_container_object
   
+def initAlgos():
+  bfs: BfsAlgorithm = BfsAlgorithm()
+  dfs: DfsAlgorithm = DfsAlgorithm()
+  djikstra: DjikstraAlgorithm = DjikstraAlgorithm()
+  a_star: AStarAlgorithm = AStarAlgorithm()
+
+
+  dictionary: dict[AlgorithmKeys, Algorithm] = {}
+  dictionary[AlgorithmKeys.BFS] = bfs
+  dictionary[AlgorithmKeys.DFS] = dfs
+  dictionary[AlgorithmKeys.DJIKSTRA] = djikstra
+  dictionary[AlgorithmKeys.A_STAR] = a_star
+
+  return dictionary

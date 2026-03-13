@@ -32,7 +32,7 @@ def gameLoop(main_tools: Tools):
 
 
     
-
+    main_tools.getMatrixObject().renderTiles()
     pygame.display.flip()
 
     

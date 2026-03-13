@@ -5,19 +5,22 @@ from .mouse import Mouse
 from .font import FontContainer
 from ..constants import AlgorithmKeys, FontKeys, GameState
 
+from ..algorithms_.algorithm import Algorithm
+
 
 
 
 
 
 class Tools:
-  def __init__(self, matrix: Matrix, renderer: pygame.Surface, mouse: Mouse, font_container: FontContainer):
+  def __init__(self, matrix: Matrix, renderer: pygame.Surface, mouse: Mouse, font_container: FontContainer, dict_algos: dict[AlgorithmKeys, Algorithm]):
   
     # The whole grid 
     self.matrix_object_: Matrix = matrix
     self.renderer_: pygame.Surface = renderer
     self.mouse_object_: Mouse = mouse
     self.font_container_object: FontContainer = font_container
+    self.dict_algorithms_: dict[AlgorithmKeys, Algorithm] = dict_algos
   
 
     # Not rendering anything at the start << in the means of pathfinding algos

@@ -7,6 +7,7 @@ from .classes.matrix import Matrix
 from .classes.mouse import Mouse
 from .classes.tools import Tools
 from .classes.font import FontContainer
+from .classes.rendererFunctions import RenderingFunctionsContainer
 
 from .algorithms_.algorithm import Algorithm
 from .algorithms_.A_star import AStarAlgorithm
@@ -22,8 +23,9 @@ def initializeEverything() -> Tools:
   pygame.display.set_caption("Pathfinding Visualizer <3")
   font_object = initFont()
   dictionary_of_algos = initAlgos()
+  rendering_func_object = RenderingFunctionsContainer()
 
-  main_tools = Tools(matrix_object, renderer_object, mouse_object, font_object, dictionary_of_algos)
+  main_tools = Tools(matrix_object, renderer_object, mouse_object, font_object, dictionary_of_algos, rendering_func_object)
 
 
   initializeTilePictures()

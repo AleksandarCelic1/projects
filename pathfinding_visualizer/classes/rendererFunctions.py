@@ -12,9 +12,6 @@ A_STAR_Y = DFS_Y + EVERY_BOX_HEIGHT + PADDING_FOR_EVERY_SIDE
 DJIKSTRA_Y = A_STAR_Y + EVERY_BOX_HEIGHT + PADDING_FOR_EVERY_SIDE
 
 
-TEXT_PLACEMENT_BLUEPRINT_X = ( EVERY_BOX_WIDTH - EVERY_BOX_X) // 2 
-TEXT_PLACEMENT_BLUEPRINT_Y = ( EVERY_BOX_HEIGHT) // 2 # Minus the according algorithm text << !
-
 
 
 
@@ -22,7 +19,7 @@ class RenderingFunctionsContainer:
   def __init__(self):
     pass
 
-  def renderUI(self, renderer: pygame.Surface):
+  def renderUI(self, renderer: pygame.Surface, algos: dict[a]):
 
     self.renderBackground()
     self.renderButtonsForAlgorithms()
@@ -36,8 +33,11 @@ class RenderingFunctionsContainer:
     pygame.draw.rect(renderer, (255, 255, 255), (EVERY_BOX_X, A_STAR_Y, EVERY_BOX_WIDTH, EVERY_BOX_HEIGHT), 0)
 
   def renderBackground(self, renderer: pygame.Surface):
-
     renderer.fill((0, 0, 0)) # black
+
+  def renderTextInBoxes(self, renderer: pygame.Surface):
+    pass
+    
 
 
 

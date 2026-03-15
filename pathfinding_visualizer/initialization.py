@@ -1,6 +1,6 @@
 import pygame
 
-from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys, FontKeys, AlgorithmKeys
+from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys, FontKeys, AlgorithmKeys, StringsAlgoEnums
 
 from .classes.tile import Tile
 from .classes.matrix import Matrix
@@ -14,6 +14,9 @@ from .algorithms_.A_star import AStarAlgorithm
 from .algorithms_.Bfs import BfsAlgorithm
 from .algorithms_.Dfs import DfsAlgorithm
 from .algorithms_.Djikstra import DjikstraAlgorithm
+
+from .classes.rendererFunctions import EVERY_BOX_WIDTH, EVERY_BOX_X, EVERY_BOX_HEIGHT, BFS_Y, DFS_Y, DJIKSTRA_Y, A_STAR_Y
+
 
 def initializeEverything() -> Tools:
 
@@ -29,6 +32,7 @@ def initializeEverything() -> Tools:
 
 
   initializeTilePictures()
+  initText(main_tools)
 
 
   return main_tools
@@ -73,3 +77,63 @@ def initAlgos():
   dictionary[AlgorithmKeys.A_STAR] = a_star
 
   return dictionary
+
+def initText(main_tools: Tools):
+
+  main_tools.getAlgoDict()[AlgorithmKeys.BFS].setTextSrc
+  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.BFS, True, (255, 255, 255)))
+
+  main_tools.getAlgoDict()[AlgorithmKeys.DFS].setTextSrc
+  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.DFS, True, (255, 255, 255)))
+
+  main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].setTextSrc
+  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.DJIKSTRA, True, (255, 255, 255)))
+
+  main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].setTextSrc
+  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.A_STAR, True, (255, 255, 255)))
+
+  bfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
+  dfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
+  djikstra_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
+  a_star_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
+
+
+  bfs_text_rect = bfs_text_src.get_rect()
+  dfs_text_rect = dfs_text_src.get_rect()
+  djikstra_text_rect = djikstra_text_src.get_rect()
+  a_star_text_rect = a_star_text_src.get_rect()
+
+
+
+  bfs_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - bfs_text_rect.width) // 2
+  dfs_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - dfs_text_rect.width) // 2
+  djikstra_text_rect.x = EVERY_BOX_X + ( EVERY_BOX_WIDTH - djikstra_text_rect.width) // 2
+  a_star_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - djikstra_text_rect.width) // 2
+
+
+  bfs_text_rect.y = BFS_Y + (EVERY_BOX_HEIGHT - bfs_text_rect.height) // 2
+  dfs_text_rect.y = DFS_Y + (EVERY_BOX_HEIGHT - dfs_text_rect.height) // 2
+  djikstra_text_rect.y = DJIKSTRA_Y + (EVERY_BOX_HEIGHT - djikstra_text_rect.height) // 2
+  a_star_text_rect.y = A_STAR_Y + (EVERY_BOX_HEIGHT - a_star_text_rect.height) // 2
+
+
+  main_tools.getAlgoDict()[AlgorithmKeys.BFS].setTextRect(bfs_text_rect)
+  main_tools.getAlgoDict()[AlgorithmKeys.DFS].setTextRect(dfs_text_rect)
+  main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].setTextRect(djikstra_text_rect)
+  main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].setTextRect(a_star_text_rect)
+
+
+  
+
+  
+
+
+  
+
+
+
+
+
+
+
+

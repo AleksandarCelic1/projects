@@ -8,7 +8,7 @@ from .algorithm import Algorithm
 
 class DfsAlgorithm(Algorithm):
   def __init__(self):
-    pass
+    super().__init__()
 
   def runAlgorithm(self, grid: Matrix, source_tile: Tile, target_tile: Tile):
     pass

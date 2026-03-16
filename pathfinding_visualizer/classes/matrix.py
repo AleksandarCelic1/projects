@@ -10,17 +10,19 @@ class Matrix():
   def __init__(self):
     
     self.matrix_: List[List[Tile]] = None
-    self.initMatrix(self)
+    self.initMatrix()
 
     
   def initMatrix(self):
 
+    self.matrix_ = [[None for _ in range(MATRIX_WIDTH)] for _ in range(MATRIX_HEIGHT)]
+    
     for index in range(MATRIX_HEIGHT): # y
       for inner in range(MATRIX_WIDTH): # x
         self.matrix_[index][inner] = Tile(TileColors.WHITE, inner, index)
         self.matrix_[index][inner].setKeyAndColor(TileColors.WHITE)
 
-    self.initTilesAxis(self)
+    self.initTilesAxis()
 
   def getMatrix(self):
     return self.matrix_

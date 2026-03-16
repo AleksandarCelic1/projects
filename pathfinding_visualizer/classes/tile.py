@@ -1,12 +1,12 @@
-from constants import TileColors, TilePicturesKeys
+from ..constants import TileColors, TilePicturesKeys
 
 class Tile:
-  def __init__(self, color: TileColors, x: int, y: int, key: TilePicturesKeys):
+  def __init__(self, color: TileColors, x: int, y: int):
 
     self.color_ = color
     self.x_ = x
     self.y_ = y
-    self.key_ = key
+    self.key_ : TilePicturesKeys = None
 
 
     self.x_axis_: int = 0

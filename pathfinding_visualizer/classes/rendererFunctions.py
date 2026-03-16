@@ -1,6 +1,7 @@
 import pygame
 
-from ..constants import PADDING_FOR_EVERY_SIDE, MATRIX_X_POSITION
+from ..constants import PADDING_FOR_EVERY_SIDE, MATRIX_X_POSITION, AlgorithmKeys
+from ..algorithms_.algorithm import Algorithm
 
 EVERY_BOX_WIDTH = MATRIX_X_POSITION - (2 * PADDING_FOR_EVERY_SIDE) # Left padding Right padding 
 EVERY_BOX_X = PADDING_FOR_EVERY_SIDE
@@ -19,10 +20,11 @@ class RenderingFunctionsContainer:
   def __init__(self):
     pass
 
-  def renderUI(self, renderer: pygame.Surface, algos: dict[a]):
+  def renderUI(self, renderer: pygame.Surface, algos: dict[AlgorithmKeys, Algorithm]):
 
-    self.renderBackground()
-    self.renderButtonsForAlgorithms()
+    self.renderBackground(renderer)
+    self.renderButtonsForAlgorithms(renderer)
+    self.renderTextInBoxes(renderer, algos)
 
 
   def renderButtonsForAlgorithms(self, renderer: pygame.Surface):
@@ -35,7 +37,15 @@ class RenderingFunctionsContainer:
   def renderBackground(self, renderer: pygame.Surface):
     renderer.fill((0, 0, 0)) # black
 
-  def renderTextInBoxes(self, renderer: pygame.Surface):
+  def renderTextInBoxes(self, renderer: pygame.Surface, algos: dict[AlgorithmKeys, Algorithm]):
+
+    for index in range(4):
+      key = AlgorithmKeys(index)
+      renderer.blit(algos[key].getTextSrc(), algos[key].getTextRect())
+
+    # This should be it regarding the text in boxes print << !
+
+
     pass
     
 

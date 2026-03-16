@@ -56,10 +56,10 @@ def initializeTilePictures():
 def initFont():
   font_container_object : FontContainer = FontContainer()
 
-  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_12] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 12)
-  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_16] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 16)
-  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_20] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 20)
-  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_24] = pygame.font.Font("pathfinding_visualizer/fonts/PressStart2P-Regular.ttf", 24)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_12] = pygame.font.Font("pathfinding_visualizer/fonts_/PressStart2P-Regular.ttf", 12)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_16] = pygame.font.Font("pathfinding_visualizer/fonts_/PressStart2P-Regular.ttf", 16)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_20] = pygame.font.Font("pathfinding_visualizer/fonts_/PressStart2P-Regular.ttf", 20)
+  font_container_object.getContainer()[FontKeys.MINECRAFT_FONT_24] = pygame.font.Font("pathfinding_visualizer/fonts_/PressStart2P-Regular.ttf", 24)
 
   return font_container_object
   
@@ -80,22 +80,36 @@ def initAlgos():
 
 def initText(main_tools: Tools):
 
-  main_tools.getAlgoDict()[AlgorithmKeys.BFS].setTextSrc
-  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.BFS, True, (255, 255, 255)))
+  # AI GENERATED -- Since Python has some odd way of interpeting function calls, ive had them rewritten with AI
+  # basically the same function call but "python"-splitted
+  main_tools.getAlgoDict()[AlgorithmKeys.BFS].setTextSrc(
+      main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+          StringsAlgoEnums.BFS.value, True, (0, 0, 0)
+      )
+    )
 
-  main_tools.getAlgoDict()[AlgorithmKeys.DFS].setTextSrc
-  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.DFS, True, (255, 255, 255)))
+  main_tools.getAlgoDict()[AlgorithmKeys.DFS].setTextSrc(
+      main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+          StringsAlgoEnums.DFS.value, True, (0, 0, 0)
+      )
+  )
 
-  main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].setTextSrc
-  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.DJIKSTRA, True, (255, 255, 255)))
+  main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].setTextSrc(
+      main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+          StringsAlgoEnums.DJIKSTRA.value, True, (0, 0, 0)
+      )
+  )
 
-  main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].setTextSrc
-  (main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(StringsAlgoEnums.A_STAR, True, (255, 255, 255)))
+  main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].setTextSrc(
+      main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+          StringsAlgoEnums.A_STAR.value, True, (0, 0, 0)
+      )
+  )
 
   bfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
-  dfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
-  djikstra_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
-  a_star_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
+  dfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.DFS].getTextSrc()
+  djikstra_text_src = main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].getTextSrc()
+  a_star_text_src = main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].getTextSrc()
 
 
   bfs_text_rect = bfs_text_src.get_rect()

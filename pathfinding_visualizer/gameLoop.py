@@ -38,8 +38,8 @@ def gameLoop(main_tools: Tools):
     
 
     # Rendering
-    main_tools.getRendererFunctionContainer().renderUI(main_tools.getRenderer())
-    main_tools.getMatrixObject().renderTiles()
+    main_tools.getRendererFunctionContainer().renderUI(main_tools.getRenderer(), main_tools.getAlgoDict())
+    main_tools.getMatrixObject().renderTiles(main_tools.getRenderer())
     pygame.display.flip()
 
 

@@ -7,6 +7,7 @@ from ..classes.tile import Tile
 
 class Algorithm(ABC):
   def __init__(self):
+    
     self.text_src: pygame.Surface = None
     self.text_rect: pygame.Rect = None 
     pass

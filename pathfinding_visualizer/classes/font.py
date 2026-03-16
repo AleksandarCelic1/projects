@@ -9,7 +9,7 @@ class FontColor(Enum):
 
 class FontContainer:
   def __init__(self):
-    self.container_map_: dict[FontKeys, pygame.font.Font] = None
+    self.container_map_: dict[FontKeys, pygame.font.Font] = {}
 
   def getContainer(self):
     return self.container_map_

@@ -231,7 +231,6 @@ def initPlayersAndTools():
   return tools
 
 def initFontAndSurfacesForScores(main_tools: Tools):
-
   main_tools.font = pygame.font.Font("chess_python/classes/fonts/PressStart2P-Regular.ttf", 12)
 
   main_tools.white_src = main_tools.font.render(WHITE_SCORE_STRING, True,  (255, 255, 255))
@@ -248,7 +247,6 @@ def initFontAndSurfacesForScores(main_tools: Tools):
   checkmate_text_black_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.CHECK_MATE_BLACK.value, True, (255, 255, 255))
   stalemate_text_src: pygame.Surface = main_tools.font.render(RenderingTextEnums.STALEMATE.value, True, (255, 255, 255))
 
-  
 
 
   player_playing_dst = player_playing_src.get_rect()

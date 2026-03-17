@@ -3,7 +3,7 @@ import pygame
 from .classes.tools import Tools
 from .constants import GameState
 
-from .gameFunctions import controlFPS
+from .gameFunctions import controlFPS, dispatcher
 
 
 def gameLoop(main_tools: Tools):
@@ -25,9 +25,13 @@ def gameLoop(main_tools: Tools):
       if (event.type == pygame.MOUSEBUTTONDOWN 
       and ( event.button == 1 or event.button == 3)):
         
-        if(main_tools.getGameState() == GameState.AVAILABLE):
-          pass
-          # call dispatcher
+        mouse_x, mouse_y = event.pos
+        
+        if(main_tools.getGameState() == GameState.AVAILABLE
+        or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
+        or main_tools.getGameState() == GameState.SECOND_MOVE_MADE):
+          
+          dispatcher(main_tools, mouse_x, mouse_y)
         else:
           pass
           #ignore

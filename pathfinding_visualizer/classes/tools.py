@@ -1,10 +1,12 @@
 import pygame
 
 from .matrix import Matrix
+from .tile import Tile
 from .mouse import Mouse
 from .font import FontContainer
 from .rendererFunctions import RenderingFunctionsContainer
-from ..constants import AlgorithmKeys, FontKeys, GameState
+from ..constants import AlgorithmKeys, GameState
+
 
 from ..algorithms_.algorithm import Algorithm
 
@@ -30,6 +32,12 @@ class Tools:
     self.game_state_: GameState = GameState.AVAILABLE
 
 
+
+
+    # Dispatcher Tiles
+    self.source_tile_: Tile = None
+    self.target_tile_: Tile = None
+
   # Getters
   def getMatrixObject(self):
     return self.matrix_object_
@@ -52,10 +60,24 @@ class Tools:
   def getRendererFunctionContainer(self):
     return self.render_func_object_
   
+  def getSourceTile(self):
+    return self.source_tile_
+  
+  def getTargetTile(self):
+    return self.target_tile_
+  
+
+  
 
   #Setters
   def setGameState(self, new_game_state: GameState):
     self.game_state_ = new_game_state
+
+  def setSourceTile(self, new_source_tile: Tile):
+    self.source_tile_ = new_source_tile
+
+  def setTargetTile(self, new_target_tile: Tile):
+    self.target_tile_ = new_target_tile
   
   
   

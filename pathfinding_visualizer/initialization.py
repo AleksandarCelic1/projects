@@ -1,6 +1,17 @@
 import pygame
 
-from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, hash_map_for_tile_pictures, TilePicturesKeys, FontKeys, AlgorithmKeys, StringsAlgoEnums
+from .constants import (
+  SCREEN_WIDTH,
+  SCREEN_HEIGHT, 
+  SCALING_FACTOR_TWO,
+  hash_map_for_tile_pictures, 
+  hash_map_for_text,
+  TilePicturesKeys, 
+  FontKeys, 
+  AlgorithmKeys, 
+  StringsAlgoEnums,
+  StringsRunReset
+)
 
 from .classes.tile import Tile
 from .classes.matrix import Matrix
@@ -15,7 +26,21 @@ from .algorithms_.Bfs import BfsAlgorithm
 from .algorithms_.Dfs import DfsAlgorithm
 from .algorithms_.Djikstra import DjikstraAlgorithm
 
-from .classes.rendererFunctions import EVERY_BOX_WIDTH, EVERY_BOX_X, EVERY_BOX_HEIGHT, BFS_Y, DFS_Y, DJIKSTRA_Y, A_STAR_Y
+from .classes.rendererFunctions import (
+  EVERY_BOX_WIDTH, 
+  EVERY_BOX_X, 
+  EVERY_BOX_HEIGHT, 
+  BFS_Y, 
+  DFS_Y, 
+  DJIKSTRA_Y, 
+  A_STAR_Y,
+  RUN_BUTTON_WIDTH,
+  RUN_BUTTON_X,
+  RUN_BUTTON_Y,
+  RESET_BUTTON_WIDTH,
+  RESET_BUTTON_X,
+  RESET_BUTTON_Y
+)
 
 
 def initializeEverything() -> Tools:
@@ -32,7 +57,8 @@ def initializeEverything() -> Tools:
 
 
   initializeTilePictures()
-  initText(main_tools)
+  initTextForAlgorithms(main_tools)
+  initTextForRunResetButtons(main_tools)
 
 
   return main_tools
@@ -45,6 +71,16 @@ def initializeTilePictures():
   green_tile_src = pygame.image.load("pathfinding_visualizer/photos_/GreenTile.png").convert_alpha()
   red_tile_src = pygame.image.load("pathfinding_visualizer/photos_/RedTile.png").convert_alpha()
   light_grey_tile_src = pygame.image.load("pathfinding_visualizer/photos_/LightGreyTile.png").convert_alpha()
+
+
+
+  white_tile_src = pygame.transform.smoothscale(white_tile_src, (white_tile_src.get_width() * SCALING_FACTOR_TWO, white_tile_src.get_height() * SCALING_FACTOR_TWO))
+  black_tile_src = pygame.transform.smoothscale(black_tile_src, (black_tile_src.get_width() * SCALING_FACTOR_TWO, black_tile_src.get_height() * SCALING_FACTOR_TWO))
+  green_tile_src = pygame.transform.smoothscale(green_tile_src, (green_tile_src.get_width() * SCALING_FACTOR_TWO, green_tile_src.get_height() * SCALING_FACTOR_TWO))
+  red_tile_src = pygame.transform.smoothscale(red_tile_src, (red_tile_src.get_width() * SCALING_FACTOR_TWO, red_tile_src.get_height() * SCALING_FACTOR_TWO))
+  light_grey_tile_src = pygame.transform.smoothscale(light_grey_tile_src, (light_grey_tile_src.get_width() * SCALING_FACTOR_TWO, light_grey_tile_src.get_height() * SCALING_FACTOR_TWO))
+
+
 
 
   hash_map_for_tile_pictures[TilePicturesKeys.WHITE_TILE] = white_tile_src
@@ -78,7 +114,7 @@ def initAlgos():
 
   return dictionary
 
-def initText(main_tools: Tools):
+def initTextForAlgorithms(main_tools: Tools):
 
   # AI GENERATED -- Since Python has some odd way of interpeting function calls, ive had them rewritten with AI
   # basically the same function call but "python"-splitted
@@ -106,6 +142,7 @@ def initText(main_tools: Tools):
       )
   )
 
+
   bfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.BFS].getTextSrc()
   dfs_text_src = main_tools.getAlgoDict()[AlgorithmKeys.DFS].getTextSrc()
   djikstra_text_src = main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].getTextSrc()
@@ -122,7 +159,7 @@ def initText(main_tools: Tools):
   bfs_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - bfs_text_rect.width) // 2
   dfs_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - dfs_text_rect.width) // 2
   djikstra_text_rect.x = EVERY_BOX_X + ( EVERY_BOX_WIDTH - djikstra_text_rect.width) // 2
-  a_star_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - djikstra_text_rect.width) // 2
+  a_star_text_rect.x = EVERY_BOX_X + (EVERY_BOX_WIDTH - a_star_text_rect.width) // 2
 
 
   bfs_text_rect.y = BFS_Y + (EVERY_BOX_HEIGHT - bfs_text_rect.height) // 2
@@ -136,7 +173,28 @@ def initText(main_tools: Tools):
   main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].setTextRect(djikstra_text_rect)
   main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].setTextRect(a_star_text_rect)
 
+def initTextForRunResetButtons(main_tools: Tools):
+  
+  run_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+    StringsRunReset.RUN.value, True, (0, 0, 0)
+  )
 
+  reset_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+    StringsRunReset.RESET.value, True, (0, 0, 0)
+  )
+
+  run_rect: pygame.Rect = run_src.get_rect()
+  reset_rect: pygame.Rect = reset_src.get_rect()
+
+
+  run_rect.x = RUN_BUTTON_X + (RUN_BUTTON_WIDTH - run_rect.width) // 2
+  run_rect.y = RUN_BUTTON_Y + (EVERY_BOX_HEIGHT - run_rect.height) // 2
+
+  reset_rect.x = RESET_BUTTON_X + (RESET_BUTTON_WIDTH - reset_rect.width) // 2
+  reset_rect.y = RESET_BUTTON_Y + (EVERY_BOX_HEIGHT - reset_rect.height) // 2
+
+  hash_map_for_text[StringsRunReset.RUN] = (run_src, run_rect)
+  hash_map_for_text[StringsRunReset.RESET] = (reset_src, reset_rect)
   
 
   

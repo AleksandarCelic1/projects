@@ -37,6 +37,8 @@ class Tools:
     # Dispatcher Tiles
     self.source_tile_: Tile = None
     self.target_tile_: Tile = None
+    # Dispatcher Selected Algorithm
+    self.selected_algorithm: Algorithm = None
 
   # Getters
   def getMatrixObject(self):
@@ -66,6 +68,9 @@ class Tools:
   def getTargetTile(self):
     return self.target_tile_
   
+  def getSelectedAlgorithm(self):
+    return self.selected_algorithm
+  
 
   
 
@@ -73,11 +78,14 @@ class Tools:
   def setGameState(self, new_game_state: GameState):
     self.game_state_ = new_game_state
 
-  def setSourceTile(self, new_source_tile: Tile):
+  def setSourceTile(self, new_source_tile: Tile | None):
     self.source_tile_ = new_source_tile
 
-  def setTargetTile(self, new_target_tile: Tile):
+  def setTargetTile(self, new_target_tile: Tile | None):
     self.target_tile_ = new_target_tile
+
+  def setSelectedAlgorithm(self, new_selected_algorithm: Algorithm | None):
+    self.selected_algorithm = new_selected_algorithm
   
   
   

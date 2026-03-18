@@ -1,6 +1,7 @@
 import pygame
 
 from enum import Enum
+from typing import List, Tuple
 
 class TileColors(Enum):
   GREEN = 0
@@ -46,6 +47,10 @@ class StringsAlgoEnums(Enum):
   DFS = "DFS"
   A_STAR = "A*"
   DJIKSTRA = "Djikstra"
+
+class StringsRunReset(Enum):
+  RUN = "RUN"
+  RESET = "RESET"
    
 class GameState(Enum):
   BUSY = 0 # indicating that a "algorithm" is drawing and cant take input 
@@ -68,8 +73,8 @@ PADDING_FOR_EVERY_SIDE = 20
 
 # Screen Dimensions
 
-MATRIX_WIDTH = 100
-MATRIX_HEIGHT = 100
+MATRIX_WIDTH = 50
+MATRIX_HEIGHT = 50
 
 MATIRX_WIDTH_PIXELS = 800
 MATRIX_HEIGHT_PIXELS = 800
@@ -78,6 +83,8 @@ MATRIX_X_POSITION = SCREEN_WIDTH - MATIRX_WIDTH_PIXELS - PADDING_FOR_EVERY_SIDE
 MATRIX_Y_POSITION = SCREEN_HEIGHT - MATRIX_HEIGHT_PIXELS - PADDING_FOR_EVERY_SIDE
 # The board will be N x N // logically yes but for rendering we have to still decide SCRRENWIDTH AND SCREEENHEIGHT
 
-TILE_WIDTH_AND_HEIGHT = 8 # ? figure out the dimensions << !
+TILE_WIDTH_AND_HEIGHT = 16 # ? figure out the dimensions << !
+SCALING_FACTOR_TWO = 2
 
 hash_map_for_tile_pictures: dict[TilePicturesKeys, pygame.Surface] = {}
+hash_map_for_text: dict[StringsRunReset, Tuple[pygame.Surface, pygame.Rect]] = { }

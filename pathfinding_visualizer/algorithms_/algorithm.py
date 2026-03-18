@@ -13,7 +13,7 @@ class Algorithm(ABC):
     pass
 
   @abstractmethod
-  def runAlgorithm(self, grid: Matrix, source_tile: Tile, target_tile: Tile):
+  def runAlgorithm(self, grid: Matrix, source_tile: Tile, target_tile: Tile, renderer: pygame.Surface):
     pass
 
 

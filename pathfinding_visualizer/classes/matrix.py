@@ -50,6 +50,7 @@ class Matrix():
 
       y_axis += TILE_WIDTH_AND_HEIGHT
 
+
   def renderTiles(self, renderer_object: pygame.Surface):
 
     for index in range(MATRIX_HEIGHT):

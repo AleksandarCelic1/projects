@@ -27,10 +27,7 @@ def gameLoop(main_tools: Tools):
         
         mouse_x, mouse_y = event.pos
         
-        if(main_tools.getGameState() == GameState.AVAILABLE
-        or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
-        or main_tools.getGameState() == GameState.SECOND_MOVE_MADE):
-          
+        if(main_tools.getGameState() != GameState.BUSY):
           dispatcher(main_tools, mouse_x, mouse_y)
         else:
           pass
@@ -43,7 +40,9 @@ def gameLoop(main_tools: Tools):
 
     # Rendering
     main_tools.getRendererFunctionContainer().renderUI(main_tools.getRenderer(), main_tools.getAlgoDict())
-    main_tools.getMatrixObject().renderTiles(main_tools.getRenderer())
+    if(main_tools.getGameState() != GameState.BUSY):
+      main_tools.getMatrixObject().renderTiles(main_tools.getRenderer())
+      
     pygame.display.flip()
 
 

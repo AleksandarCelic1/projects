@@ -9,9 +9,29 @@ from .constants import (
   TILE_WIDTH_AND_HEIGHT,
   MATRIX_HEIGHT,
   MATRIX_WIDTH,
+  PADDING_FOR_EVERY_SIDE,
   TileColors,
-  GameState
+  GameState,
+  AlgorithmKeys
 )
+
+from .classes.rendererFunctions import (
+  EVERY_BOX_HEIGHT,
+  EVERY_BOX_WIDTH,
+  EVERY_BOX_X,
+  BFS_Y,
+  DFS_Y,
+  DJIKSTRA_Y,
+  A_STAR_Y,
+  RESET_BUTTON_WIDTH,
+  RESET_BUTTON_X,
+  RESET_BUTTON_Y,
+  RUN_BUTTON_WIDTH,
+  RUN_BUTTON_X,
+  RUN_BUTTON_Y
+)
+
+
 from .classes.tools import Tools
 from .classes.tile import Tile
 from .classes.matrix import Matrix
@@ -24,14 +44,21 @@ def controlFPS(frame_start: int):
 
 def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   
-  if(dispatcherMatrix(main_tools, mouse_x, mouse_y)):
-    return True
-  
+  if(main_tools.getGameState() == GameState.AVAILABLE or main_tools.getGameState() == GameState.FIRST_MOVE_MADE):
+    if(dispatcherMatrix(main_tools, mouse_x, mouse_y)):
+      return True
+    
   if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
     return True
   
-  if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
+  if(dispatcherResetButton(main_tools, mouse_x, mouse_y)):
     return True
+  
+  if(main_tools.getGameState() == GameState.SECOND_MOVE_MADE and main_tools.getSelectedAlgorithm()):
+    if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
+      return True
+    
+  
   
   return False
 
@@ -49,8 +76,6 @@ def dispatcherMatrix(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     clicked_column = (mouse_x - MATRIX_X_POSITION) // TILE_WIDTH_AND_HEIGHT
     clicked_row = (mouse_y - MATRIX_Y_POSITION) // TILE_WIDTH_AND_HEIGHT
 
-    print(clicked_column)
-    print(clicked_row)
 
     if(not isInsideBounds(clicked_column, clicked_row)):
       return False
@@ -71,17 +96,76 @@ def dispatcherMatrix(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
         clicked_tile.setKeyAndColor(TileColors.RED)
         main_tools.setGameState(GameState.SECOND_MOVE_MADE)
         main_tools.setTargetTile(clicked_tile)
-
-
-
+      
 
     pass
 
 def dispatcherAlgorithm(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
-  pass
+  
+  algo_dict_ref = main_tools.getAlgoDict()
+
+  if( mouse_x >= EVERY_BOX_X
+  and mouse_x <= EVERY_BOX_X + EVERY_BOX_WIDTH):
+    
+    if( mouse_y >= BFS_Y
+    and mouse_y <= BFS_Y + EVERY_BOX_HEIGHT):
+      print("[CLICKED] BFS")
+      main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.BFS])
+      return True
+    
+    if( mouse_y >= DFS_Y
+    and mouse_y <= DFS_Y + EVERY_BOX_HEIGHT):
+      print("[CLICKED] DFS")
+      main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.DFS])
+      return True
+    
+    if( mouse_y >= DJIKSTRA_Y
+    and mouse_y <= DJIKSTRA_Y + EVERY_BOX_HEIGHT):
+      print("[CLICKED] DJIKSTRA")
+      main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.DJIKSTRA])
+      return True
+    
+    if( mouse_y >= A_STAR_Y
+    and mouse_y <= A_STAR_Y + EVERY_BOX_HEIGHT):
+      print("[CLICKED] A_STAR")
+      main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.A_STAR])
+      return True
+
+
 
 def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
-  pass
+  
+  if( mouse_x >= RUN_BUTTON_X
+  and mouse_x <= RUN_BUTTON_X + RUN_BUTTON_WIDTH
+  and mouse_y >= RUN_BUTTON_Y
+  and mouse_y <= RUN_BUTTON_Y + EVERY_BOX_HEIGHT):
+    
+    grid_reference: Matrix = main_tools.getMatrixObject()
+    src: Tile = main_tools.getSourceTile()
+    target: Tile = main_tools.getTargetTile()
+    renderer: pygame.Surface = main_tools.getRenderer()
+
+    main_tools.setGameState(GameState.BUSY)
+    if(main_tools.getSelectedAlgorithm().runAlgorithm(grid_reference, src, target, renderer)):
+      main_tools.setGameState(GameState.AVAILABLE)
+      return True
+
+      # make a wrapper function that constructs path after AGLO runs if he returns true construct if not dont << !
+
+def dispatcherResetButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
+
+  if( mouse_x >= RESET_BUTTON_X
+  and mouse_x <= RESET_BUTTON_WIDTH + RESET_BUTTON_X
+  and mouse_y >= RESET_BUTTON_Y
+  and mouse_y <= RESET_BUTTON_Y + EVERY_BOX_HEIGHT):
+    
+    main_tools.setSelectedAlgorithm(None)
+    main_tools.setSourceTile(None)
+    main_tools.setTargetTile(None)
+    main_tools.getMatrixObject().clearBoard()
+    main_tools.setGameState(GameState.AVAILABLE)
+    return True
+    
 
 def isInsideBounds(x: int, y: int):
   placeholder: bool = False

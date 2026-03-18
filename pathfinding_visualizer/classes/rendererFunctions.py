@@ -1,6 +1,13 @@
 import pygame
 
-from ..constants import PADDING_FOR_EVERY_SIDE, MATRIX_X_POSITION, AlgorithmKeys
+from ..constants import (
+  PADDING_FOR_EVERY_SIDE, 
+  MATRIX_X_POSITION, 
+  AlgorithmKeys,
+  StringsRunReset,
+  hash_map_for_text
+)
+
 from ..algorithms_.algorithm import Algorithm
 
 EVERY_BOX_WIDTH = MATRIX_X_POSITION - (2 * PADDING_FOR_EVERY_SIDE) # Left padding Right padding 
@@ -11,6 +18,16 @@ BFS_Y = PADDING_FOR_EVERY_SIDE
 DFS_Y = BFS_Y + EVERY_BOX_HEIGHT + PADDING_FOR_EVERY_SIDE
 A_STAR_Y = DFS_Y + EVERY_BOX_HEIGHT + PADDING_FOR_EVERY_SIDE
 DJIKSTRA_Y = A_STAR_Y + EVERY_BOX_HEIGHT + PADDING_FOR_EVERY_SIDE
+
+RUN_BUTTON_X = EVERY_BOX_X
+RUN_BUTTON_Y = DJIKSTRA_Y + EVERY_BOX_HEIGHT + PADDING_FOR_EVERY_SIDE
+RUN_BUTTON_WIDTH = (EVERY_BOX_WIDTH // 2) - PADDING_FOR_EVERY_SIDE
+
+
+RESET_BUTTON_X = RUN_BUTTON_X + RUN_BUTTON_WIDTH + (PADDING_FOR_EVERY_SIDE * 2)
+RESET_BUTTON_Y = RUN_BUTTON_Y
+
+RESET_BUTTON_WIDTH = RUN_BUTTON_WIDTH
 
 
 
@@ -24,6 +41,7 @@ class RenderingFunctionsContainer:
 
     self.renderBackground(renderer)
     self.renderButtonsForAlgorithms(renderer)
+    self.renderRunAndResetButtons(renderer)
     self.renderTextInBoxes(renderer, algos)
 
 
@@ -43,12 +61,17 @@ class RenderingFunctionsContainer:
       key = AlgorithmKeys(index)
       renderer.blit(algos[key].getTextSrc(), algos[key].getTextRect())
 
+    renderer.blit(hash_map_for_text[StringsRunReset.RUN][0], hash_map_for_text[StringsRunReset.RUN][1])
+    renderer.blit(hash_map_for_text[StringsRunReset.RESET][0], hash_map_for_text[StringsRunReset.RESET][1])
+
+
     # This should be it regarding the text in boxes print << !
-
-
-    pass
     
+  def renderRunAndResetButtons(self, renderer: pygame.Surface):
 
+    pygame.draw.rect(renderer, (255, 255, 255), (RUN_BUTTON_X, RUN_BUTTON_Y, RUN_BUTTON_WIDTH, EVERY_BOX_HEIGHT), 0)
+    pygame.draw.rect(renderer, (255, 255, 255), (RESET_BUTTON_X, RESET_BUTTON_Y, RESET_BUTTON_WIDTH, EVERY_BOX_HEIGHT), 0)
+    
 
 
 

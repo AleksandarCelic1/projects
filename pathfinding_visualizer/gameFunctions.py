@@ -131,8 +131,6 @@ def dispatcherAlgorithm(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
       main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.A_STAR])
       return True
 
-
-
 def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   
   if( mouse_x >= RUN_BUTTON_X
@@ -166,7 +164,6 @@ def dispatcherResetButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool
     main_tools.setGameState(GameState.AVAILABLE)
     return True
     
-
 def isInsideBounds(x: int, y: int):
   placeholder: bool = False
 

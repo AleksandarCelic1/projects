@@ -12,7 +12,6 @@ class Tile:
     self.x_axis_: int = 0
     self.y_axis_: int = 0
 
-    
     pass
 
   def getColor(self):

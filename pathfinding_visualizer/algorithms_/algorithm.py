@@ -12,10 +12,6 @@ class Algorithm(ABC):
     self.text_rect: pygame.Rect = None 
     pass
 
-  @abstractmethod
-  def runAlgorithm(self, grid: Matrix, source_tile: Tile, target_tile: Tile, renderer: pygame.Surface):
-    pass
-
 
   # Getters
   def getTextSrc(self):
@@ -31,4 +27,11 @@ class Algorithm(ABC):
   def setTextRect(self, dst: pygame.Rect):
     self.text_rect = dst
 
+  @abstractmethod
+  def runAlgorithm(self, grid: Matrix, source_tile: Tile, target_tile: Tile, renderer: pygame.Surface):
+    pass
+
+  def manhattanDistance(self, source_tile: Tile, target_tile: Tile):
+    return (abs(source_tile.getXCoord() - target_tile.getXCoord()) + abs(source_tile.getYCoord() - target_tile.getYCoord()))
+  
   

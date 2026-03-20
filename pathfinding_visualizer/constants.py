@@ -56,7 +56,8 @@ class GameState(Enum):
   BUSY = 0 # indicating that a "algorithm" is drawing and cant take input 
   AVAILABLE = 1 # can take input 
   FIRST_MOVE_MADE = 2 # indicating source tile is given
-  SECOND_MOVE_MADE = 3 # indicating target tile is given 
+  SECOND_MOVE_MADE = 3 # indicating target tile is given
+  MUST_USE_BRUSH = 4 # after algo is finished you have to clean
   
 
 

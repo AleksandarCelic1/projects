@@ -44,17 +44,22 @@ def controlFPS(frame_start: int):
 
 def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   
-  if(main_tools.getGameState() == GameState.AVAILABLE or main_tools.getGameState() == GameState.FIRST_MOVE_MADE):
+  if(main_tools.getGameState() == GameState.AVAILABLE 
+  or main_tools.getGameState() == GameState.FIRST_MOVE_MADE):
     if(dispatcherMatrix(main_tools, mouse_x, mouse_y)):
       return True
     
-  if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
-    return True
+  if(main_tools.getGameState() == GameState.AVAILABLE
+  or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
+  or main_tools.getGameState() == GameState.SECOND_MOVE_MADE):
+    if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
+      return True
   
   if(dispatcherResetButton(main_tools, mouse_x, mouse_y)):
     return True
   
-  if(main_tools.getGameState() == GameState.SECOND_MOVE_MADE and main_tools.getSelectedAlgorithm()):
+  if( main_tools.getGameState() == GameState.SECOND_MOVE_MADE
+  and main_tools.getSelectedAlgorithm()):
     if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
       return True
     
@@ -145,7 +150,7 @@ def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
 
     main_tools.setGameState(GameState.BUSY)
     if(main_tools.getSelectedAlgorithm().runAlgorithm(grid_reference, src, target, renderer)):
-      main_tools.setGameState(GameState.AVAILABLE)
+      main_tools.setGameState(GameState.MUST_USE_BRUSH)
       return True
 
       # make a wrapper function that constructs path after AGLO runs if he returns true construct if not dont << !

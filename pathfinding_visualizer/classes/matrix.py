@@ -33,6 +33,10 @@ class Matrix():
     for index in range(MATRIX_HEIGHT):
       for inner in range(MATRIX_WIDTH):
         self.matrix_[index][inner].setKeyAndColor(TileColors.WHITE)
+        self.matrix_[index][inner].setFcost(0)
+        self.matrix_[index][inner].setGcost(0)
+        self.matrix_[index][inner].setHcost(0)
+        self.matrix_[index][inner].setParent(0)
 
   def initTilesAxis(self):
 

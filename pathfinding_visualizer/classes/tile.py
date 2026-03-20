@@ -12,8 +12,16 @@ class Tile:
     self.x_axis_: int = 0
     self.y_axis_: int = 0
 
+    # A*
+
+    self.parent_: Tile = None # used so we can reconstruct paths in A_star
+    self.g_cost_: int = 0 # real costfrom start to current node
+    self.h_cost_: int = 0 # estimated cost from current node to goal
+    self.f_cost_: int = 0 # total score used to decide priority
+
     pass
 
+  # Getters
   def getColor(self):
     return self.color_
   
@@ -31,6 +39,23 @@ class Tile:
   
   def getYAxis(self):
     return self.y_axis_
+  
+  def getParent(self):
+    return self.parent_
+  
+  def getGcost(self):
+    return self.g_cost_
+  
+  def getFcost(self):
+    return self.f_cost_
+  
+  def getHcost(self):
+    return self.h_cost_
+  
+
+  
+
+  # Setters
   
   def setKeyAndColor(self, color: TileColors):
 
@@ -56,4 +81,16 @@ class Tile:
 
   def setYAxis(self, y: int):
     self.y_axis_ = y
+
+  def setParent(self, new_parent: Tile):
+    self.parent_ = new_parent
+  
+  def setGcost(self, new_cost: int):
+    self.g_cost_ = new_cost
+  
+  def setFcost(self, new_cost: int):
+    self.f_cost_ = new_cost
+  
+  def setHcost(self, new_cost: int):
+    self.h_cost_ = new_cost
 

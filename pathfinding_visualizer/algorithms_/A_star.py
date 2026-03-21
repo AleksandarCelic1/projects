@@ -13,6 +13,7 @@ from .algorithm import Algorithm
 from ..gameFunctions import isInsideBounds
 
 from typing import List, Tuple
+from collections import deque
 
 
 class AStarAlgorithm(Algorithm):
@@ -35,7 +36,7 @@ class AStarAlgorithm(Algorithm):
       current_coords: Tuple[int, int] = (current_tile.getXCoord(), current_tile.getYCoord())
 
       if(current_tile == target_tile):
-        return True
+        break
     
       not_visited.remove(current_tile)
       visited.add(current_tile)
@@ -74,10 +75,23 @@ class AStarAlgorithm(Algorithm):
             not_visited.append(neighbour_tile)
         
       grid.renderTiles(renderer)
+      pygame.display.flip()    
+
+
+    reconstructed_path: deque[Tile] = deque()
+    iterator_tile: Tile = target_tile
+
+    while(iterator_tile is not source_tile):
+      if(iterator_tile != target_tile):
+        iterator_tile.setKeyAndColor(TileColors.BLACK)
+
+      reconstructed_path.appendleft(iterator_tile)
+      iterator_tile = iterator_tile.getParent()
+      grid.renderTiles(renderer)
       pygame.display.flip()        
 
 
-    return False
+    return True
 
 
 

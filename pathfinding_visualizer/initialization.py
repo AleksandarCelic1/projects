@@ -71,6 +71,7 @@ def initializeTilePictures():
   green_tile_src = pygame.image.load("pathfinding_visualizer/photos_/GreenTile.png").convert_alpha()
   red_tile_src = pygame.image.load("pathfinding_visualizer/photos_/RedTile.png").convert_alpha()
   light_grey_tile_src = pygame.image.load("pathfinding_visualizer/photos_/LightGreyTile.png").convert_alpha()
+  light_green_tile_src = pygame.image.load("pathfinding_visualizer/photos_/LightGreenTile.png").convert_alpha()
 
 
 
@@ -79,6 +80,7 @@ def initializeTilePictures():
   green_tile_src = pygame.transform.smoothscale(green_tile_src, (green_tile_src.get_width() * SCALING_FACTOR_TWO, green_tile_src.get_height() * SCALING_FACTOR_TWO))
   red_tile_src = pygame.transform.smoothscale(red_tile_src, (red_tile_src.get_width() * SCALING_FACTOR_TWO, red_tile_src.get_height() * SCALING_FACTOR_TWO))
   light_grey_tile_src = pygame.transform.smoothscale(light_grey_tile_src, (light_grey_tile_src.get_width() * SCALING_FACTOR_TWO, light_grey_tile_src.get_height() * SCALING_FACTOR_TWO))
+  light_green_tile_src = pygame.transform.smoothscale(light_green_tile_src, (light_green_tile_src.get_width() * SCALING_FACTOR_TWO, light_green_tile_src.get_height() * SCALING_FACTOR_TWO))
 
 
 
@@ -88,6 +90,7 @@ def initializeTilePictures():
   hash_map_for_tile_pictures[TilePicturesKeys.GREEN_TILE] = green_tile_src
   hash_map_for_tile_pictures[TilePicturesKeys.RED_TILE] = red_tile_src
   hash_map_for_tile_pictures[TilePicturesKeys.LIGHT_GREY_TILE] = light_grey_tile_src
+  hash_map_for_tile_pictures[TilePicturesKeys.LIGHT_GREEN_TILE] = light_green_tile_src
 
 def initFont():
   font_container_object : FontContainer = FontContainer()

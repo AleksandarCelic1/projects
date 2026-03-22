@@ -90,7 +90,7 @@ class DjikstraAlgorithm(Algorithm):
 
     while(iterator_tile is not source_tile):
       if(iterator_tile != target_tile):
-        iterator_tile.setKeyAndColor(TileColors.BLACK)
+        iterator_tile.setKeyAndColor(TileColors.LIGHT_GREEN)
 
       reconstructed_path.appendleft(iterator_tile)
       iterator_tile = iterator_tile.getParent()

@@ -9,6 +9,7 @@ class TileColors(Enum):
   LIGHT_GREY = 2
   WHITE = 3
   BLACK = 4
+  LIGHT_GREEN = 5
 
 # Green indicates start point
 # Red indicates end point
@@ -32,6 +33,7 @@ class TilePicturesKeys(Enum):
   GREEN_TILE = 2
   RED_TILE = 3
   LIGHT_GREY_TILE = 4
+  LIGHT_GREEN_TILE = 5
 
 #Pretty self explanatory
 
@@ -58,7 +60,7 @@ class GameState(Enum):
   FIRST_MOVE_MADE = 2 # indicating source tile is given
   SECOND_MOVE_MADE = 3 # indicating target tile is given
   MUST_USE_BRUSH = 4 # after algo is finished you have to clean
-  
+
 
 
 

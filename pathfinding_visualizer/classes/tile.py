@@ -76,6 +76,9 @@ class Tile:
     elif(self.color_ == TileColors.WHITE):
       self.key_ = TilePicturesKeys.WHITE_TILE
 
+    elif(self.color_ == TileColors.LIGHT_GREEN):
+      self.key_ = TilePicturesKeys.LIGHT_GREEN_TILE
+
   def setXAxis(self, x: int):
     self.x_axis_ = x
 

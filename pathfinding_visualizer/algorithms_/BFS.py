@@ -19,13 +19,19 @@ class BfsAlgorithm(Algorithm):
     
     source_tile_coords: Tuple[int, int] = (source_tile.getXCoord(), source_tile.getYCoord())
     target_tile_coords: Tuple[int, int] = (target_tile.getXCoord(), target_tile.getYCoord())
+
+    path: dict[Tuple[int,int], Tuple[int, int]] = {}
+    path[source_tile_coords] = source_tile_coords
+    stop = False
     
 
     queue: deque[Tuple[int, int]] = deque()
-
     queue.append(source_tile_coords)
 
     while ( queue ):
+
+      if(stop):
+        break
 
       current_coords: Tuple[int, int] = queue.popleft()
       
@@ -44,7 +50,9 @@ class BfsAlgorithm(Algorithm):
         current_tile: Tile = grid.getMatrix()[neighbours[index][1]][neighbours[index][0]]
 
         if(current_tile == target_tile):
-          return True
+          stop = True
+          path[neighbours[index]] = current_coords
+          break
 
         if(current_tile.getColor() == TileColors.BLACK
         or current_tile.getColor() == TileColors.GREEN
@@ -54,22 +62,26 @@ class BfsAlgorithm(Algorithm):
 
         current_tile.setKeyAndColor(TileColors.LIGHT_GREY)
         queue.append(neighbours[index])
+        path[neighbours[index]] = current_coords
+
+      grid.renderTiles(renderer)
+      pygame.display.flip()
+
+      
+    reconstructed_path: deque[Tuple[int ,int]] = deque()
+    iterator_coords: Tuple[int, int] = target_tile_coords
+
+    while iterator_coords is not source_tile_coords:
+
+      iterator_tile: Tile = grid.getMatrix()[iterator_coords[1]][iterator_coords[0]]
+
+      if(iterator_tile != target_tile):
+        iterator_tile.setKeyAndColor(TileColors.LIGHT_GREEN)
+
+      reconstructed_path.appendleft(iterator_tile)
+      iterator_coords = path[iterator_coords[0], iterator_coords[1]]
       grid.renderTiles(renderer)
       pygame.display.flip()
 
 
-      
-    return False # will try makign walls and when he doesnt find it we can do some output info regarding it 
-
-
-
-
-
-
-
-
-
-
-
-
-    pass
+    return True  

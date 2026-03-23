@@ -45,23 +45,24 @@ def controlFPS(frame_start: int):
 def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   
   if(main_tools.getGameState() == GameState.AVAILABLE 
-  or main_tools.getGameState() == GameState.FIRST_MOVE_MADE):
+  or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
+  or main_tools.getGameState() == GameState.MUST_USE_BRUSH):
     if(dispatcherMatrix(main_tools, mouse_x, mouse_y)):
       return True
     
   if(main_tools.getGameState() == GameState.AVAILABLE
   or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
-  or main_tools.getGameState() == GameState.SECOND_MOVE_MADE):
+  or main_tools.getGameState() == GameState.SECOND_MOVE_MADE
+  or main_tools.getGameState() == GameState.MUST_USE_BRUSH):
     if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
       return True
   
   if(dispatcherResetButton(main_tools, mouse_x, mouse_y)):
     return True
   
-  if( main_tools.getGameState() == GameState.SECOND_MOVE_MADE
-  and main_tools.getSelectedAlgorithm()):
-    if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
-      return True
+  
+  if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
+    return True
     
   
   
@@ -142,6 +143,14 @@ def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   and mouse_x <= RUN_BUTTON_X + RUN_BUTTON_WIDTH
   and mouse_y >= RUN_BUTTON_Y
   and mouse_y <= RUN_BUTTON_Y + EVERY_BOX_HEIGHT):
+    
+    if(main_tools.getSourceTile() == None
+    or main_tools.getTargetTile() == None
+    or main_tools.getSelectedAlgorithm() == None):
+      pass
+
+    if(main_tools.getGameState() == GameState.MUST_USE_BRUSH):
+      pass
     
     grid_reference: Matrix = main_tools.getMatrixObject()
     src: Tile = main_tools.getSourceTile()

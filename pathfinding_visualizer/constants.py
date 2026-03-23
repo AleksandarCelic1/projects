@@ -53,6 +53,15 @@ class StringsAlgoEnums(Enum):
 class StringsRunReset(Enum):
   RUN = "RUN"
   RESET = "RESET"
+
+class StringsError(Enum):
+  ERROR = "[ERROR]"
+  YOU_ARE_MISSING = " -> You are missing:"
+  MUST_RESET = " -> You must use reset button!"
+  SOURCE_TILE = "Source Tile"
+  TARGET_TILE = "Target Tile"
+  CHOSEN_ALGO = "Algorithm"
+
    
 class GameState(Enum):
   BUSY = 0 # indicating that a "algorithm" is drawing and cant take input 
@@ -92,3 +101,4 @@ SCALING_FACTOR_TWO = 2
 
 hash_map_for_tile_pictures: dict[TilePicturesKeys, pygame.Surface] = {}
 hash_map_for_text: dict[StringsRunReset, Tuple[pygame.Surface, pygame.Rect]] = { }
+hash_map_for_errors: dict[StringsError, Tuple[pygame.Surface, pygame.Rect]] = { }

@@ -4,13 +4,18 @@ from .constants import (
   SCREEN_WIDTH,
   SCREEN_HEIGHT, 
   SCALING_FACTOR_TWO,
+  MATRIX_X_POSITION,
+  MATRIX_Y_POSITION,
+  PADDING_FOR_EVERY_SIDE,
   hash_map_for_tile_pictures, 
   hash_map_for_text,
+  hash_map_for_errors,
   TilePicturesKeys, 
   FontKeys, 
   AlgorithmKeys, 
   StringsAlgoEnums,
-  StringsRunReset
+  StringsRunReset,
+  StringsError
 )
 
 from .classes.tile import Tile
@@ -59,6 +64,7 @@ def initializeEverything() -> Tools:
   initializeTilePictures()
   initTextForAlgorithms(main_tools)
   initTextForRunResetButtons(main_tools)
+  initTextForErrors(main_tools)
 
 
   return main_tools
@@ -199,6 +205,63 @@ def initTextForRunResetButtons(main_tools: Tools):
   hash_map_for_text[StringsRunReset.RUN] = (run_src, run_rect)
   hash_map_for_text[StringsRunReset.RESET] = (reset_src, reset_rect)
   
+def initTextForErrors(main_tools: Tools): 
+  error_error_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+    StringsError.ERROR.value, True, (0, 0, 0)
+  )
+
+  error_you_are_missing_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+      StringsError.YOU_ARE_MISSING.value, True, (0, 0, 0)
+  )
+
+  error_must_reset_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+      StringsError.MUST_RESET.value, True, (0, 0, 0)
+  )
+
+  error_source_tile_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+      StringsError.SOURCE_TILE.value, True, (0, 0, 0)
+  )
+
+  error_target_tile_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+      StringsError.TARGET_TILE.value, True, (0, 0, 0)
+  )
+
+  error_chosen_algo_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+      StringsError.CHOSEN_ALGO.value, True, (0, 0, 0)
+  )
+
+
+  error_error_rect = error_error_src.get_rect()
+  error_you_are_missing_rect = error_you_are_missing_src.get_rect()
+  error_must_reset_rect = error_must_reset_src.get_rect()
+  error_source_tile_rect = error_source_tile_src.get_rect()
+  error_target_tile_rect = error_target_tile_src.get_rect()
+  error_chosen_algo_rect = error_chosen_algo_src.get_rect()
+
+  EVERY_MESSAGE_Y = MATRIX_Y_POSITION - PADDING_FOR_EVERY_SIDE
+
+  error_error_rect.y = EVERY_MESSAGE_Y
+  error_you_are_missing_rect.y = EVERY_MESSAGE_Y
+  error_must_reset_rect.y = EVERY_MESSAGE_Y
+  error_source_tile_rect.y = EVERY_MESSAGE_Y
+  error_target_tile_rect.y = EVERY_MESSAGE_Y
+  error_chosen_algo_rect.y = EVERY_MESSAGE_Y
+
+  error_error_rect.x = MATRIX_X_POSITION
+
+  error_you_are_missing_rect.x = error_error_rect.x + error_error_rect.width
+  error_must_reset_rect.x = error_error_rect.x + error_error_rect.width
+
+
+  hash_map_for_errors[StringsError.ERROR] = (error_error_src, error_error_rect)
+  hash_map_for_errors[StringsError.YOU_ARE_MISSING] = (error_you_are_missing_src, error_you_are_missing_rect)
+  hash_map_for_errors[StringsError.MUST_RESET] = (error_must_reset_src, error_must_reset_rect)
+  hash_map_for_errors[StringsError.SOURCE_TILE] = (error_source_tile_src, error_source_tile_rect)
+  hash_map_for_errors[StringsError.TARGET_TILE] = (error_target_tile_src, error_target_tile_rect)
+  hash_map_for_errors[StringsError.CHOSEN_ALGO] = (error_chosen_algo_src, error_chosen_algo_rect)
+
+
+
 
   
 

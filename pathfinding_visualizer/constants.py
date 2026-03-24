@@ -62,6 +62,7 @@ class StringsError(Enum):
   TARGET_TILE = "Target Tile"
   CHOSEN_ALGO = "Algorithm"
 
+
    
 class GameState(Enum):
   BUSY = 0 # indicating that a "algorithm" is drawing and cant take input 

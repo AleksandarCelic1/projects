@@ -207,27 +207,27 @@ def initTextForRunResetButtons(main_tools: Tools):
   
 def initTextForErrors(main_tools: Tools): 
   error_error_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
-    StringsError.ERROR.value, True, (0, 0, 0)
+    StringsError.ERROR.value, True, (255, 255, 255)
   )
 
   error_you_are_missing_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
-      StringsError.YOU_ARE_MISSING.value, True, (0, 0, 0)
+      StringsError.YOU_ARE_MISSING.value, True, (255, 255, 255)
   )
 
   error_must_reset_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
-      StringsError.MUST_RESET.value, True, (0, 0, 0)
+      StringsError.MUST_RESET.value, True, (255, 255, 255)
   )
 
   error_source_tile_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
-      StringsError.SOURCE_TILE.value, True, (0, 0, 0)
+      StringsError.SOURCE_TILE.value, True, (255, 255, 255)
   )
 
   error_target_tile_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
-      StringsError.TARGET_TILE.value, True, (0, 0, 0)
+      StringsError.TARGET_TILE.value, True, (255, 255, 255)
   )
 
   error_chosen_algo_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
-      StringsError.CHOSEN_ALGO.value, True, (0, 0, 0)
+      StringsError.CHOSEN_ALGO.value, True, (255, 255, 255)
   )
 
 
@@ -238,7 +238,7 @@ def initTextForErrors(main_tools: Tools):
   error_target_tile_rect = error_target_tile_src.get_rect()
   error_chosen_algo_rect = error_chosen_algo_src.get_rect()
 
-  EVERY_MESSAGE_Y = MATRIX_Y_POSITION - PADDING_FOR_EVERY_SIDE
+  EVERY_MESSAGE_Y = MATRIX_Y_POSITION - PADDING_FOR_EVERY_SIDE * 2
 
   error_error_rect.y = EVERY_MESSAGE_Y
   error_you_are_missing_rect.y = EVERY_MESSAGE_Y

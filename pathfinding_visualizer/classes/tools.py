@@ -31,6 +31,11 @@ class Tools:
     # Not rendering anything at the start << in the means of pathfinding algos
     self.game_state_: GameState = GameState.AVAILABLE
 
+    # Rendering Errors
+    self.error_on_: bool = False
+    self.which_error_occured_: int = -1
+    # 0 for must use brush and 1 for pressing run and not having sufficient stuff
+
 
 
 
@@ -71,6 +76,14 @@ class Tools:
   def getSelectedAlgorithm(self):
     return self.selected_algorithm
   
+  def getErrorBool(self):
+    return self.error_on_
+  
+  def getWhichErrorOccured(self):
+    return self.which_error_occured_
+  
+
+  
 
   
 
@@ -86,6 +99,12 @@ class Tools:
 
   def setSelectedAlgorithm(self, new_selected_algorithm: Algorithm | None):
     self.selected_algorithm = new_selected_algorithm
+
+  def setErrorBool(self, new_bool: bool):
+    self.error_on_ = new_bool
+
+  def setWhichErrorOccured(self, new_error: int):
+    self.which_error_occured_ = new_error
   
   
   

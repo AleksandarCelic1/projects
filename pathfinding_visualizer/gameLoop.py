@@ -3,18 +3,20 @@ import pygame
 from .classes.tools import Tools
 from .constants import GameState
 
-from .gameFunctions import controlFPS, dispatcher
+from .gameFunctions import controlFPS, dispatcher, calculateDeltaTime
 
 
 def gameLoop(main_tools: Tools):
 
   running = True
   last_frame = pygame.time.get_ticks()
+  delta_time: float = float(0)
 
 
   while running:
 
     frame_start = pygame.time.get_ticks()
+    delta_time = calculateDeltaTime(frame_start, last_frame)
     last_frame = frame_start
 
     for event in pygame.event.get():
@@ -39,7 +41,7 @@ def gameLoop(main_tools: Tools):
     
 
     # Rendering
-    main_tools.getRendererFunctionContainer().renderUI(main_tools.getRenderer(), main_tools.getAlgoDict())
+    main_tools.getRendererFunctionContainer().renderUI(main_tools, delta_time)
     if(main_tools.getGameState() != GameState.BUSY):
       main_tools.getMatrixObject().renderTiles(main_tools.getRenderer())
       

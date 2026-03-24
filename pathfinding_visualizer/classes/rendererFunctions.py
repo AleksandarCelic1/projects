@@ -5,7 +5,9 @@ from ..constants import (
   MATRIX_X_POSITION, 
   AlgorithmKeys,
   StringsRunReset,
-  hash_map_for_text
+  StringsError,
+  hash_map_for_text,
+  hash_map_for_errors
 )
 
 from ..algorithms_.algorithm import Algorithm
@@ -35,14 +37,37 @@ RESET_BUTTON_WIDTH = RUN_BUTTON_WIDTH
 
 class RenderingFunctionsContainer:
   def __init__(self):
+    self.timer_: float = float(0)
+
     pass
 
-  def renderUI(self, renderer: pygame.Surface, algos: dict[AlgorithmKeys, Algorithm]):
+
+  def renderUI(self, main_tool, delta_time: float):
+
+
+    renderer: pygame.Surface = main_tool.getRenderer()
+    algos: dict[AlgorithmKeys, Algorithm] = main_tool.getAlgoDict()
 
     self.renderBackground(renderer)
     self.renderButtonsForAlgorithms(renderer)
     self.renderRunAndResetButtons(renderer)
     self.renderTextInBoxes(renderer, algos)
+
+    if(main_tool.getErrorBool()):
+      self.timer_ += delta_time
+
+      if(main_tool.getWhichErrorOccured() == 0):
+        self.renderErrorMustUseBrush(renderer)
+
+      if(self.timer_ >= 3.0):
+        main_tool.setErrorBool(False)
+        main_tool.setWhichErrorOccured(-1)
+      
+
+      
+
+
+
 
 
   def renderButtonsForAlgorithms(self, renderer: pygame.Surface):
@@ -73,6 +98,12 @@ class RenderingFunctionsContainer:
     pygame.draw.rect(renderer, (255, 255, 255), (RESET_BUTTON_X, RESET_BUTTON_Y, RESET_BUTTON_WIDTH, EVERY_BOX_HEIGHT), 0)
     
 
+  def renderErrorMustUseBrush(self, renderer: pygame.Surface):
+    
+    renderer.blit(hash_map_for_errors[StringsError.ERROR][0], hash_map_for_errors[StringsError.ERROR][1])
+    renderer.blit(hash_map_for_errors[StringsError.MUST_RESET][0], hash_map_for_errors[StringsError.MUST_RESET][1])
+
+    
 
 
 

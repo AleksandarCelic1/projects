@@ -10,6 +10,7 @@ from .constants import (
   MATRIX_HEIGHT,
   MATRIX_WIDTH,
   PADDING_FOR_EVERY_SIDE,
+  ONE_SECOND,
   TileColors,
   GameState,
   AlgorithmKeys
@@ -43,23 +44,25 @@ def controlFPS(frame_start: int):
 
 
 def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
+
+  if(dispatcherResetButton(main_tools, mouse_x, mouse_y)):
+    return True
+  
+  if(main_tools.getGameState() == GameState.MUST_USE_BRUSH):
+    main_tools.setErrorBool(True)
+    main_tools.setWhichErrorOccured(0)
+    return True 
   
   if(main_tools.getGameState() == GameState.AVAILABLE 
-  or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
-  or main_tools.getGameState() == GameState.MUST_USE_BRUSH):
+  or main_tools.getGameState() == GameState.FIRST_MOVE_MADE):
     if(dispatcherMatrix(main_tools, mouse_x, mouse_y)):
       return True
     
   if(main_tools.getGameState() == GameState.AVAILABLE
   or main_tools.getGameState() == GameState.FIRST_MOVE_MADE
-  or main_tools.getGameState() == GameState.SECOND_MOVE_MADE
-  or main_tools.getGameState() == GameState.MUST_USE_BRUSH):
+  or main_tools.getGameState() == GameState.SECOND_MOVE_MADE):
     if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
       return True
-  
-  if(dispatcherResetButton(main_tools, mouse_x, mouse_y)):
-    return True
-  
   
   if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
     return True
@@ -149,9 +152,6 @@ def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     or main_tools.getSelectedAlgorithm() == None):
       pass
 
-    if(main_tools.getGameState() == GameState.MUST_USE_BRUSH):
-      pass
-    
     grid_reference: Matrix = main_tools.getMatrixObject()
     src: Tile = main_tools.getSourceTile()
     target: Tile = main_tools.getTargetTile()
@@ -184,3 +184,6 @@ def isInsideBounds(x: int, y: int):
   placeholder = True if (x < MATRIX_WIDTH and x >= 0 and y < MATRIX_HEIGHT and y >= 0) else False
 
   return placeholder
+
+def calculateDeltaTime(current_frame: float, last_frame: float):
+  return (current_frame - last_frame) / ONE_SECOND

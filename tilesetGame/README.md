@@ -126,12 +126,53 @@ Textures used are from public websit
 ## Performance
 - 60 FPS cap
 
+## Animations / Gifs
 
-## Pictures / Examples 
+## Idle Animations
+![](readmeimages/idle.gif)
+
+## Basic Combat
+![](readmeimages/basicombat.gif)
+
+## Enemy Pathfinding
+![](readmeimages/orcpathfinding.gif)
+
+## Player Walking
+![](readmeimages/palyerwalking.gif)
+
+## Special Attack
+![](readmeimages/specialattack.gif)
+
+
+
+## Pictures / Examples
+
+## First Level
+![](readmeimages/firstLevel.png) 
+
+## Second Level
+![](readmeimages/secondLevel.png)
+
+## Third Level
+![](readmeimages/thirdLevel.png)
 
 ## Fourth Level
-
 ![](readmeimages/fourthLevel.png)
+
+## Fifth Level
+![](readmeimages/FifthLevel.png)
+
+## Shop (In-between levels)
+![](readmeimages/shop.png)
+
+## Inventory UI
+![](readmeimages/inventory.png)
+
+## Shop UI
+![](readmeimages/shopUI.png)
+
+## Controls 
+![](readmeimages/controlPanel.png)
 
 
 

@@ -47,10 +47,15 @@ def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
 
   if(dispatcherResetButton(main_tools, mouse_x, mouse_y)):
     return True
+
+  if(main_tools.getGameState() != GameState.MUST_USE_BRUSH):
+    if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
+      return True
   
   if(main_tools.getGameState() == GameState.MUST_USE_BRUSH):
     main_tools.setErrorBool(True)
     main_tools.setWhichErrorOccured(0)
+    main_tools.getRendererFunctionContainer().refreshTimer()
     return True 
   
   if(main_tools.getGameState() == GameState.AVAILABLE 
@@ -64,8 +69,7 @@ def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
       return True
   
-  if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
-    return True
+  
     
   
   
@@ -118,25 +122,21 @@ def dispatcherAlgorithm(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     
     if( mouse_y >= BFS_Y
     and mouse_y <= BFS_Y + EVERY_BOX_HEIGHT):
-      print("[CLICKED] BFS")
       main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.BFS])
       return True
     
     if( mouse_y >= DFS_Y
     and mouse_y <= DFS_Y + EVERY_BOX_HEIGHT):
-      print("[CLICKED] DFS")
       main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.DFS])
       return True
     
     if( mouse_y >= DJIKSTRA_Y
     and mouse_y <= DJIKSTRA_Y + EVERY_BOX_HEIGHT):
-      print("[CLICKED] DJIKSTRA")
       main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.DJIKSTRA])
       return True
     
     if( mouse_y >= A_STAR_Y
     and mouse_y <= A_STAR_Y + EVERY_BOX_HEIGHT):
-      print("[CLICKED] A_STAR")
       main_tools.setSelectedAlgorithm(algo_dict_ref[AlgorithmKeys.A_STAR])
       return True
 
@@ -150,7 +150,10 @@ def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     if(main_tools.getSourceTile() == None
     or main_tools.getTargetTile() == None
     or main_tools.getSelectedAlgorithm() == None):
-      pass
+      main_tools.setErrorBool(True)
+      main_tools.setWhichErrorOccured(1)
+      main_tools.getRendererFunctionContainer().refreshTimer()
+      return True
 
     grid_reference: Matrix = main_tools.getMatrixObject()
     src: Tile = main_tools.getSourceTile()

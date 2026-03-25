@@ -11,6 +11,7 @@ from ..constants import (
 )
 
 from ..algorithms_.algorithm import Algorithm
+from ..classes.tile import Tile
 
 EVERY_BOX_WIDTH = MATRIX_X_POSITION - (2 * PADDING_FOR_EVERY_SIDE) # Left padding Right padding 
 EVERY_BOX_X = PADDING_FOR_EVERY_SIDE
@@ -41,6 +42,8 @@ class RenderingFunctionsContainer:
 
     pass
 
+  def refreshTimer(self):
+    self.timer_ = float(0)
 
   def renderUI(self, main_tool, delta_time: float):
 
@@ -58,10 +61,13 @@ class RenderingFunctionsContainer:
 
       if(main_tool.getWhichErrorOccured() == 0):
         self.renderErrorMustUseBrush(renderer)
+      elif(main_tool.getWhichErrorOccured() == 1):
+        self.renderErrorTilesAlgo(renderer, main_tool.getSourceTile(), main_tool.getTargetTile(), main_tool.getSelectedAlgorithm())
 
-      if(self.timer_ >= 3.0):
+      if(self.timer_ >= 5.0):
         main_tool.setErrorBool(False)
         main_tool.setWhichErrorOccured(-1)
+        self.timer_ = float(0)
       
 
       
@@ -104,6 +110,33 @@ class RenderingFunctionsContainer:
     renderer.blit(hash_map_for_errors[StringsError.MUST_RESET][0], hash_map_for_errors[StringsError.MUST_RESET][1])
 
     
+  def renderErrorTilesAlgo(self, renderer: pygame.Surface, source_tile: Tile, target_tile: Tile, algo: Algorithm):
 
+    x: int = hash_map_for_errors[StringsError.ERROR][1].x
+
+    renderer.blit(hash_map_for_errors[StringsError.ERROR][0], hash_map_for_errors[StringsError.ERROR][1])
+
+    x += hash_map_for_errors[StringsError.ERROR][1].width
+
+    renderer.blit(hash_map_for_errors[StringsError.YOU_ARE_MISSING][0], hash_map_for_errors[StringsError.YOU_ARE_MISSING][1])
+
+    x += hash_map_for_errors[StringsError.YOU_ARE_MISSING][1].width + PADDING_FOR_EVERY_SIDE
+
+    if(source_tile is None):
+      hash_map_for_errors[StringsError.SOURCE_TILE][1].x = x
+      x += hash_map_for_errors[StringsError.SOURCE_TILE][1].width + PADDING_FOR_EVERY_SIDE
+      renderer.blit(hash_map_for_errors[StringsError.SOURCE_TILE][0], hash_map_for_errors[StringsError.SOURCE_TILE][1])
+
+    if(target_tile is None):
+      hash_map_for_errors[StringsError.TARGET_TILE][1].x = x
+      x += hash_map_for_errors[StringsError.TARGET_TILE][1].width + PADDING_FOR_EVERY_SIDE
+      renderer.blit(hash_map_for_errors[StringsError.TARGET_TILE][0], hash_map_for_errors[StringsError.TARGET_TILE][1])
+
+    if(algo is None):
+      hash_map_for_errors[StringsError.CHOSEN_ALGO][1].x = x
+      x += hash_map_for_errors[StringsError.CHOSEN_ALGO][1].width + PADDING_FOR_EVERY_SIDE
+      renderer.blit(hash_map_for_errors[StringsError.CHOSEN_ALGO][0], hash_map_for_errors[StringsError.CHOSEN_ALGO][1])
+
+    
 
 

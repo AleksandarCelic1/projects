@@ -55,6 +55,7 @@ class RenderingFunctionsContainer:
     self.renderButtonsForAlgorithms(renderer)
     self.renderRunAndResetButtons(renderer)
     self.renderTextInBoxes(renderer, algos)
+    self.renderTutorial(renderer, main_tool.getTutorialSource(), main_tool.getTutorialRect())
 
     if(main_tool.getErrorBool()):
       self.timer_ += delta_time
@@ -137,6 +138,9 @@ class RenderingFunctionsContainer:
       x += hash_map_for_errors[StringsError.CHOSEN_ALGO][1].width + PADDING_FOR_EVERY_SIDE
       renderer.blit(hash_map_for_errors[StringsError.CHOSEN_ALGO][0], hash_map_for_errors[StringsError.CHOSEN_ALGO][1])
 
+  def renderTutorial(self, renderer: pygame.Surface, src: pygame.Surface, rect: pygame.Rect):
+
+    renderer.blit(src, rect)
     
 
 

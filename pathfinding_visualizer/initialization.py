@@ -65,9 +65,23 @@ def initializeEverything() -> Tools:
   initTextForAlgorithms(main_tools)
   initTextForRunResetButtons(main_tools)
   initTextForErrors(main_tools)
+  initializeTutorial(main_tools)
 
 
   return main_tools
+
+def initializeTutorial(main_tools: Tools):
+
+  main_tools.setTutorialSource(pygame.image.load("pathfinding_visualizer/photos_/tutorialPathfindingVisualizer.png").convert_alpha())
+  placeholder: pygame.Surface = main_tools.getTutorialSource()
+
+  rect: pygame.rect = placeholder.get_rect()
+
+  rect.x = EVERY_BOX_X
+  rect.y = RUN_BUTTON_Y + PADDING_FOR_EVERY_SIDE + EVERY_BOX_HEIGHT
+
+  main_tools.setTutorialRect(rect)
+  
 
 
 def initializeTilePictures():

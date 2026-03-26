@@ -36,14 +36,16 @@ class Tools:
     self.which_error_occured_: int = -1
     # 0 for must use brush and 1 for pressing run and not having sufficient stuff
 
-
-
-
     # Dispatcher Tiles
     self.source_tile_: Tile = None
     self.target_tile_: Tile = None
     # Dispatcher Selected Algorithm
     self.selected_algorithm: Algorithm = None
+
+
+    # Tutorial Rendering
+    self.tutorial_source: pygame.Surface = None
+    self.tutorial_rect: pygame.Rect = None
 
   # Getters
   def getMatrixObject(self):
@@ -82,7 +84,11 @@ class Tools:
   def getWhichErrorOccured(self):
     return self.which_error_occured_
   
-
+  def getTutorialSource(self):
+    return self.tutorial_source
+  
+  def getTutorialRect(self):
+    return self.tutorial_rect
   
 
   
@@ -105,6 +111,14 @@ class Tools:
 
   def setWhichErrorOccured(self, new_error: int):
     self.which_error_occured_ = new_error
+
+  def setTutorialSource(self, new_tutorial: pygame.Surface):
+    self.tutorial_source = new_tutorial
+
+  def setTutorialRect(self, new_tutorial_rect: pygame.Rect):
+    self.tutorial_rect = new_tutorial_rect
+
+  
   
   
   

@@ -44,7 +44,9 @@ from .classes.rendererFunctions import (
   RUN_BUTTON_Y,
   RESET_BUTTON_WIDTH,
   RESET_BUTTON_X,
-  RESET_BUTTON_Y
+  RESET_BUTTON_Y,
+  WALLS_X,
+  WALLS_Y
 )
 
 
@@ -63,7 +65,7 @@ def initializeEverything() -> Tools:
 
   initializeTilePictures()
   initTextForAlgorithms(main_tools)
-  initTextForRunResetButtons(main_tools)
+  initTextForButtons(main_tools)
   initTextForErrors(main_tools)
   initializeTutorial(main_tools)
 
@@ -78,7 +80,7 @@ def initializeTutorial(main_tools: Tools):
   rect: pygame.rect = placeholder.get_rect()
 
   rect.x = EVERY_BOX_X
-  rect.y = RUN_BUTTON_Y + PADDING_FOR_EVERY_SIDE + EVERY_BOX_HEIGHT
+  rect.y = WALLS_Y + PADDING_FOR_EVERY_SIDE + EVERY_BOX_HEIGHT
 
   main_tools.setTutorialRect(rect)
   
@@ -196,7 +198,7 @@ def initTextForAlgorithms(main_tools: Tools):
   main_tools.getAlgoDict()[AlgorithmKeys.DJIKSTRA].setTextRect(djikstra_text_rect)
   main_tools.getAlgoDict()[AlgorithmKeys.A_STAR].setTextRect(a_star_text_rect)
 
-def initTextForRunResetButtons(main_tools: Tools):
+def initTextForButtons(main_tools: Tools):
   
   run_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
     StringsRunReset.RUN.value, True, (0, 0, 0)
@@ -206,8 +208,14 @@ def initTextForRunResetButtons(main_tools: Tools):
     StringsRunReset.RESET.value, True, (0, 0, 0)
   )
 
+  walls_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(
+    StringsRunReset.WALLS.value, True, (0, 0, 0)
+  )
+
   run_rect: pygame.Rect = run_src.get_rect()
   reset_rect: pygame.Rect = reset_src.get_rect()
+  walls_rect: pygame.Rect = walls_src.get_rect()
+
 
 
   run_rect.x = RUN_BUTTON_X + (RUN_BUTTON_WIDTH - run_rect.width) // 2
@@ -216,8 +224,12 @@ def initTextForRunResetButtons(main_tools: Tools):
   reset_rect.x = RESET_BUTTON_X + (RESET_BUTTON_WIDTH - reset_rect.width) // 2
   reset_rect.y = RESET_BUTTON_Y + (EVERY_BOX_HEIGHT - reset_rect.height) // 2
 
+  walls_rect.x = WALLS_X + (EVERY_BOX_WIDTH - walls_rect.width) // 2
+  walls_rect.y = WALLS_Y + (EVERY_BOX_HEIGHT - walls_rect.height) // 2
+
   hash_map_for_text[StringsRunReset.RUN] = (run_src, run_rect)
   hash_map_for_text[StringsRunReset.RESET] = (reset_src, reset_rect)
+  hash_map_for_text[StringsRunReset.WALLS] = (walls_src, walls_rect)
   
 def initTextForErrors(main_tools: Tools): 
   error_error_src = main_tools.getFontContainer().getContainer()[FontKeys.MINECRAFT_FONT_12].render(

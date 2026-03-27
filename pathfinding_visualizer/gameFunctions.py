@@ -29,7 +29,9 @@ from .classes.rendererFunctions import (
   RESET_BUTTON_Y,
   RUN_BUTTON_WIDTH,
   RUN_BUTTON_X,
-  RUN_BUTTON_Y
+  RUN_BUTTON_Y,
+  WALLS_X,
+  WALLS_Y
 )
 
 
@@ -51,6 +53,10 @@ def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   if(main_tools.getGameState() != GameState.MUST_USE_BRUSH):
     if(dispatcherRunButton(main_tools, mouse_x, mouse_y)):
       return True
+    
+  if(main_tools.getGameState() != GameState.MUST_USE_BRUSH):
+    if(dispatcherWalls(main_tools, mouse_x, mouse_y)):
+      return True
   
   if(main_tools.getGameState() == GameState.MUST_USE_BRUSH):
     main_tools.setErrorBool(True)
@@ -68,12 +74,26 @@ def dispatcher(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   or main_tools.getGameState() == GameState.SECOND_MOVE_MADE):
     if(dispatcherAlgorithm(main_tools, mouse_x, mouse_y)):
       return True
+    
+  
   
   
     
   
   
   return False
+
+def dispatcherWalls(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
+
+  if(mouse_x >= WALLS_X
+  and mouse_x <= WALLS_X + EVERY_BOX_WIDTH
+  and mouse_y >= WALLS_Y
+  and mouse_y <= WALLS_Y + EVERY_BOX_HEIGHT):
+    print("im inside the wall button << !")
+    main_tools.getMatrixObject().randomizeWalls()
+
+  pass
+
 
 
 def dispatcherMatrix(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:

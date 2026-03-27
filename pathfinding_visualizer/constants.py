@@ -53,6 +53,7 @@ class StringsAlgoEnums(Enum):
 class StringsRunReset(Enum):
   RUN = "RUN"
   RESET = "RESET"
+  WALLS = "WALLS"
 
 class StringsError(Enum):
   ERROR = "[ERROR]"

@@ -1,4 +1,5 @@
 import pygame
+import random
 
 from .tile import Tile
 from ..constants import MATRIX_WIDTH, MATRIX_HEIGHT, TileColors, MATRIX_X_POSITION, MATRIX_Y_POSITION, TILE_WIDTH_AND_HEIGHT, hash_map_for_tile_pictures
@@ -63,6 +64,24 @@ class Matrix():
 
         renderer_object.blit(hash_map_for_tile_pictures[current_tile.getKeyForImage()], (current_tile.getXAxis(), current_tile.getYAxis()))
 
+  def randomizeWalls(self):
+
+    for index in range(MATRIX_HEIGHT):
+      for inner in range(MATRIX_WIDTH):
+        current_tile: Tile = self.matrix_[index][inner]
+
+        if(current_tile.getColor() == TileColors.RED
+        or current_tile.getColor() == TileColors.GREEN):
+          continue
+
+        if(current_tile.getColor() == TileColors.BLACK):
+          current_tile.setKeyAndColor(TileColors.WHITE)
+          continue
+
+        placeholder: int = random.randint(1, 3)
+
+        if(placeholder == 1):
+          current_tile.setKeyAndColor(TileColors.BLACK)
 
 
 

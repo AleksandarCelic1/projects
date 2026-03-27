@@ -32,6 +32,9 @@ RESET_BUTTON_Y = RUN_BUTTON_Y
 
 RESET_BUTTON_WIDTH = RUN_BUTTON_WIDTH
 
+WALLS_X = EVERY_BOX_X
+WALLS_Y = RUN_BUTTON_Y + PADDING_FOR_EVERY_SIDE + EVERY_BOX_HEIGHT
+
 
 
 
@@ -95,6 +98,7 @@ class RenderingFunctionsContainer:
 
     renderer.blit(hash_map_for_text[StringsRunReset.RUN][0], hash_map_for_text[StringsRunReset.RUN][1])
     renderer.blit(hash_map_for_text[StringsRunReset.RESET][0], hash_map_for_text[StringsRunReset.RESET][1])
+    renderer.blit(hash_map_for_text[StringsRunReset.WALLS][0], hash_map_for_text[StringsRunReset.WALLS][1])
 
 
     # This should be it regarding the text in boxes print << !
@@ -103,6 +107,7 @@ class RenderingFunctionsContainer:
 
     pygame.draw.rect(renderer, (255, 255, 255), (RUN_BUTTON_X, RUN_BUTTON_Y, RUN_BUTTON_WIDTH, EVERY_BOX_HEIGHT), 0)
     pygame.draw.rect(renderer, (255, 255, 255), (RESET_BUTTON_X, RESET_BUTTON_Y, RESET_BUTTON_WIDTH, EVERY_BOX_HEIGHT), 0)
+    pygame.draw.rect(renderer, (255, 255, 255), (WALLS_X, WALLS_Y, EVERY_BOX_WIDTH, EVERY_BOX_HEIGHT), 0)
     
 
   def renderErrorMustUseBrush(self, renderer: pygame.Surface):

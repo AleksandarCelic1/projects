@@ -70,6 +70,9 @@ class DfsAlgorithm(Algorithm):
       grid.renderTiles(renderer)
       pygame.display.flip()
 
+    if(current_tile != target_tile):
+      return False
+    
     reconstructed_path: deque[Tuple[int ,int]] = deque()
     iterator_coords: Tuple[int, int] = target_tile_coords
 

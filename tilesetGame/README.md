@@ -5,7 +5,7 @@ A 2D action-adventure game built in C++ using SDL2, featuring combat, inventory 
   - C++
   - SDL2
 
-Textures used are from public websit
+Textures used are from public website
 
 ## Highlights:
 - BFS-based enemy AI pathfinding

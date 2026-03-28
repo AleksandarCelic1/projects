@@ -78,6 +78,9 @@ class AStarAlgorithm(Algorithm):
       pygame.display.flip()    
 
 
+    if(current_tile != target_tile):
+      return False
+    
     reconstructed_path: deque[Tile] = deque()
     iterator_tile: Tile = target_tile
 

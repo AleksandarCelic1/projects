@@ -89,7 +89,6 @@ def dispatcherWalls(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
   and mouse_x <= WALLS_X + EVERY_BOX_WIDTH
   and mouse_y >= WALLS_Y
   and mouse_y <= WALLS_Y + EVERY_BOX_HEIGHT):
-    print("im inside the wall button << !")
     main_tools.getMatrixObject().randomizeWalls()
 
   pass
@@ -115,6 +114,8 @@ def dispatcherMatrix(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     
 
     clicked_tile: Tile = main_tools.getMatrixObject().getMatrix()[clicked_row][clicked_column]
+    if(clicked_tile.getColor() == TileColors.BLACK):
+      return
 
 
     if(main_tools.getGameState() == GameState.AVAILABLE):
@@ -181,9 +182,9 @@ def dispatcherRunButton(main_tools: Tools, mouse_x: int, mouse_y: int) -> bool:
     renderer: pygame.Surface = main_tools.getRenderer()
 
     main_tools.setGameState(GameState.BUSY)
-    if(main_tools.getSelectedAlgorithm().runAlgorithm(grid_reference, src, target, renderer)):
-      main_tools.setGameState(GameState.MUST_USE_BRUSH)
-      return True
+    main_tools.getSelectedAlgorithm().runAlgorithm(grid_reference, src, target, renderer)
+    main_tools.setGameState(GameState.MUST_USE_BRUSH)
+    return True
 
       # make a wrapper function that constructs path after AGLO runs if he returns true construct if not dont << !
 

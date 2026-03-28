@@ -79,11 +79,10 @@ class DjikstraAlgorithm(Algorithm):
       pygame.display.flip()    
       
 
-    if(target_tile.getGcost() == DJIKSTRA_INF):
+    if(target_tile.getGcost() == DJIKSTRA_INF or current_tile != target_tile):
       # no path found
       return False
       
-    
     # Reconstruction of path can be done later << !
     reconstructed_path: deque[Tile] = deque()
     iterator_tile: Tile = target_tile

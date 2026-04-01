@@ -28,8 +28,6 @@ inline const int SCALING_FACTOR_TWO = 2;
 inline const int SCALING_FACTOR_THREE = 3;
 inline const int SCALING_FACTOR_FOUR = 4;
 
-inline const int AMOUNT_OF_PLAYERS_PER_GAME = 3;
-
 
 
 #endif

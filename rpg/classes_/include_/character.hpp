@@ -1,8 +1,8 @@
 #ifndef CHARACTER_HPP
 #define CHARACTER_HPP
 
-#include "../../constants_/constants.hpp"
-#include "../../constants_/enums.hpp"
+#include "attributes.hpp"
+#include "stats.hpp"
 
 class Character
 {
@@ -12,17 +12,11 @@ class Character
     size_t bronze_;
     size_t level_;
 
-    int base_health_;
-    int current_health_;
-
-    int base_attack_;
-    int current_attack_;
+    Stats stats_;
+    Attributes attributes_;
 
 
-
-    float attack_speed_;
-
-
+  
     
 
 };

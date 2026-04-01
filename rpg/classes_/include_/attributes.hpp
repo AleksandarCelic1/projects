@@ -86,6 +86,10 @@ class Attributes
     void adjustSpellRange(Stats* placeholder) noexcept;
     void adjustGlobalCooldown(Stats* placeholder) noexcept;    
     void adjustMovementSpeed(Stats* placeholder) noexcept;
+    void adjustArmorPenetration(Stats* placeholder) noexcept;
+    void adjustSpellPenetration(Stats* placeholder) noexcept; 
+    void adjustLifesteal(Stats* placeholder) noexcept; 
+    void adjustTenacity(Stats* placeholder) noexcept; 
 
   
 };

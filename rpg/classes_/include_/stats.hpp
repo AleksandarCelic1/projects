@@ -31,7 +31,12 @@ class Stats
     int spell_range_;
     int global_cooldown_;
 
+    int armor_penetration_;
+    int spell_penetration_;
+
     float movement_speed_;
+    float lifesteal_;
+    float tenacity_;
 
   public:
     // Getters
@@ -52,6 +57,10 @@ class Stats
     int getSpellRange() const { return this->spell_range_; }
     int getGlobalCooldown() const { return this->global_cooldown_; }
     float getMovementSpeed() const { return this->movement_speed_; }
+    int getArmorPenetration() const { return this->armor_penetration_; }
+    int getSpellPenetration() const { return this->spell_penetration_; }
+    int getLifeSteal() const { return this->lifesteal_; }
+    float getTenacity() const { return this->tenacity_; }
 
     // Setters
     void setBaseHealth(int& base_health) { this->base_health_ = base_health; }
@@ -71,6 +80,10 @@ class Stats
     void setSpellRange(int& spell_range) { this->spell_range_ = spell_range; }
     void setGlobalCooldown(int& global_cooldown) { this->global_cooldown_ = global_cooldown; }
     void setMovementSpeed(float& movement_speed) { this->movement_speed_ = movement_speed; }
+    void setArmorPenetration(int& armor_pen) { this->armor_penetration_ = armor_pen; }
+    void setSpellPenetration(int& spell_pen) { this->spell_penetration_ = spell_pen; }
+    void setLifeSteal(float& lifesteal) { this->lifesteal_ = lifesteal; }
+    void setTenacity(float& tenacity) { this->tenacity_ = tenacity; }
 
 
     // Functions

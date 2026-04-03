@@ -26,8 +26,12 @@ class Attributes
     int tenacity_;
 
   public:
-
-    Attributes() = default;
+    // Constructor Destructor Copy Constructor 
+    Attributes();
+    Attributes(int loaded_str, int loaded_dex, int loaded_int, int loaded_wisd, int loaded_havoc,
+    int loaded_chaos, int loaded_isg, int loaded_percp, int loaded_vamp, int loaded_faith, int loaded_tenacity);
+    Attributes(const Attributes& copy) = delete;
+    ~Attributes() = default;
 
     // Getters
     int getStrength() const { return this->strenght_; }

@@ -39,6 +39,14 @@ class Stats
     float tenacity_;
 
   public:
+    // Constructor Destructor Copy Constructor 
+    Stats(ClassType type);
+    Stats(int loaded_base_hp, int loaded_current_hp, int loaded_base_mana, int loaded_current_mana, int loaded_physical_power, int loaded_sp, float loaded_attack_speed,
+          float loaded_spell_haste, float loaded_hit_rating, float loaded_phy_crit, float loaded_mag_crit, int loaded_magic_resis,
+          int loaded_armor, int loaded_melee_range, int loaded_spell_range, int loaded_gcd, int loaded_arpen, int loaded_spellpen,
+          float loaded_movespeed, float loaded_lifesteal, float loaded_tenacity);
+    Stats(const Stats* copy) = delete;
+    ~Stats() = default;    
     // Getters
     int getBaseHealth() const { return this->base_health_; }
     int getCurrentHealth() const { return this->current_health_; }
@@ -87,6 +95,11 @@ class Stats
 
 
     // Functions
+
+    void assignBaseStatsToTemplar() noexcept;
+    void assignBaseStatsToKnight() noexcept;
+    void assignBaseStatsToWizard() noexcept;
+    void assignBaseStatsToPriest() noexcept;
 
 
 

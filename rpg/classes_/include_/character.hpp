@@ -14,6 +14,14 @@ class Character
 
     Stats stats_;
     Attributes attributes_;
+    ClassType class_;
+
+  public:
+
+    // Getters
+    
+
+    // Setters
 
 
   

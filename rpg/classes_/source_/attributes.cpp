@@ -2,6 +2,31 @@
 #include "stats.hpp"
 
 
+Attributes::Attributes()
+{
+  // Do when making a Character >> Stats ctor >> Attr ctor >> adjust everything after Attr
+  
+}
+
+Attributes:: Attributes(int loaded_str, int loaded_dex, int loaded_int, int loaded_wisd, int loaded_havoc,
+int loaded_chaos, int loaded_isg, int loaded_percp, int loaded_vamp, int loaded_faith, int loaded_tenacity)
+{
+  this->strenght_ = loaded_str;
+  this->dexterity_ = loaded_dex;
+  this->intellect_ = loaded_int;
+  this->wisdom_ = loaded_wisd;
+  this->havoc_ = loaded_havoc;
+  this->chaos_ = loaded_chaos;
+  this->insight_ = loaded_isg;
+  this->perception_ = loaded_percp;
+  this->vamp_ = loaded_vamp;
+  this->faith_ = loaded_faith;
+  this->tenacity_ = loaded_tenacity;
+
+  // Do i need to recalculate the stats here << !
+}
+
+
 void Attributes::addStrength(int& strength, Stats* placeholder)
 {
   this->strenght_ += strength;

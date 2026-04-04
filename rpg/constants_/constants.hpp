@@ -28,6 +28,9 @@ inline const int SCALING_FACTOR_TWO = 2;
 inline const int SCALING_FACTOR_THREE = 3;
 inline const int SCALING_FACTOR_FOUR = 4;
 
+inline const int MAXIMUM_BRONZE_AND_SILVER = 99;
+inline const int MAXIMUM_GOLD = 999999;
+
 
 
 #endif

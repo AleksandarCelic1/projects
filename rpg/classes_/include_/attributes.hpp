@@ -2,7 +2,7 @@
 #define ATTRIBUTES_HPP
 
 #include "../../constants_/constants.hpp"
-#include "../../constants_/enums.hpp"
+#include "../../enums_/enums.hpp"
 
 class Stats;
 
@@ -27,7 +27,7 @@ class Attributes
 
   public:
     // Constructor Destructor Copy Constructor 
-    Attributes();
+    Attributes(ClassType type);
     Attributes(int loaded_str, int loaded_dex, int loaded_int, int loaded_wisd, int loaded_havoc,
     int loaded_chaos, int loaded_isg, int loaded_percp, int loaded_vamp, int loaded_faith, int loaded_tenacity);
     Attributes(const Attributes& copy) = delete;
@@ -73,6 +73,12 @@ class Attributes
     void subtractTenacity(int& tenacity, Stats* placeholder) noexcept;
 
     // Functions 
+    
+    void assignBaseAttrToTemplar() noexcept;
+    void assignBaseAttrToWizard() noexcept;
+    void assignBaseAttrToPriest() noexcept;
+    void assignBaseAttrToKnight() noexcept;
+
     void adjustBaseHealth(Stats* placeholder) noexcept;
     void adjustCurrentHealth(Stats* placeholder) noexcept;
     void adjustBaseMana(Stats* placeholder) noexcept;

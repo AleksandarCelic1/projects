@@ -2,10 +2,29 @@
 #include "stats.hpp"
 
 
-Attributes::Attributes()
+Attributes::Attributes(ClassType type)
 {
   // Do when making a Character >> Stats ctor >> Attr ctor >> adjust everything after Attr
-  
+  switch (type)
+  {
+    case TEMPLAR:
+      assignBaseAttrToTemplar();
+      break;
+    case KNIGHT:
+      assignBaseAttrToKnight();
+      break;
+    case WIZARD:
+      assignBaseAttrToWizard();
+      break;
+    case PRIEST:
+      assignBaseAttrToPriest();
+      break;
+    default:
+      std::cout << "[DEBUG] Stats.cpp, ClassType given does not match any normal class type!\n";
+      break;
+  }
+
+
 }
 
 Attributes:: Attributes(int loaded_str, int loaded_dex, int loaded_int, int loaded_wisd, int loaded_havoc,
@@ -200,4 +219,80 @@ void Attributes::subtractTenacity(int& tenacity, Stats* placeholder)
   this->tenacity_ -= tenacity;
 
   adjustTenacity(placeholder);
+}
+
+void Attributes::assignBaseAttrToTemplar()
+{
+  this->strenght_ = static_cast<int>(TemplarBaseAttr::BASE_STR);
+  this->dexterity_ = static_cast<int>(TemplarBaseAttr::BASE_DEX);
+
+  this->intellect_ = static_cast<int>(TemplarBaseAttr::BASE_INT);
+  this->wisdom_ = static_cast<int>(TemplarBaseAttr::BASE_WIS);
+
+  this->havoc_ = static_cast<int>(TemplarBaseAttr::BASE_HAV);
+  this->chaos_ = static_cast<int>(TemplarBaseAttr::BASE_CHA);
+
+  this->insight_ = static_cast<int>(TemplarBaseAttr::BASE_INS);
+  this->perception_ = static_cast<int>(TemplarBaseAttr::BASE_PCT);
+
+  this->vamp_ = static_cast<int>(TemplarBaseAttr::BASE_VMP);
+  this->faith_ = static_cast<int>(TemplarBaseAttr::BASE_FTH);
+  this->tenacity_ = static_cast<int>(TemplarBaseAttr::BASE_TNC);
+}
+
+void Attributes::assignBaseAttrToKnight() 
+{
+  this->strenght_ = static_cast<int>(KnightBaseAttr::BASE_STR);
+  this->dexterity_ = static_cast<int>(KnightBaseAttr::BASE_DEX);
+
+  this->intellect_ = static_cast<int>(KnightBaseAttr::BASE_INT);
+  this->wisdom_ = static_cast<int>(KnightBaseAttr::BASE_WIS);
+
+  this->havoc_ = static_cast<int>(KnightBaseAttr::BASE_HAV);
+  this->chaos_ = static_cast<int>(KnightBaseAttr::BASE_CHA);
+
+  this->insight_ = static_cast<int>(KnightBaseAttr::BASE_INS);
+  this->perception_ = static_cast<int>(KnightBaseAttr::BASE_PCT);
+
+  this->vamp_ = static_cast<int>(KnightBaseAttr::BASE_VMP);
+  this->faith_ = static_cast<int>(KnightBaseAttr::BASE_FTH);
+  this->tenacity_ = static_cast<int>(KnightBaseAttr::BASE_TNC);
+}
+
+void Attributes::assignBaseAttrToWizard() 
+{
+  this->strenght_ = static_cast<int>(WizardBaseAttr::BASE_STR);
+  this->dexterity_ = static_cast<int>(WizardBaseAttr::BASE_DEX);
+
+  this->intellect_ = static_cast<int>(WizardBaseAttr::BASE_INT);
+  this->wisdom_ = static_cast<int>(WizardBaseAttr::BASE_WIS);
+
+  this->havoc_ = static_cast<int>(WizardBaseAttr::BASE_HAV);
+  this->chaos_ = static_cast<int>(WizardBaseAttr::BASE_CHA);
+
+  this->insight_ = static_cast<int>(WizardBaseAttr::BASE_INS);
+  this->perception_ = static_cast<int>(WizardBaseAttr::BASE_PCT);
+
+  this->vamp_ = static_cast<int>(WizardBaseAttr::BASE_VMP);
+  this->faith_ = static_cast<int>(WizardBaseAttr::BASE_FTH);
+  this->tenacity_ = static_cast<int>(WizardBaseAttr::BASE_TNC);
+}
+
+void Attributes::assignBaseAttrToPriest() 
+{
+  this->strenght_ = static_cast<int>(PriestBaseAttr::BASE_STR);
+  this->dexterity_ = static_cast<int>(PriestBaseAttr::BASE_DEX);
+
+  this->intellect_ = static_cast<int>(PriestBaseAttr::BASE_INT);
+  this->wisdom_ = static_cast<int>(PriestBaseAttr::BASE_WIS);
+
+  this->havoc_ = static_cast<int>(PriestBaseAttr::BASE_HAV);
+  this->chaos_ = static_cast<int>(PriestBaseAttr::BASE_CHA);
+
+  this->insight_ = static_cast<int>(PriestBaseAttr::BASE_INS);
+  this->perception_ = static_cast<int>(PriestBaseAttr::BASE_PCT);
+
+  this->vamp_ = static_cast<int>(PriestBaseAttr::BASE_VMP);
+  this->faith_ = static_cast<int>(PriestBaseAttr::BASE_FTH);
+  this->tenacity_ = static_cast<int>(PriestBaseAttr::BASE_TNC);
 }

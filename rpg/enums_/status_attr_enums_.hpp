@@ -1,17 +1,7 @@
-#ifndef ENUMS__HPP
-#define ENUMS__HPP
+#ifndef STATUS_ATTR_ENUMS__HPP
+#define STATUS_ATTR_ENUMS__HPP
 
-typedef enum 
-{
-  TEMPLAR = 0,
-  KNIGHT = 1,
-  WIZARD = 2,
-  PRIEST = 3
-  
-} ClassType;
-
-
-typedef enum
+enum TemplarBaseStats
 {
   BASE_HP = 0,
   BASE_MANA = 0,
@@ -36,9 +26,9 @@ typedef enum
   BASE_MOVEMENT_SPEED = 0,
   BASE_LIFESTEAL = 0,
   BASE_TENACITY = 0
-} TemplarBaseStats;
+} ;
 
-typedef enum
+enum WizardBaseStats
 {
   BASE_HP = 0,
   BASE_MANA = 0,
@@ -63,9 +53,9 @@ typedef enum
   BASE_MOVEMENT_SPEED = 0,
   BASE_LIFESTEAL = 0,
   BASE_TENACITY = 0
-} WizardBaseStats;
+} ;
 
-typedef enum
+enum class PriestBaseStats
 {
   BASE_HP = 0,
   BASE_MANA = 0,
@@ -90,9 +80,9 @@ typedef enum
   BASE_MOVEMENT_SPEED = 0,
   BASE_LIFESTEAL = 0,
   BASE_TENACITY = 0
-} PriestBaseStats;
+} ;
 
-typedef enum
+enum class KnightBaseStats
 {
   BASE_HP = 0,
   BASE_MANA = 0,
@@ -117,6 +107,65 @@ typedef enum
   BASE_MOVEMENT_SPEED = 0,
   BASE_LIFESTEAL = 0,
   BASE_TENACITY = 0
-} KnightBaseStats;
+};
 
+enum class TemplarBaseAttr
+{
+  BASE_STR = 0,
+  BASE_DEX = 0,
+  BASE_INT = 0,
+  BASE_WIS = 0,
+  BASE_HAV = 0,
+  BASE_CHA = 0,
+  BASE_INS = 0,
+  BASE_PCT = 0,
+  BASE_VMP = 0,
+  BASE_FTH = 0,
+  BASE_TNC = 0
+};
+
+enum class KnightBaseAttr
+{
+  BASE_STR = 0,
+  BASE_DEX = 0,
+  BASE_INT = 0,
+  BASE_WIS = 0,
+  BASE_HAV = 0,
+  BASE_CHA = 0,
+  BASE_INS = 0,
+  BASE_PCT = 0,
+  BASE_VMP = 0,
+  BASE_FTH = 0,
+  BASE_TNC = 0
+};
+
+enum class WizardBaseAttr
+{
+  BASE_STR = 0,
+  BASE_DEX = 0,
+  BASE_INT = 0,
+  BASE_WIS = 0,
+  BASE_HAV = 0,
+  BASE_CHA = 0,
+  BASE_INS = 0,
+  BASE_PCT = 0,
+  BASE_VMP = 0,
+  BASE_FTH = 0,
+  BASE_TNC = 0
+};
+
+enum class PriestBaseAttr
+{
+  BASE_STR = 0,
+  BASE_DEX = 0,
+  BASE_INT = 0,
+  BASE_WIS = 0,
+  BASE_HAV = 0,
+  BASE_CHA = 0,
+  BASE_INS = 0,
+  BASE_PCT = 0,
+  BASE_VMP = 0,
+  BASE_FTH = 0,
+  BASE_TNC = 0
+};
 #endif

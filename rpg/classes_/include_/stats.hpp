@@ -2,7 +2,7 @@
 #define STATS_HPP
 
 #include "../../constants_/constants.hpp"
-#include "../../constants_/enums.hpp"
+#include "../../enums_/enums.hpp"
 
 
 class Stats

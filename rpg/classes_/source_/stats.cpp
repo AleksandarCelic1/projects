@@ -52,104 +52,101 @@ float loaded_movespeed, float loaded_lifesteal, float loaded_tenacity)
   this->tenacity_ = loaded_tenacity;
 }
 
-
-void Stats::assignBaseStatsToKnight() 
+void Stats::assignBaseStatsToKnight()
 {
-  this->base_health_ = KnightBaseStats::BASE_HP;
+  this->base_health_ = static_cast<int>(KnightBaseStats::BASE_HP);
   this->current_health_ = this->base_health_;
 
-  this->base_mana_ = KnightBaseStats::BASE_MANA;
+  this->base_mana_ = static_cast<int>(KnightBaseStats::BASE_MANA);
   this->current_mana_ = this->base_mana_;
 
-  this->physical_power_ = KnightBaseStats::BASE_PHY_AP;
-  this->spell_power_ = KnightBaseStats::BASE_SPELL_POWER;
+  this->physical_power_ = static_cast<int>(KnightBaseStats::BASE_PHY_AP);
+  this->spell_power_ = static_cast<int>(KnightBaseStats::BASE_SPELL_POWER);
 
-  this->attack_speed_ = KnightBaseStats::BASE_ATTACK_SPEED / 100.0f;
-  this->spell_haste_ = KnightBaseStats::BASE_SPELL_HASTE / 100.0f;
+  this->attack_speed_ = static_cast<float>(KnightBaseStats::BASE_ATTACK_SPEED) / 100.0f;
+  this->spell_haste_ = static_cast<float>(KnightBaseStats::BASE_SPELL_HASTE) / 100.0f;
   
-  this->hit_rating_ = KnightBaseStats::BASE_HIT_RATING / 100.0f;
+  this->hit_rating_ = static_cast<float>(KnightBaseStats::BASE_HIT_RATING) / 100.0f;
 
-  this->physical_crit_chance_ = KnightBaseStats::BASE_PHY_CRIT_CHANCE / 100.0f;
-  this->magic_crit_chance_ = KnightBaseStats::BASE_SPELL_CRIT_CHANCE / 100.0f;
+  this->physical_crit_chance_ = static_cast<float>(KnightBaseStats::BASE_PHY_CRIT_CHANCE) / 100.0f;
+  this->magic_crit_chance_ = static_cast<float>(KnightBaseStats::BASE_SPELL_CRIT_CHANCE) / 100.0f;
 
-  this->magic_resistance_ = KnightBaseStats::BASE_MR;
-  this->armor_ = KnightBaseStats::BASE_ARMOR;
-  this->melee_range_ = KnightBaseStats::BASE_MELEE_RANGE;
-  this->spell_range_ = KnightBaseStats::BASE_SPELL_RANGE;
-  this->global_cooldown_ = KnightBaseStats::BASE_GCD;
+  this->magic_resistance_ = static_cast<int>(KnightBaseStats::BASE_MR);
+  this->armor_ = static_cast<int>(KnightBaseStats::BASE_ARMOR);
+  this->melee_range_ = static_cast<int>(KnightBaseStats::BASE_MELEE_RANGE);
+  this->spell_range_ = static_cast<int>(KnightBaseStats::BASE_SPELL_RANGE);
+  this->global_cooldown_ = static_cast<int>(KnightBaseStats::BASE_GCD);
 
-  this->armor_penetration_ = KnightBaseStats::BASE_ARP;
-  this->spell_penetration_ = KnightBaseStats::BASE_SPELL_PEN;
+  this->armor_penetration_ = static_cast<int>(KnightBaseStats::BASE_ARP);
+  this->spell_penetration_ = static_cast<int>(KnightBaseStats::BASE_SPELL_PEN);
 
-  this->movement_speed_ = KnightBaseStats::BASE_MOVEMENT_SPEED / 100.0f;
-  this->lifesteal_ = KnightBaseStats::BASE_LIFESTEAL / 100.0f;
-  this->tenacity_ = KnightBaseStats::BASE_TENACITY / 100.0f;
+  this->movement_speed_ = static_cast<float>(KnightBaseStats::BASE_MOVEMENT_SPEED) / 100.0f;
+  this->lifesteal_ = static_cast<float>(KnightBaseStats::BASE_LIFESTEAL) / 100.0f;
+  this->tenacity_ = static_cast<float>(KnightBaseStats::BASE_TENACITY) / 100.0f;
 }
 
-void Stats::assignBaseStatsToWizard() 
+void Stats::assignBaseStatsToWizard()
 {
-  this->base_health_ = WizardBaseStats::BASE_HP;
+  this->base_health_ = static_cast<int>(WizardBaseStats::BASE_HP);
   this->current_health_ = this->base_health_;
 
-  this->base_mana_ = WizardBaseStats::BASE_MANA;
+  this->base_mana_ = static_cast<int>(WizardBaseStats::BASE_MANA);
   this->current_mana_ = this->base_mana_;
 
-  this->physical_power_ = WizardBaseStats::BASE_PHY_AP;
-  this->spell_power_ = WizardBaseStats::BASE_SPELL_POWER;
+  this->physical_power_ = static_cast<int>(WizardBaseStats::BASE_PHY_AP);
+  this->spell_power_ = static_cast<int>(WizardBaseStats::BASE_SPELL_POWER);
 
-  this->attack_speed_ = WizardBaseStats::BASE_ATTACK_SPEED / 100.0f;
-  this->spell_haste_ = WizardBaseStats::BASE_SPELL_HASTE / 100.0f;
+  this->attack_speed_ = static_cast<float>(WizardBaseStats::BASE_ATTACK_SPEED) / 100.0f;
+  this->spell_haste_ = static_cast<float>(WizardBaseStats::BASE_SPELL_HASTE) / 100.0f;
   
-  this->hit_rating_ = WizardBaseStats::BASE_HIT_RATING / 100.0f;
+  this->hit_rating_ = static_cast<float>(WizardBaseStats::BASE_HIT_RATING) / 100.0f;
 
-  this->physical_crit_chance_ = WizardBaseStats::BASE_PHY_CRIT_CHANCE / 100.0f;
-  this->magic_crit_chance_ = WizardBaseStats::BASE_SPELL_CRIT_CHANCE / 100.0f;
+  this->physical_crit_chance_ = static_cast<float>(WizardBaseStats::BASE_PHY_CRIT_CHANCE) / 100.0f;
+  this->magic_crit_chance_ = static_cast<float>(WizardBaseStats::BASE_SPELL_CRIT_CHANCE) / 100.0f;
 
-  this->magic_resistance_ = WizardBaseStats::BASE_MR;
-  this->armor_ = WizardBaseStats::BASE_ARMOR;
-  this->melee_range_ = WizardBaseStats::BASE_MELEE_RANGE;
-  this->spell_range_ = WizardBaseStats::BASE_SPELL_RANGE;
-  this->global_cooldown_ = WizardBaseStats::BASE_GCD;
+  this->magic_resistance_ = static_cast<int>(WizardBaseStats::BASE_MR);
+  this->armor_ = static_cast<int>(WizardBaseStats::BASE_ARMOR);
+  this->melee_range_ = static_cast<int>(WizardBaseStats::BASE_MELEE_RANGE);
+  this->spell_range_ = static_cast<int>(WizardBaseStats::BASE_SPELL_RANGE);
+  this->global_cooldown_ = static_cast<int>(WizardBaseStats::BASE_GCD);
 
-  this->armor_penetration_ = WizardBaseStats::BASE_ARP;
-  this->spell_penetration_ = WizardBaseStats::BASE_SPELL_PEN;
+  this->armor_penetration_ = static_cast<int>(WizardBaseStats::BASE_ARP);
+  this->spell_penetration_ = static_cast<int>(WizardBaseStats::BASE_SPELL_PEN);
 
-  this->movement_speed_ = WizardBaseStats::BASE_MOVEMENT_SPEED / 100.0f;
-  this->lifesteal_ = WizardBaseStats::BASE_LIFESTEAL / 100.0f;
-  this->tenacity_ = WizardBaseStats::BASE_TENACITY / 100.0f;
+  this->movement_speed_ = static_cast<float>(WizardBaseStats::BASE_MOVEMENT_SPEED) / 100.0f;
+  this->lifesteal_ = static_cast<float>(WizardBaseStats::BASE_LIFESTEAL) / 100.0f;
+  this->tenacity_ = static_cast<float>(WizardBaseStats::BASE_TENACITY) / 100.0f;
 }
 
 void Stats::assignBaseStatsToPriest()
 {
-  this->base_health_ = PriestBaseStats::BASE_HP;
+  this->base_health_ = static_cast<int>(PriestBaseStats::BASE_HP);
   this->current_health_ = this->base_health_;
 
-  this->base_mana_ = PriestBaseStats::BASE_MANA;
+  this->base_mana_ = static_cast<int>(PriestBaseStats::BASE_MANA);
   this->current_mana_ = this->base_mana_;
 
-  this->physical_power_ = PriestBaseStats::BASE_PHY_AP;
-  this->spell_power_ = PriestBaseStats::BASE_SPELL_POWER;
+  this->physical_power_ = static_cast<int>(PriestBaseStats::BASE_PHY_AP);
+  this->spell_power_ = static_cast<int>(PriestBaseStats::BASE_SPELL_POWER);
 
-  this->attack_speed_ = PriestBaseStats::BASE_ATTACK_SPEED / 100.0f;
-  this->spell_haste_ = PriestBaseStats::BASE_SPELL_HASTE / 100.0f;
+  this->attack_speed_ = static_cast<float>(PriestBaseStats::BASE_ATTACK_SPEED) / 100.0f;
+  this->spell_haste_ = static_cast<float>(PriestBaseStats::BASE_SPELL_HASTE) / 100.0f;
   
-  this->hit_rating_ = PriestBaseStats::BASE_HIT_RATING / 100.0f;
+  this->hit_rating_ = static_cast<float>(PriestBaseStats::BASE_HIT_RATING) / 100.0f;
 
-  this->physical_crit_chance_ = PriestBaseStats::BASE_PHY_CRIT_CHANCE / 100.0f;
-  this->magic_crit_chance_ = PriestBaseStats::BASE_SPELL_CRIT_CHANCE / 100.0f;
+  this->physical_crit_chance_ = static_cast<float>(PriestBaseStats::BASE_PHY_CRIT_CHANCE) / 100.0f;
+  this->magic_crit_chance_ = static_cast<float>(PriestBaseStats::BASE_SPELL_CRIT_CHANCE) / 100.0f;
 
-  this->magic_resistance_ = PriestBaseStats::BASE_MR;
-  this->armor_ = PriestBaseStats::BASE_ARMOR;
-  this->melee_range_ = PriestBaseStats::BASE_MELEE_RANGE;
-  this->spell_range_ = PriestBaseStats::BASE_SPELL_RANGE;
-  this->global_cooldown_ = PriestBaseStats::BASE_GCD;
+  this->magic_resistance_ = static_cast<int>(PriestBaseStats::BASE_MR);
+  this->armor_ = static_cast<int>(PriestBaseStats::BASE_ARMOR);
+  this->melee_range_ = static_cast<int>(PriestBaseStats::BASE_MELEE_RANGE);
+  this->spell_range_ = static_cast<int>(PriestBaseStats::BASE_SPELL_RANGE);
+  this->global_cooldown_ = static_cast<int>(PriestBaseStats::BASE_GCD);
 
-  this->armor_penetration_ = PriestBaseStats::BASE_ARP;
-  this->spell_penetration_ = PriestBaseStats::BASE_SPELL_PEN;
+  this->armor_penetration_ = static_cast<int>(PriestBaseStats::BASE_ARP);
+  this->spell_penetration_ = static_cast<int>(PriestBaseStats::BASE_SPELL_PEN);
 
-  this->movement_speed_ = PriestBaseStats::BASE_MOVEMENT_SPEED / 100.0f;
-  this->lifesteal_ = PriestBaseStats::BASE_LIFESTEAL / 100.0f;
-  this->tenacity_ = PriestBaseStats::BASE_TENACITY / 100.0f;
+  this->movement_speed_ = static_cast<float>(PriestBaseStats::BASE_MOVEMENT_SPEED) / 100.0f;
+  this->lifesteal_ = static_cast<float>(PriestBaseStats::BASE_LIFESTEAL) / 100.0f;
+  this->tenacity_ = static_cast<float>(PriestBaseStats::BASE_TENACITY) / 100.0f;
 }
-
-

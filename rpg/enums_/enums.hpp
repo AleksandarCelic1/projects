@@ -1,7 +1,8 @@
 #ifndef ENUMS__HPP
 #define ENUMS__HPP
 
-#include "status_attr_enums_.hpp"
+#include "status_attr_enums.hpp"
+#include "spell_id_enums.hpp"
 
 typedef enum 
 {

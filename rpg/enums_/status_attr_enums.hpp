@@ -1,5 +1,5 @@
-#ifndef STATUS_ATTR_ENUMS__HPP
-#define STATUS_ATTR_ENUMS__HPP
+#ifndef STATUS_ATTR_ENUMS_HPP
+#define STATUS_ATTR_ENUMS_HPP
 
 enum TemplarBaseStats
 {

@@ -4,6 +4,8 @@ Game::Game()
 {
   initializeResolution();
   initializeWindowAndRenderer();
+
+  this->texture_manager_ = TextureManager(this->main_renderer_);
 }
 
 

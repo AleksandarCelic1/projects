@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "account.hpp"
+#include "texture_manager.hpp"
 
 typedef struct
 {
@@ -16,6 +17,8 @@ class Game
 {
   private:
     Account current_account_logged_in_;
+    TextureManager texture_manager_;
+
     GameSettings game_settings_;
     SDL_Window* main_window_;
     SDL_Renderer* main_renderer_;

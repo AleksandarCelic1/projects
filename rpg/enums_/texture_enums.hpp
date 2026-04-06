@@ -1,0 +1,69 @@
+#ifndef TEXTURE_ENUMS_HPP
+#define TEXTURE_ENUMS_HPP
+
+enum class CharacterAnimationState
+{
+  // [Templar]
+  TEMPLAR_IDLE = 0,
+  TEMPLAR_ATTACK_ONE = 1,
+  TEMPLAR_ATTACK_TWO = 2,
+  TEMPLAR_ATTACK_THREE = 3,
+  TEMPLAR_BLOCK = 4,
+  TEMPLAR_HURT = 5,
+  TEMPLAR_DEATH = 6,
+  TEMPLAR_WALK_ONE = 7,
+  TEMPLAR_WALK_TWO = 8,
+
+
+  // [Wizard]
+  WIZARD_IDLE = 9,
+  WIZARD_HURT = 10,
+  WIZARD_ICICLE_ATTACK = 11,
+  WIZARD_FIREBALL_ATTACK = 12,
+  WIZARD_DEATH = 13,
+  WIZARD_WALK = 14,
+
+  // [Priest]
+
+  PRIEST_IDLE = 15,
+  PRIEST_DEATH = 16,
+  PRIEST_HURT = 17,
+  PRIEST_WALK = 18,
+  PRIEST_SMITE = 19,
+  PRIEST_BASIC_HEAL = 20,
+
+  // [Knight]
+
+  KNIGHT_ATTACK_ONE = 21,
+  KNIGHT_ATTACK_TWO = 22,
+  KNIGHT_ATTACK_THREE = 23,
+  KNIGHT_IDLE = 24,
+  KNIGHT_HURT = 25,
+  KNIGHT_DEATH = 26,
+  KNIGHT_WALK = 27,
+  KNIGHT_BLOCK = 28,
+
+};
+
+enum class VisualEffects
+{
+  // [Templar]
+  // [Wizard]
+  WIZARD_ICICLE_EFFECT = 0,
+  WIZARD_FIREBALL_EFFECT = 1,
+
+  // [Priest]
+  PRIEST_SMITE = 2,
+  PRIEST_BASIC_HEAL = 3,
+};
+
+
+enum class UI
+{
+
+};
+
+
+
+
+#endif

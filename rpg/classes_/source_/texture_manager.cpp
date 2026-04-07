@@ -32,7 +32,7 @@ void TextureManager::clear()
 
 TextureManager::TextureManager(SDL_Renderer* new_renderer) 
 { 
-  this->main_renderer_ = new_renderer; 
+  this->main_renderer_ = new_renderer;
   loadCharAnimations();
   loadUITextures();
   loadVisualEffects;

@@ -16,6 +16,7 @@ class TextureManager
   public:
 
     // Constructor Destructor Copy Constructor
+    TextureManager() = default;
     TextureManager(SDL_Renderer* new_renderer);
     TextureManager(const TextureManager& copy) = delete;
     ~TextureManager(); // Implement clearing out each map << !

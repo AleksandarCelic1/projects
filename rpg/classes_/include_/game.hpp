@@ -3,6 +3,7 @@
 
 #include "account.hpp"
 #include "texture_manager.hpp"
+#include "world.hpp"
 
 typedef struct
 {
@@ -17,6 +18,7 @@ class Game
 {
   private:
     Account current_account_logged_in_;
+    World world_;
     TextureManager texture_manager_;
 
     GameSettings game_settings_;

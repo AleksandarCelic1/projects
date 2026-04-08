@@ -3,7 +3,8 @@
 
 enum class FloorType
 {
-  
+  PLAINS_GRASS = 0,
+  PLAINS_GRASS_WITH_LEAVES_ONE = 1
 };
 
 

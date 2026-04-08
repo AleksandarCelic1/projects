@@ -35,7 +35,9 @@ TextureManager::TextureManager(SDL_Renderer* new_renderer)
   this->main_renderer_ = new_renderer;
   loadCharAnimations();
   loadUITextures();
-  loadVisualEffects;
+  loadVisualEffects();
+  loadFloorTextures();
+
 
 }
 TextureManager::~TextureManager() { this->clear(); }
@@ -102,4 +104,11 @@ void TextureManager::loadVisualEffects()
 
   this->visual_effects_[VisualEffects::PRIEST_SMITE] = loadTexture("../../photos_/player_classes_/priest_/priest_attack_effect_.png");
   this->visual_effects_[VisualEffects::PRIEST_BASIC_HEAL] = loadTexture("../../photos_/player_classes_/priest_/priest_heal_effect_.png");
+}
+
+void TextureManager::loadFloorTextures()
+{
+  this->floor_textures_[FloorType::PLAINS_GRASS] = loadTexture("../../photos_/floors_/PlainsGrass.png");
+  this->floor_textures_[FloorType::PLAINS_GRASS_WITH_LEAVES_ONE] = loadTexture("../../photos_/floors_/PlainsGrassLeavesOne.png");
+  
 }

@@ -4,6 +4,7 @@
 #include "account.hpp"
 #include "texture_manager.hpp"
 #include "world.hpp"
+#include "camera.hpp"
 
 typedef struct
 {
@@ -20,6 +21,7 @@ class Game
     Account current_account_logged_in_;
     World world_;
     TextureManager texture_manager_;
+    Camera camera_;
 
     GameSettings game_settings_;
     SDL_Window* main_window_;
@@ -40,11 +42,18 @@ class Game
     SDL_Window* getMainWindow() const noexcept { return this->main_window_;  }
     SDL_Renderer* getRenderer() const noexcept { return this->main_renderer_;}
 
+    Account& getAccount() noexcept { return this->current_account_logged_in_; }
+    World& getWorld() noexcept { return this->world_; }
+    Camera& getCamera() noexcept { return this->camera_; }
+
 
     // Setters
     void setSDLWindow(SDL_Window* new_window) noexcept{ this->main_window_ = new_window; }
     void setSDLRenderer(SDL_Renderer* new_renderer) noexcept { this->main_renderer_ = new_renderer; }
     void setCurrentAccountLoggedIn(Account& new_current_account)  noexcept { this->current_account_logged_in_ = new_current_account; }
+    void setWorld(World& world) noexcept { this->world_ = world; }
+    void setCamera(Camera& new_camera) noexcept { this->camera_ = new_camera; }
+    
 
 
     // Functions 

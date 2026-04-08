@@ -34,7 +34,8 @@ class Tile
 
     // Functions
 
-    void render(SDL_Renderer* renderer) noexcept;
+    // Probably will need camera << !
+    void render(SDL_Renderer* renderer, std::unordered_map<FloorType, SDL_Texture*>& map) noexcept;
 };
 
 

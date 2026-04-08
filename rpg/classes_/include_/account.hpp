@@ -25,6 +25,7 @@ class Account
     std::string getPassword() const noexcept { return this->password_; }
     size_t getAccountID() const noexcept { return this->account_id_; }
     int getCurrentCharacterID() const noexcept { return this->current_character_id_; }
+    Character* getCurrentCharacter() noexcept { return this->characters_[current_character_id_];}
     std::vector<Character*> getCharacters() const noexcept { return this->characters_; }
 
 

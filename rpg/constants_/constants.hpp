@@ -31,6 +31,9 @@ inline const int SCALING_FACTOR_FOUR = 4;
 inline const int MAXIMUM_BRONZE_AND_SILVER = 99;
 inline const int MAXIMUM_GOLD = 999999;
 
+inline const int STARTING_CHARACTER_WORLD_X = 0;
+inline const int STARTING_CHARACTER_WORLD_Y = 0;
+
 
 
 #endif

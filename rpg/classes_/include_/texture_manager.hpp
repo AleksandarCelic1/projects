@@ -12,6 +12,7 @@ class TextureManager
     std::unordered_map<CharacterAnimationState, SDL_Texture*> char_animations_;
     std::unordered_map<VisualEffects, SDL_Texture*> visual_effects_;
     std::unordered_map<UI, SDL_Texture*> ui_textures_;
+    std::unordered_map<FloorType, SDL_Texture*> floor_textures_;
 
   public:
 
@@ -25,6 +26,7 @@ class TextureManager
     SDL_Texture* getCharAnimation(CharacterAnimationState& placeholder) noexcept { return this->char_animations_[placeholder]; }
     SDL_Texture* getVisualEffect(VisualEffects& placeholder) noexcept { return this->visual_effects_[placeholder]; }
     SDL_Texture* getUITexture(UI& placeholder) noexcept { return this->ui_textures_[placeholder]; }
+    SDL_Texture* getFloorTexture(FloorType& placeholder) noexcept { return this->floor_textures_[placeholder]; }
     
 
 
@@ -33,6 +35,7 @@ class TextureManager
     void loadCharAnimations() noexcept;
     void loadVisualEffects() noexcept;
     void loadUITextures() noexcept;
+    void loadFloorTextures() noexcept;
     void clear() noexcept;
 
 };

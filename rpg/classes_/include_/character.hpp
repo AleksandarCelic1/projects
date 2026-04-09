@@ -72,11 +72,6 @@ class Character
 
     virtual void render(SDL_Renderer* renderer, std::unordered_map<CharacterAnimationState, SDL_Surface*> map) = 0;
 
-
-
-  
-    
-
 };
 
 

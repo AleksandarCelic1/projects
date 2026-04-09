@@ -57,10 +57,9 @@ enum class VisualEffects
   PRIEST_BASIC_HEAL = 3,
 };
 
-
 enum class UI
 {
-
+  LOGIN_BACKGROUND = 0
 };
 
 

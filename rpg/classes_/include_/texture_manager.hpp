@@ -3,16 +3,17 @@
 
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"
+#include "../../structs_/structs.hpp"
 
 class TextureManager
 {
   private:
     SDL_Renderer* main_renderer_;
 
-    std::unordered_map<CharacterAnimationState, SDL_Texture*> char_animations_;
-    std::unordered_map<VisualEffects, SDL_Texture*> visual_effects_;
-    std::unordered_map<UI, SDL_Texture*> ui_textures_;
-    std::unordered_map<FloorType, SDL_Texture*> floor_textures_;
+    std::unordered_map<CharacterAnimationState, TextureAsset> char_animations_;
+    std::unordered_map<VisualEffects, TextureAsset> visual_effects_;
+    std::unordered_map<UI, TextureAsset> ui_textures_;
+    std::unordered_map<FloorType, TextureAsset> floor_textures_;
 
   public:
 
@@ -23,15 +24,17 @@ class TextureManager
     ~TextureManager(); // Implement clearing out each map << !
 
     // Getters
-    SDL_Texture* getCharAnimation(CharacterAnimationState& placeholder) noexcept { return this->char_animations_[placeholder]; }
-    SDL_Texture* getVisualEffect(VisualEffects& placeholder) noexcept { return this->visual_effects_[placeholder]; }
-    SDL_Texture* getUITexture(UI& placeholder) noexcept { return this->ui_textures_[placeholder]; }
-    SDL_Texture* getFloorTexture(FloorType& placeholder) noexcept { return this->floor_textures_[placeholder]; }
+    const TextureAsset& getCharAnimation(CharacterAnimationState placeholder) noexcept { return this->char_animations_.at(placeholder); }
+    const TextureAsset& getVisualEffect(VisualEffects placeholder) noexcept { return this->visual_effects_.at(placeholder); }
+    const TextureAsset& getUITexture(UI placeholder) noexcept { return this->ui_textures_.at(placeholder); }
+    const TextureAsset& getFloorTexture(FloorType placeholder) noexcept { return this->floor_textures_.at(placeholder); }
     
 
 
     // Functions 
     SDL_Texture* loadTexture(const std::string& path) noexcept; 
+    TextureAsset makeTextureAsset(const std::string& path) noexcept;
+    
     void loadCharAnimations() noexcept;
     void loadVisualEffects() noexcept;
     void loadUITextures() noexcept;

@@ -5,6 +5,7 @@
 #include "texture_manager.hpp"
 #include "world.hpp"
 #include "camera.hpp"
+#include "login.hpp"
 
 typedef struct
 {
@@ -22,8 +23,11 @@ class Game
     World world_;
     TextureManager texture_manager_;
     Camera camera_;
+    Login login_;
 
     GameSettings game_settings_;
+    GameState gamestate_;
+
     SDL_Window* main_window_;
     SDL_Renderer* main_renderer_;
   
@@ -45,6 +49,8 @@ class Game
     Account& getAccount() noexcept { return this->current_account_logged_in_; }
     World& getWorld() noexcept { return this->world_; }
     Camera& getCamera() noexcept { return this->camera_; }
+    Login& getLogin() noexcept { return this->login_; }
+    GameState& getGameState() noexcept { return this->gamestate_; }
 
 
     // Setters
@@ -53,6 +59,8 @@ class Game
     void setCurrentAccountLoggedIn(Account& new_current_account)  noexcept { this->current_account_logged_in_ = new_current_account; }
     void setWorld(World& world) noexcept { this->world_ = world; }
     void setCamera(Camera& new_camera) noexcept { this->camera_ = new_camera; }
+    void setLogin(Login& new_login) noexcept { this->login_ = new_login; }
+    void setGameState(GameState& new_state) noexcept { this->gamestate_ = new_state; }
     
 
 

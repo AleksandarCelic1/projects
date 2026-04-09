@@ -5,6 +5,8 @@ Game::Game()
   initializeResolution();
   initializeWindowAndRenderer();
 
+  
+  this->gamestate_ = GameState::LOG_IN_SCREEN;
   this->texture_manager_ = TextureManager(this->main_renderer_);
 }
 

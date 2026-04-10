@@ -34,6 +34,10 @@ inline const int MAXIMUM_GOLD = 999999;
 inline const int STARTING_CHARACTER_WORLD_X = 0;
 inline const int STARTING_CHARACTER_WORLD_Y = 0;
 
+inline const int FPS = 60;
+inline const int FRAME_DELAY = 1000 / FPS;
+inline const float ONE_SECOND = 1000.0f; 
+
 
 
 #endif

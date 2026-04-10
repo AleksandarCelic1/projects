@@ -5,9 +5,14 @@ Game::Game()
   initializeResolution();
   initializeWindowAndRenderer();
 
-  
+  this->login_ = LoginState(this->main_renderer_);
+  this->current_state_ = &(this->login_);
+  this->delta_time_ = 0.0f;
+
   this->gamestate_ = GameState::LOG_IN_SCREEN;
   this->texture_manager_ = TextureManager(this->main_renderer_);
+
+  
 }
 
 
@@ -86,4 +91,66 @@ void Game::initializeWindowAndRenderer()
   this->main_renderer_ = renderer;
 
 
+}
+
+void Game::run()
+{
+  SDL_Event event;
+  Uint32 last_frame = SDL_GetTicks();
+
+  while(this->gamestate_ != GameState::EXIT)
+  {
+    this->calculateDeltaTime(last_frame);
+    this->mainEventHandler(&event);
+    this->update();
+    this->render();
+  }
+
+  // When finished, make a SAVE to the SQL so 
+  // on next load we can continue from where we stopped
+}
+
+
+
+void Game::render()
+{
+  this->current_state_->render(*this);
+}
+
+void Game::update()
+{
+  this->current_state_->update(*this);
+}
+
+void Game::mainEventHandler(SDL_Event* event)
+{
+  // SDL_PollEvent is basically a queue and we ask each frame if there is a new event if no he returns 0 if yes we handle it < !
+  while(SDL_PollEvent(event))
+  {
+    switch(event->type)
+    {
+      case SDL_KEYDOWN:
+        break;
+      case SDL_KEYUP:
+        break;
+      case SDL_MOUSEBUTTONDOWN:
+        if(event->button.button == SDL_BUTTON_LEFT) { } // this is left click 
+        break;
+      case SDL_MOUSEBUTTONUP:
+        break;
+      default:
+        std::cout << "[EVENT] -> event didnt match any type!" << std::endl;
+        break;
+    }
+  } 
+
+
+
+}
+
+void Game::calculateDeltaTime(Uint32& last_frame)
+{
+  Uint32 current_frame = SDL_GetTicks();
+  this->delta_time_ = (current_frame - last_frame) / ONE_SECOND;
+  last_frame = current_frame;
 }

@@ -6,6 +6,7 @@
 #include "world.hpp"
 #include "camera.hpp"
 #include "login.hpp"
+#include "state.hpp"
 
 typedef struct
 {
@@ -23,13 +24,17 @@ class Game
     World world_;
     TextureManager texture_manager_;
     Camera camera_;
-    Login login_;
+
+    LoginState login_;
+    State* current_state_;
 
     GameSettings game_settings_;
     GameState gamestate_;
 
     SDL_Window* main_window_;
     SDL_Renderer* main_renderer_;
+
+    float delta_time_;
   
   public:
 
@@ -42,6 +47,7 @@ class Game
     int getWindowWidth() const noexcept  { return this->game_settings_.screen_width_;  }
     int getFullscreenBoolean() const noexcept { return this->game_settings_.fullscreen_;}
     int getScalingFactor() const noexcept { return this->game_settings_.scaling_factor_;}
+    float getDeltaTime() const noexcept { return this->delta_time_; }
 
     SDL_Window* getMainWindow() const noexcept { return this->main_window_;  }
     SDL_Renderer* getRenderer() const noexcept { return this->main_renderer_;}
@@ -49,8 +55,14 @@ class Game
     Account& getAccount() noexcept { return this->current_account_logged_in_; }
     World& getWorld() noexcept { return this->world_; }
     Camera& getCamera() noexcept { return this->camera_; }
-    Login& getLogin() noexcept { return this->login_; }
-    GameState& getGameState() noexcept { return this->gamestate_; }
+    LoginState& getLogin() noexcept { return this->login_; }
+    State* getCurrentState() noexcept { return this->current_state_; }
+    TextureManager& getTextureManager() noexcept { return this->texture_manager_; }
+
+    GameState getGameState() const noexcept { return this->gamestate_; }
+    
+
+
 
 
     // Setters
@@ -59,14 +71,23 @@ class Game
     void setCurrentAccountLoggedIn(Account& new_current_account)  noexcept { this->current_account_logged_in_ = new_current_account; }
     void setWorld(World& world) noexcept { this->world_ = world; }
     void setCamera(Camera& new_camera) noexcept { this->camera_ = new_camera; }
-    void setLogin(Login& new_login) noexcept { this->login_ = new_login; }
+    void setLogin(LoginState& new_login) noexcept { this->login_ = new_login; }
     void setGameState(GameState& new_state) noexcept { this->gamestate_ = new_state; }
+    void setCurrentState(State* new_current_state) noexcept { this->current_state_ = new_current_state; }
+    void setDeltaTime(float& new_delta_time) noexcept { this->delta_time_ = new_delta_time; }
+    void setTextureManager(TextureManager& new_manager) noexcept { this->texture_manager_ = new_manager; }
     
 
 
     // Functions 
     void initializeResolution() noexcept;
     void initializeWindowAndRenderer() noexcept;
+
+    void run();
+    void render();
+    void update();
+    void mainEventHandler(SDL_Event* event);
+    void calculateDeltaTime(Uint32& last_frame) noexcept; 
 
 
 

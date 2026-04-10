@@ -3,7 +3,7 @@
 
 #include "state.hpp"
 
-class LoginState : virtual State
+class LoginState : virtual public State
 {
   private:
   // Maybe connection to Account 
@@ -25,6 +25,9 @@ class LoginState : virtual State
     // Functions
     void render(Game& game) override;
     void update(Game& game) override;
+
+    // Mini Render Functions
+    void renderBackground(Game& game) noexcept;
 
 };
 

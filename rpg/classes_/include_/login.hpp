@@ -6,6 +6,12 @@
 class LoginState : virtual public State
 {
   private:
+    
+    // Login Panel Delay < ! > 
+    float time_passed_;
+    float panel_delay_;
+    float smooth_duration_;
+
   // Maybe connection to Account 
   // should parse the username and password 
   // then probably go to accountVERIFICATIOR and whatnot 
@@ -26,8 +32,12 @@ class LoginState : virtual public State
     void render(Game& game) override;
     void update(Game& game) override;
 
+    // Mini Update Functions
+    void updateTimePassed(Game& game) noexcept;
+
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
+    void renderLoginPanel(Game& game) noexcept;
 
 };
 

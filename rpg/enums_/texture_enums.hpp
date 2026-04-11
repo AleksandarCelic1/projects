@@ -59,7 +59,8 @@ enum class VisualEffects
 
 enum class UI
 {
-  LOGIN_BACKGROUND = 0
+  LOGIN_BACKGROUND = 0,
+  LOGIN_PANEL = 1
 };
 
 

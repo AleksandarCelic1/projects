@@ -37,10 +37,16 @@ TextureManager::TextureManager(SDL_Renderer* new_renderer)
   loadUITextures();
   loadVisualEffects();
   loadFloorTextures();
+  enableBlendModeUI();
 
 
 }
 TextureManager::~TextureManager() { this->clear(); }
+
+void TextureManager::enableBlendMode(const TextureAsset& asset)
+{
+  SDL_SetTextureBlendMode(asset.texture_, SDL_BLENDMODE_BLEND);
+}
 
 SDL_Texture* TextureManager::loadTexture(const std::string& path)
 {
@@ -113,6 +119,7 @@ void TextureManager::loadCharAnimations()
 void TextureManager::loadUITextures()
 {
   this->ui_textures_[UI::LOGIN_BACKGROUND] = makeTextureAsset("../../photos_/UI_/login_/background_for_login.png");
+  this->ui_textures_[UI::LOGIN_PANEL] = makeTextureAsset("../../photos_/UI_/login_/login_panel_not_finished.png");
 }
 
 void TextureManager::loadVisualEffects()
@@ -129,4 +136,10 @@ void TextureManager::loadFloorTextures()
   this->floor_textures_[FloorType::PLAINS_GRASS] = makeTextureAsset("../../photos_/floors_/PlainsGrass.png");
   this->floor_textures_[FloorType::PLAINS_GRASS_WITH_LEAVES_ONE] = makeTextureAsset("../../photos_/floors_/PlainsGrassLeavesOne.png");
 
+}
+
+
+void TextureManager::enableBlendModeUI()
+{
+  enableBlendMode(this->ui_textures_[UI::LOGIN_PANEL]);
 }

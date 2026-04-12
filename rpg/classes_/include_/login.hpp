@@ -12,6 +12,9 @@ class LoginState : virtual public State
     float panel_delay_;
     float smooth_duration_;
 
+    // Local map to known UI elements
+    std::unordered_map<LoginUI, ElementUI> ui_elements_;
+
   // Maybe connection to Account 
   // should parse the username and password 
   // then probably go to accountVERIFICATIOR and whatnot 
@@ -23,7 +26,7 @@ class LoginState : virtual public State
   public:
     // Constructor Destructor Copy Constructor
     LoginState() = default;
-    LoginState(SDL_Renderer* main_renderer);      
+    LoginState(Game& game);      
     LoginState(const LoginState& copy) = delete;
     ~LoginState() = default;
 

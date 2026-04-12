@@ -1,11 +1,27 @@
 #include "../include_/login.hpp"
 #include "../include_/game.hpp"
 
-LoginState::LoginState(SDL_Renderer* main_renderer) : State(main_renderer)
+LoginState::LoginState(Game& game) : State(game.getRenderer())
 {
   this->time_passed_ = 0.0f;
   this->panel_delay_ = 3.0f;
   this->smooth_duration_ = 1.0f;
+
+  int screen_width = game.getWindowWidth();
+  int screen_height = game.getWindowHeight();
+
+
+  // Scale
+  this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
+  this->ui_elements_[LoginUI::LOGIN_PANEL] = ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
+
+
+
+  // Assign Correct (X,Y)
+  ElementUI& panel = this->ui_elements_[LoginUI::LOGIN_PANEL];
+  panel.setX(this->centerX(0, screen_width, panel.getW()));
+  panel.setY(this->centerY(0, screen_height, panel.getH()));
+
 
 
 }
@@ -24,19 +40,11 @@ void LoginState::update(Game& game)
 
 void LoginState::renderBackground(Game& game)
 {
-  TextureAsset placeholder = game.getTextureManager().getUITexture(UI::LOGIN_BACKGROUND);
-
-  SDL_Rect rect;
-  rect.h = placeholder.height_ * game.getScalingFactor();
-  rect.w = placeholder.width_ * game.getScalingFactor();
-  rect.x = 0;
-  rect.y = 0;
-
-  SDL_RenderCopy(game.getRenderer(), placeholder.texture_, nullptr, &rect);
+  ElementUI& placeholder = this->ui_elements_[LoginUI::LOGIN_BACKGROUND];
+  SDL_RenderCopy(game.getRenderer(), placeholder.getTexture(), nullptr, &placeholder.getRect());
 
   // nullprt for SRC rect means -> that we take a specific part of the texture and then render 
   // it with DST rect and DST holds x,y,w,h if we do nullprt for SRC we just use the entire Texture
-
 }
 
 void LoginState::updateTimePassed(Game& game)
@@ -64,15 +72,8 @@ void LoginState::renderLoginPanel(Game& game)
 
   Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
 
-  TextureAsset login_panel = game.getTextureManager().getUITexture(UI::LOGIN_PANEL);
-  SDL_SetTextureAlphaMod(login_panel.texture_, alpha);
-
-  SDL_Rect rect;
-  rect.w = login_panel.width_ * game.getScalingFactor();
-  rect.h = login_panel.height_ * game.getScalingFactor();
-  rect.x = (game.getWindowWidth() / 2) - (rect.w / 2);
-  rect.y = (game.getWindowHeight() / 2) - (rect.h / 2);
-
-  SDL_RenderCopy(game.getRenderer(), login_panel.texture_, nullptr, &rect);
+  ElementUI& placeholder = this->ui_elements_[LoginUI::LOGIN_PANEL];
+  SDL_SetTextureAlphaMod(placeholder.getTexture(), alpha);
+  SDL_RenderCopy(game.getRenderer(), placeholder.getTexture(), nullptr, &placeholder.getRect());
 
 }

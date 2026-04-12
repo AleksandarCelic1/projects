@@ -2,7 +2,7 @@
 #define STRUCTS_HPP
 
 
-#include "texture_asset.hpp"
+#include "texture_structs.hpp"
 
 
 #endif

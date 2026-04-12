@@ -3,6 +3,8 @@
 
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"
+#include "../../structs_/structs.hpp"
+#include "elementUI.hpp"
 
 class Game;
 
@@ -25,6 +27,12 @@ class State
     void setRenderer(SDL_Renderer* new_rend) noexcept { this->renderer_ = new_rend; }
 
     // Functions
+    int centerX(int x, int screen_width, int object_width);
+    int centerY(int y, int screen_height, int object_height);
+
+
+
+
     virtual void render(Game& game) = 0;
     virtual void update(Game& game) = 0;
 };

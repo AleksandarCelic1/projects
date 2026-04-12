@@ -5,12 +5,13 @@ Game::Game()
   initializeResolution();
   initializeWindowAndRenderer();
 
-  this->login_ = LoginState(this->main_renderer_);
   this->current_state_ = &(this->login_);
   this->delta_time_ = 0.0f;
 
   this->gamestate_ = GameState::LOG_IN_SCREEN;
   this->texture_manager_ = TextureManager(this->main_renderer_);
+
+  this->login_ = LoginState(*this);
 
   
 }

@@ -130,7 +130,7 @@ void TextureManager::loadVisualEffects()
   this->visual_effects_[VisualEffects::PRIEST_SMITE] = makeTextureAsset("../../photos_/player_classes_/priest_/priest_attack_effect_.png");
   this->visual_effects_[VisualEffects::PRIEST_BASIC_HEAL] = makeTextureAsset("../../photos_/player_classes_/priest_/priest_heal_effect_.png");
 }
-
+ 
 void TextureManager::loadFloorTextures()
 {
   this->floor_textures_[FloorType::PLAINS_GRASS] = makeTextureAsset("../../photos_/floors_/PlainsGrass.png");

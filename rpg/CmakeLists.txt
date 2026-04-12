@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.10)
+project(rpg CXX)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+
+add_executable(
+  main
+  src_/main.cpp
+  classes_/source_/account.cpp
+  classes_/source_/armory.cpp
+  classes_/source_/attributes.cpp
+  classes_/source_/camera.cpp
+  classes_/source_/character.cpp
+  classes_/source_/chunk.cpp
+  classes_/source_/cooldown.cpp
+  classes_/source_/database_manager.cpp
+  classes_/source_/elementUI.cpp
+  classes_/source_/game.cpp
+  classes_/source_/inventory.cpp
+  classes_/source_/login.cpp
+  classes_/source_/map_object.cpp
+  classes_/source_/map.cpp
+  classes_/source_/spell.cpp
+  classes_/source_/state.cpp
+  classes_/source_/stats.cpp
+  classes_/source_/texture_manager.cpp
+  classes_/source_/tile.cpp
+  classes_/source_/world.cpp
+)
+
+target_link_libraries(main PRIVATE SDL2::SDL2 SDL2::SDL2_image) // This doesnt work find out why << ! >>

@@ -63,6 +63,13 @@ enum class UI
   LOGIN_PANEL = 1
 };
 
+enum class LoginUI
+{
+  LOGIN_BACKGROUND = 0,
+  LOGIN_PANEL = 1
+};
+
+
 
 
 

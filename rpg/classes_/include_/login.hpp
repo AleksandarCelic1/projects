@@ -2,10 +2,12 @@
 #define LOGIN_HPP
 
 #include "state.hpp"
+#include "login_validator.hpp"
 
 class LoginState : virtual public State
 {
   private:
+    LoginValidator validator_;
     
     // Login Panel Delay < ! > 
     float time_passed_;
@@ -29,6 +31,12 @@ class LoginState : virtual public State
     LoginState(Game& game);      
     LoginState(const LoginState& copy) = delete;
     ~LoginState() = default;
+
+    // Getters
+    LoginValidator& getValidator() noexcept { return this->validator_; }
+
+    // Setters
+    void setValidator(LoginValidator& new_validator) noexcept { this->validator_ = new_validator; }
 
 
     // Functions

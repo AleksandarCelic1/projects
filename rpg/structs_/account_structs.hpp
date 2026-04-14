@@ -8,6 +8,7 @@ typedef struct
   int pass_lowercase_letter_ = 1;
   int pass_uppercase_letter_ = 1;
   int pass_number_ = 1;
+
 } UsernamePasswordConstraints;
 
 typedef struct 

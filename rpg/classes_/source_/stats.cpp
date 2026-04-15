@@ -1,4 +1,4 @@
-#include "stats.hpp"
+#include "../include_/stats.hpp"
 
 Stats::Stats(ClassType type)
 {
@@ -52,7 +52,7 @@ float loaded_movespeed, float loaded_lifesteal, float loaded_tenacity)
   this->tenacity_ = loaded_tenacity;
 }
 
-void Stats::assignBaseStatsToKnight()
+void Stats::assignBaseStatsToKnight() noexcept
 {
   this->base_health_ = static_cast<int>(KnightBaseStats::BASE_HP);
   this->current_health_ = this->base_health_;
@@ -85,7 +85,7 @@ void Stats::assignBaseStatsToKnight()
   this->tenacity_ = static_cast<float>(KnightBaseStats::BASE_TENACITY) / 100.0f;
 }
 
-void Stats::assignBaseStatsToWizard()
+void Stats::assignBaseStatsToWizard() noexcept
 {
   this->base_health_ = static_cast<int>(WizardBaseStats::BASE_HP);
   this->current_health_ = this->base_health_;
@@ -118,7 +118,7 @@ void Stats::assignBaseStatsToWizard()
   this->tenacity_ = static_cast<float>(WizardBaseStats::BASE_TENACITY) / 100.0f;
 }
 
-void Stats::assignBaseStatsToPriest()
+void Stats::assignBaseStatsToPriest() noexcept
 {
   this->base_health_ = static_cast<int>(PriestBaseStats::BASE_HP);
   this->current_health_ = this->base_health_;
@@ -149,4 +149,9 @@ void Stats::assignBaseStatsToPriest()
   this->movement_speed_ = static_cast<float>(PriestBaseStats::BASE_MOVEMENT_SPEED) / 100.0f;
   this->lifesteal_ = static_cast<float>(PriestBaseStats::BASE_LIFESTEAL) / 100.0f;
   this->tenacity_ = static_cast<float>(PriestBaseStats::BASE_TENACITY) / 100.0f;
+}
+
+void Stats::assignBaseStatsToTemplar() noexcept
+{
+  
 }

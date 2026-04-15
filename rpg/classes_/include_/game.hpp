@@ -40,7 +40,7 @@ class Game
 
     Game();
     Game(const Game& copy) = delete;
-    ~Game() = default; // Should this be virtual ? 
+    ~Game();
 
     // Getters 
     int getWindowHeight() const noexcept  { return this->game_settings_.screen_height_; }
@@ -72,7 +72,7 @@ class Game
     void setWorld(World& world) noexcept { this->world_ = world; }
     void setCamera(Camera& new_camera) noexcept { this->camera_ = new_camera; }
     void setLogin(LoginState& new_login) noexcept { this->login_ = new_login; }
-    void setGameState(GameState& new_state) noexcept { this->gamestate_ = new_state; }
+    void setGameState(GameState new_state) noexcept { this->gamestate_ = new_state; }
     void setCurrentState(State* new_current_state) noexcept { this->current_state_ = new_current_state; }
     void setDeltaTime(float& new_delta_time) noexcept { this->delta_time_ = new_delta_time; }
     void setTextureManager(TextureManager& new_manager) noexcept { this->texture_manager_ = new_manager; }

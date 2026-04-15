@@ -1,7 +1,7 @@
 #ifndef ACCOUNT_STRUCTS_HPP
 #define ACCOUNT_STRUCTS_HPP
 
-typedef struct 
+typedef struct UsernamePasswordConstraints
 {
   int user_special_char = 0;
   int pass_special_char_ = 1;
@@ -11,7 +11,7 @@ typedef struct
 
 } UsernamePasswordConstraints;
 
-typedef struct 
+typedef struct UsernamePasswordSizes
 {
   int username_min_ = 4;
   int username_max_ = 16;

@@ -15,7 +15,7 @@ class LoginState : virtual public State
     float smooth_duration_;
 
     // Local map to known UI elements
-    std::unordered_map<LoginUI, ElementUI> ui_elements_;
+    std::unordered_map<LoginUI, ElementUI*> ui_elements_;
 
   // Maybe connection to Account 
   // should parse the username and password 

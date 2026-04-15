@@ -1,6 +1,5 @@
-#include "attributes.hpp"
-#include "stats.hpp"
-
+#include "../include_/attributes.hpp"
+#include "../include_/stats.hpp"
 
 Attributes::Attributes(ClassType type)
 {
@@ -46,7 +45,7 @@ int loaded_chaos, int loaded_isg, int loaded_percp, int loaded_vamp, int loaded_
 }
 
 
-void Attributes::addStrength(int& strength, Stats* placeholder)
+void Attributes::addStrength(int& strength, Stats* placeholder) noexcept
 {
   this->strenght_ += strength;
 
@@ -55,7 +54,7 @@ void Attributes::addStrength(int& strength, Stats* placeholder)
   adjustCurrentHealth(placeholder);
 }
 
-void Attributes::addDexterity(int& dexterity, Stats* placeholder)
+void Attributes::addDexterity(int& dexterity, Stats* placeholder) noexcept
 {
   this->dexterity_ += dexterity;
 
@@ -64,7 +63,7 @@ void Attributes::addDexterity(int& dexterity, Stats* placeholder)
   adjustMovementSpeed(placeholder);
 }
 
-void Attributes::addIntellect(int& intellect, Stats* placeholder)
+void Attributes::addIntellect(int& intellect, Stats* placeholder) noexcept
 {
   this->intellect_ += intellect;
 
@@ -74,7 +73,7 @@ void Attributes::addIntellect(int& intellect, Stats* placeholder)
 }
 
 
-void Attributes::addWisdom(int& wisdom, Stats* placeholder)
+void Attributes::addWisdom(int& wisdom, Stats* placeholder) noexcept
 {
   this->wisdom_ += wisdom;
 
@@ -83,7 +82,7 @@ void Attributes::addWisdom(int& wisdom, Stats* placeholder)
   adjustMovementSpeed(placeholder);
 }
 
-void Attributes::addHavoc(int& havoc, Stats* placeholder)
+void Attributes::addHavoc(int& havoc, Stats* placeholder) noexcept
 {
   this->havoc_ += havoc;
 
@@ -91,28 +90,28 @@ void Attributes::addHavoc(int& havoc, Stats* placeholder)
 }
 
 
-void Attributes::addChaos(int& chaos, Stats* placeholder)
+void Attributes::addChaos(int& chaos, Stats* placeholder) noexcept
 {
   this->chaos_ += chaos;
 
   adjustSpellPenetration(placeholder);
 }
 
-void Attributes::addInsight(int& insight, Stats* placeholder)
+void Attributes::addInsight(int& insight, Stats* placeholder) noexcept
 {
   this->insight_ += insight;
 
   adjustMeleeRange(placeholder);
 }
 
-void Attributes::addPerception(int& perception, Stats* placeholder)
+void Attributes::addPerception(int& perception, Stats* placeholder) noexcept
 {
   this->perception_ += perception;
 
   adjustSpellRange(placeholder);
 }
 
-void Attributes::addVamp(int& vamp, Stats* placeholder)
+void Attributes::addVamp(int& vamp, Stats* placeholder) noexcept
 {
   this->vamp_ += vamp;
 
@@ -120,14 +119,14 @@ void Attributes::addVamp(int& vamp, Stats* placeholder)
 }
 
 
-void Attributes::addFaith(int& faith, Stats* placeholder)
+void Attributes::addFaith(int& faith, Stats* placeholder) noexcept
 {
   this->faith_ += faith;
 
   adjustGlobalCooldown(placeholder);
 }
 
-void Attributes::addTenacity(int& tenacity, Stats* placeholder)
+void Attributes::addTenacity(int& tenacity, Stats* placeholder) noexcept
 {
   this->tenacity_ += tenacity;
 
@@ -136,7 +135,7 @@ void Attributes::addTenacity(int& tenacity, Stats* placeholder)
 
 
 // SUBTRACT < -- !
-void Attributes::subtractStrength(int& strength, Stats* placeholder)
+void Attributes::subtractStrength(int& strength, Stats* placeholder) noexcept
 {
   this->strenght_ -= strength;
 
@@ -145,7 +144,7 @@ void Attributes::subtractStrength(int& strength, Stats* placeholder)
   adjustCurrentHealth(placeholder);
 }
 
-void Attributes::subtractDexterity(int& dexterity, Stats* placeholder)
+void Attributes::subtractDexterity(int& dexterity, Stats* placeholder) noexcept
 {
   this->dexterity_ -= dexterity;
 
@@ -154,7 +153,7 @@ void Attributes::subtractDexterity(int& dexterity, Stats* placeholder)
   adjustMovementSpeed(placeholder);
 }
 
-void Attributes::subtractIntellect(int& intellect, Stats* placeholder)
+void Attributes::subtractIntellect(int& intellect, Stats* placeholder) noexcept
 {
   this->intellect_ -= intellect;
 
@@ -163,7 +162,7 @@ void Attributes::subtractIntellect(int& intellect, Stats* placeholder)
   adjustCurrentMana(placeholder);
 }
 
-void Attributes::subtractWisdom(int& wisdom, Stats* placeholder)
+void Attributes::subtractWisdom(int& wisdom, Stats* placeholder) noexcept
 {
   this->wisdom_ -= wisdom;
 
@@ -172,56 +171,56 @@ void Attributes::subtractWisdom(int& wisdom, Stats* placeholder)
   adjustMovementSpeed(placeholder);
 }
 
-void Attributes::subtractHavoc(int& havoc, Stats* placeholder)
+void Attributes::subtractHavoc(int& havoc, Stats* placeholder) noexcept
 {
   this->havoc_ -= havoc;
 
   adjustArmorPenetration(placeholder);
 }
 
-void Attributes::subtractChaos(int& chaos, Stats* placeholder)
+void Attributes::subtractChaos(int& chaos, Stats* placeholder) noexcept
 {
   this->chaos_ -= chaos;
 
   adjustSpellPenetration(placeholder);
 }
 
-void Attributes::subtractInsight(int& insight, Stats* placeholder)
+void Attributes::subtractInsight(int& insight, Stats* placeholder) noexcept
 {
   this->insight_ -= insight;
 
   adjustMeleeRange(placeholder);
 }
 
-void Attributes::subtractPerception(int& perception, Stats* placeholder)
+void Attributes::subtractPerception(int& perception, Stats* placeholder) noexcept
 {
   this->perception_ -= perception;
 
   adjustSpellRange(placeholder);
 }
 
-void Attributes::subtractVamp(int& vamp, Stats* placeholder)
+void Attributes::subtractVamp(int& vamp, Stats* placeholder) noexcept
 {
   this->vamp_ -= vamp;
 
   adjustLifesteal(placeholder);
 }
 
-void Attributes::subtractFaith(int& faith, Stats* placeholder)
+void Attributes::subtractFaith(int& faith, Stats* placeholder) noexcept
 {
   this->faith_ -= faith;
 
   adjustGlobalCooldown(placeholder);
 }
 
-void Attributes::subtractTenacity(int& tenacity, Stats* placeholder)
+void Attributes::subtractTenacity(int& tenacity, Stats* placeholder) noexcept
 {
   this->tenacity_ -= tenacity;
 
   adjustTenacity(placeholder);
 }
 
-void Attributes::assignBaseAttrToTemplar()
+void Attributes::assignBaseAttrToTemplar() noexcept
 {
   this->strenght_ = static_cast<int>(TemplarBaseAttr::BASE_STR);
   this->dexterity_ = static_cast<int>(TemplarBaseAttr::BASE_DEX);
@@ -240,7 +239,7 @@ void Attributes::assignBaseAttrToTemplar()
   this->tenacity_ = static_cast<int>(TemplarBaseAttr::BASE_TNC);
 }
 
-void Attributes::assignBaseAttrToKnight() 
+void Attributes::assignBaseAttrToKnight() noexcept
 {
   this->strenght_ = static_cast<int>(KnightBaseAttr::BASE_STR);
   this->dexterity_ = static_cast<int>(KnightBaseAttr::BASE_DEX);
@@ -259,7 +258,7 @@ void Attributes::assignBaseAttrToKnight()
   this->tenacity_ = static_cast<int>(KnightBaseAttr::BASE_TNC);
 }
 
-void Attributes::assignBaseAttrToWizard() 
+void Attributes::assignBaseAttrToWizard() noexcept
 {
   this->strenght_ = static_cast<int>(WizardBaseAttr::BASE_STR);
   this->dexterity_ = static_cast<int>(WizardBaseAttr::BASE_DEX);
@@ -278,7 +277,7 @@ void Attributes::assignBaseAttrToWizard()
   this->tenacity_ = static_cast<int>(WizardBaseAttr::BASE_TNC);
 }
 
-void Attributes::assignBaseAttrToPriest() 
+void Attributes::assignBaseAttrToPriest() noexcept
 {
   this->strenght_ = static_cast<int>(PriestBaseAttr::BASE_STR);
   this->dexterity_ = static_cast<int>(PriestBaseAttr::BASE_DEX);
@@ -295,4 +294,109 @@ void Attributes::assignBaseAttrToPriest()
   this->vamp_ = static_cast<int>(PriestBaseAttr::BASE_VMP);
   this->faith_ = static_cast<int>(PriestBaseAttr::BASE_FTH);
   this->tenacity_ = static_cast<int>(PriestBaseAttr::BASE_TNC);
+}
+
+void Attributes::adjustBaseHealth(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustCurrentHealth(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustBaseMana(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustCurrentMana(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustPhysicalPower(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustSpellPower(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustAttackSpeed(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustSpellHaste(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustHitRating(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustPhysicalCritChance(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustMagicCritChance(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustMagicResistence(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustArmor(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustMeleeRange(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustSpellRange(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustGlobalCooldown(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustMovementSpeed(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustArmorPenetration(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustSpellPenetration(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustLifesteal(Stats* placeholder) noexcept
+{
+
+}
+
+void Attributes::adjustTenacity(Stats* placeholder) noexcept
+{
+
 }

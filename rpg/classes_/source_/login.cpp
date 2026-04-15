@@ -12,15 +12,15 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
 
 
   // Scale
-  this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
-  this->ui_elements_[LoginUI::LOGIN_PANEL] = ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
+  this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = new ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
+  this->ui_elements_[LoginUI::LOGIN_PANEL] = new ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
 
 
 
   // Assign Correct (X,Y)
-  ElementUI& panel = this->ui_elements_[LoginUI::LOGIN_PANEL];
-  panel.setX(this->centerX(0, screen_width, panel.getW()));
-  panel.setY(this->centerY(0, screen_height, panel.getH()));
+  ElementUI* panel = this->ui_elements_[LoginUI::LOGIN_PANEL];
+  panel->setX(this->centerX(0, screen_width, panel->getW()));
+  panel->setY(this->centerY(0, screen_height, panel->getH()));
 
 
 
@@ -33,26 +33,26 @@ void LoginState::render(Game& game)
   this->renderLoginPanel(game);
 }
 
-void LoginState::update(Game& game)
+void LoginState::update(Game& game) 
 {
   this->updateTimePassed(game);
 }
 
-void LoginState::renderBackground(Game& game)
+void LoginState::renderBackground(Game& game) noexcept
 {
-  ElementUI& placeholder = this->ui_elements_[LoginUI::LOGIN_BACKGROUND];
-  SDL_RenderCopy(game.getRenderer(), placeholder.getTexture(), nullptr, &placeholder.getRect());
+  ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_BACKGROUND];
+  SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &placeholder->getRect());
 
   // nullprt for SRC rect means -> that we take a specific part of the texture and then render 
   // it with DST rect and DST holds x,y,w,h if we do nullprt for SRC we just use the entire Texture
 }
 
-void LoginState::updateTimePassed(Game& game)
+void LoginState::updateTimePassed(Game& game) noexcept
 {
   this->time_passed_ += game.getDeltaTime();
 }
 
-void LoginState::renderLoginPanel(Game& game)
+void LoginState::renderLoginPanel(Game& game) noexcept
 {
   if(this->time_passed_ < this->panel_delay_)
   {
@@ -72,8 +72,8 @@ void LoginState::renderLoginPanel(Game& game)
 
   Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
 
-  ElementUI& placeholder = this->ui_elements_[LoginUI::LOGIN_PANEL];
-  SDL_SetTextureAlphaMod(placeholder.getTexture(), alpha);
-  SDL_RenderCopy(game.getRenderer(), placeholder.getTexture(), nullptr, &placeholder.getRect());
+  ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_PANEL];
+  SDL_SetTextureAlphaMod(placeholder->getTexture(), alpha);
+  SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &placeholder->getRect());
 
 }

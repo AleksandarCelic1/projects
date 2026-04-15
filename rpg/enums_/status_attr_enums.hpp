@@ -1,7 +1,7 @@
 #ifndef STATUS_ATTR_ENUMS_HPP
 #define STATUS_ATTR_ENUMS_HPP
 
-enum TemplarBaseStats
+enum class TemplarBaseStats
 {
   BASE_HP = 0,
   BASE_MANA = 0,
@@ -28,7 +28,7 @@ enum TemplarBaseStats
   BASE_TENACITY = 0
 } ;
 
-enum WizardBaseStats
+enum class WizardBaseStats
 {
   BASE_HP = 0,
   BASE_MANA = 0,

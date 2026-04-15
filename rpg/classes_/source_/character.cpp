@@ -1,6 +1,6 @@
 #include "../include_/character.hpp"
 
-void Character::addBronze(int& bronze)
+void Character::addBronze(int& bronze) noexcept
 {
   this->bronze_ += bronze;
 
@@ -10,7 +10,7 @@ void Character::addBronze(int& bronze)
   }
 }
 
-void Character::addSilver(int& silver)
+void Character::addSilver(int& silver) noexcept
 {
   this->silver_ += silver;
   if(this->silver_ > MAXIMUM_BRONZE_AND_SILVER)
@@ -19,29 +19,29 @@ void Character::addSilver(int& silver)
   }
 }
 
-void Character::addGold(int& gold)
+void Character::addGold(int& gold) noexcept
 {
   this->gold_ += gold;
   checkGoldCapacity();
 }
 
 
-void Character::subtractBronze(int& bronze)
+void Character::subtractBronze(int& bronze) noexcept
 {
   this->bronze_ -= bronze;
 }
 
-void Character::subtractSilver(int& silver)
+void Character::subtractSilver(int& silver) noexcept
 {
   this->silver_ -= silver;
 }
 
-void Character::subtractGold(int& gold)
+void Character::subtractGold(int& gold) noexcept
 {
   this->gold_ -= gold;
 }
 
-void Character::convertBronzeToSilver()
+void Character::convertBronzeToSilver() noexcept
 {
   this->bronze_ -= MAXIMUM_BRONZE_AND_SILVER;
   this->silver_ += 1;
@@ -51,14 +51,14 @@ void Character::convertBronzeToSilver()
   }
 }
 
-void Character::convertSilverToGold()
+void Character::convertSilverToGold() noexcept
 {
   this->silver_ -= MAXIMUM_BRONZE_AND_SILVER;
   this->gold_ += 1;
   checkGoldCapacity();
 }
 
-void Character::checkGoldCapacity()
+void Character::checkGoldCapacity() noexcept
 {
   if(this->gold_ > MAXIMUM_GOLD)
   {
@@ -66,7 +66,7 @@ void Character::checkGoldCapacity()
   }
 }
 
-void Character::convertGoldToSilver()
+void Character::convertGoldToSilver() noexcept
 {
   if(this->gold_ > 0)
   {
@@ -75,7 +75,7 @@ void Character::convertGoldToSilver()
   }
 }
 
-void Character::convertSilverToBronze()
+void Character::convertSilverToBronze() noexcept
 {
   if(this->silver_ > 0)
   {

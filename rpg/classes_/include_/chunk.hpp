@@ -18,7 +18,7 @@ class Chunk
     ~Chunk() = default;
 
     // Getters
-    std::vector<std::vector<Tile>> getTiles() const noexcept { return this->tiles_; }
+    std::vector<std::vector<Tile>>& getTiles() noexcept { return this->tiles_; }
 
     // Setters
 

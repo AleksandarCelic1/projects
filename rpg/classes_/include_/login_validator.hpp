@@ -11,6 +11,9 @@ class LoginValidator : virtual public InputValidator
 
   public:
     // Constructor Copy Constructor Destructor
+    LoginValidator() = default; // check
+    LoginValidator(const LoginValidator& copy) = delete;
+    ~LoginValidator() = default; //check
 
     // Functions
     void validate(Game& game, const std::string& username, const std::string& password) override;

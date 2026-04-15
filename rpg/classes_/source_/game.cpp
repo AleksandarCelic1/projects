@@ -2,22 +2,46 @@
 
 Game::Game()
 {
+  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+  IMG_Init(IMG_INIT_PNG);
+  TTF_Init();
+
   initializeResolution();
   initializeWindowAndRenderer();
 
-  this->current_state_ = &(this->login_);
+  
   this->delta_time_ = 0.0f;
 
   this->gamestate_ = GameState::LOG_IN_SCREEN;
   this->texture_manager_ = TextureManager(this->main_renderer_);
 
   this->login_ = LoginState(*this);
+  this->current_state_ = &(this->login_);
 
   
 }
 
+Game::~Game()
+{
+   if(this->main_renderer_)
+  {
+    SDL_DestroyRenderer(this->main_renderer_);
+    this->main_renderer_ = nullptr;
+  }
 
-void Game::initializeResolution()
+  if(this->main_window_)
+  {
+    SDL_DestroyWindow(this->main_window_);
+    this->main_window_ = nullptr;
+  }
+
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
+}
+
+
+void Game::initializeResolution() noexcept
 {
   int mouse_x = 0;
   int mouse_y = 0;
@@ -62,7 +86,7 @@ void Game::initializeResolution()
 
 }
 
-void Game::initializeWindowAndRenderer()
+void Game::initializeWindowAndRenderer() noexcept
 {
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;
@@ -130,8 +154,11 @@ void Game::mainEventHandler(SDL_Event* event)
   // SDL_PollEvent is basically a queue and we ask each frame if there is a new event if no he returns 0 if yes we handle it < !
   while(SDL_PollEvent(event))
   {
-    switch(event->type)
+    switch(event->key.keysym.sym)
     {
+      case SDLK_ESCAPE:
+        this->setGameState(GameState::EXIT);
+        break;
       case SDL_KEYDOWN:
         break;
       case SDL_KEYUP:
@@ -151,7 +178,7 @@ void Game::mainEventHandler(SDL_Event* event)
 
 }
 
-void Game::calculateDeltaTime(Uint32& last_frame)
+void Game::calculateDeltaTime(Uint32& last_frame) noexcept
 {
   Uint32 current_frame = SDL_GetTicks();
   this->delta_time_ = (current_frame - last_frame) / ONE_SECOND;

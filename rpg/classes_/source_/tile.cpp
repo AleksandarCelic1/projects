@@ -9,7 +9,7 @@ Tile::Tile(FloorType new_type, int world_x, int world_y)
 
 
 // Not Implemented
-void Tile::render(SDL_Renderer* renderer)
+void Tile::render(SDL_Renderer* renderer, std::unordered_map<FloorType, SDL_Texture*>& map) noexcept
 {
   return;
 }

@@ -15,7 +15,7 @@ class InputValidator
     // Constructor Copy Constructor Desctructor
     InputValidator() = default;
     InputValidator(const InputValidator& copy ) = delete;
-    virtual ~InputValidator();
+    virtual ~InputValidator() = default; // check
 
 
     // Functions 

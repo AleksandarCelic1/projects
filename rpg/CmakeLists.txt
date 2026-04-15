@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(rpg CXX)
 
+set(CMAKE_CXX_STANDARD 17)
+
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 add_executable(
   main
@@ -27,6 +30,10 @@ add_executable(
   classes_/source_/texture_manager.cpp
   classes_/source_/tile.cpp
   classes_/source_/world.cpp
+  classes_/source_/login_validator.cpp
 )
 
-target_link_libraries(main PRIVATE SDL2::SDL2 SDL2::SDL2_image) // This doesnt work find out why << ! >>
+target_link_libraries(main PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)
+
+message(STATUS "SDL2 include dirs: ${SDL2_INCLUDE_DIRS}")
+message(STATUS "SDL2_image include dirs: ${SDL2_IMAGE_INCLUDE_DIRS}")

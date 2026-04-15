@@ -10,11 +10,9 @@ void LoginValidator::validate(Game& game, const std::string& username, const std
   {
     // try to log in -- > auth via database
   }
-
-
 }
 
-bool LoginValidator::validateUsername(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validateUsername(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   // make error printfs << ! >> 
   if(!this->validateUsernameSize(username, constraints, sizes))
@@ -35,7 +33,7 @@ bool LoginValidator::validateUsername(const std::string& username, UsernamePassw
   return true;
 }
 
-bool LoginValidator::validatePassword(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePassword(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   if(!this->validatePasswordSize(password, constraints, sizes))
   {
@@ -72,7 +70,7 @@ bool LoginValidator::validatePassword(const std::string& password, UsernamePassw
 }
 
 
-bool LoginValidator::validateUsernameSize(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validateUsernameSize(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   if(username.size() < sizes.username_min_)
   {
@@ -87,7 +85,7 @@ bool LoginValidator::validateUsernameSize(const std::string& username, UsernameP
   return true;
 }
 
-bool LoginValidator::validateUsernameSpecialChars(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validateUsernameSpecialChars(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   int count = 0; 
   for(int index = 0; username.size(); index++)
@@ -106,7 +104,7 @@ bool LoginValidator::validateUsernameSpecialChars(const std::string& username, U
   return true;
 }
 
-bool LoginValidator::validateUsernameSpaces(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validateUsernameSpaces(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   if(username.find(' ') != std::string::npos)
   {
@@ -116,7 +114,7 @@ bool LoginValidator::validateUsernameSpaces(const std::string& username, Usernam
   return true;
 }
 
-bool LoginValidator::validatePasswordLowerCase(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePasswordLowerCase(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   int count = 0; 
   for(int index = 0; index < password.size(); index++)
@@ -135,7 +133,7 @@ bool LoginValidator::validatePasswordLowerCase(const std::string& password, User
   return false;
 }
 
-bool LoginValidator::validatePasswordUpperCase(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePasswordUpperCase(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   int count = 0; 
   for(int index = 0; index < password.size(); index++)
@@ -154,7 +152,7 @@ bool LoginValidator::validatePasswordUpperCase(const std::string& password, User
   return false; 
 }
 
-bool LoginValidator::validatePasswordNumber(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePasswordNumber(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   int count = 0; 
   for(int index = 0; index < password.size(); index++)
@@ -173,7 +171,7 @@ bool LoginValidator::validatePasswordNumber(const std::string& password, Usernam
   return false;
 }
 
-bool LoginValidator::validatePasswordSpecialCharacter(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePasswordSpecialCharacter(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   int count = 0; 
   for(int index = 0; index < password.size(); index++)
@@ -192,7 +190,7 @@ bool LoginValidator::validatePasswordSpecialCharacter(const std::string& passwor
   return false;
 }
 
-bool LoginValidator::validatePasswordSpaces(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePasswordSpaces(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   if(password.find(' ') != std::string::npos)
   {
@@ -202,7 +200,7 @@ bool LoginValidator::validatePasswordSpaces(const std::string& password, Usernam
   return true;
 }
 
-bool LoginValidator::validatePasswordSize(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes)
+bool LoginValidator::validatePasswordSize(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   if(password.size() < sizes.password_min_)
   {

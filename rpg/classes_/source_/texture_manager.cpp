@@ -33,10 +33,10 @@ void TextureManager::clear() noexcept
 TextureManager::TextureManager(SDL_Renderer* new_renderer) 
 { 
   this->main_renderer_ = new_renderer;
-  loadCharAnimations();
+  //loadCharAnimations();
   loadUITextures();
-  loadVisualEffects();
-  loadFloorTextures();
+  //loadVisualEffects();
+  //loadFloorTextures();
   enableBlendModeUI();
 
 
@@ -56,7 +56,10 @@ SDL_Texture* TextureManager::loadTexture(const std::string& path) noexcept
     return nullptr;
   }
 
+
+
   SDL_Texture* texture = SDL_CreateTextureFromSurface(this->main_renderer_, surface);
+  SDL_FreeSurface(surface);
   return texture;
 }
 

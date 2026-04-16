@@ -12,15 +12,18 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
 
 
   // Scale
-  this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = new ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
-  this->ui_elements_[LoginUI::LOGIN_PANEL] = new ElementUI(game.getTextureManager().getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
+  this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = new ElementUI(game.getTextureManager()->getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
+  this->ui_elements_[LoginUI::LOGIN_PANEL] = new ElementUI(game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
 
 
 
   // Assign Correct (X,Y)
-  ElementUI* panel = this->ui_elements_[LoginUI::LOGIN_PANEL];
+  ElementUI* panel = this->ui_elements_[LoginUI::LOGIN_PANEL];  
+  
   panel->setX(this->centerX(0, screen_width, panel->getW()));
   panel->setY(this->centerY(0, screen_height, panel->getH()));
+
+  
 
 
 
@@ -41,7 +44,8 @@ void LoginState::update(Game& game)
 void LoginState::renderBackground(Game& game) noexcept
 {
   ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_BACKGROUND];
-  SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &placeholder->getRect());
+  SDL_Rect copy = placeholder->getRect();
+  SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &copy);
 
   // nullprt for SRC rect means -> that we take a specific part of the texture and then render 
   // it with DST rect and DST holds x,y,w,h if we do nullprt for SRC we just use the entire Texture

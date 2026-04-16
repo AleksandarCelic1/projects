@@ -22,10 +22,10 @@ class Game
   private:
     Account current_account_logged_in_;
     World world_;
-    TextureManager texture_manager_;
+    TextureManager* texture_manager_;
     Camera camera_;
 
-    LoginState login_;
+    LoginState* login_;
     State* current_state_;
 
     GameSettings game_settings_;
@@ -55,9 +55,9 @@ class Game
     Account& getAccount() noexcept { return this->current_account_logged_in_; }
     World& getWorld() noexcept { return this->world_; }
     Camera& getCamera() noexcept { return this->camera_; }
-    LoginState& getLogin() noexcept { return this->login_; }
+    LoginState* getLogin() noexcept { return this->login_; }
     State* getCurrentState() noexcept { return this->current_state_; }
-    TextureManager& getTextureManager() noexcept { return this->texture_manager_; }
+    TextureManager* getTextureManager() noexcept { return this->texture_manager_; }
 
     GameState getGameState() const noexcept { return this->gamestate_; }
     
@@ -71,11 +71,11 @@ class Game
     void setCurrentAccountLoggedIn(Account& new_current_account)  noexcept { this->current_account_logged_in_ = new_current_account; }
     void setWorld(World& world) noexcept { this->world_ = world; }
     void setCamera(Camera& new_camera) noexcept { this->camera_ = new_camera; }
-    void setLogin(LoginState& new_login) noexcept { this->login_ = new_login; }
+    void setLogin(LoginState* new_login) noexcept { this->login_ = new_login; }
     void setGameState(GameState new_state) noexcept { this->gamestate_ = new_state; }
     void setCurrentState(State* new_current_state) noexcept { this->current_state_ = new_current_state; }
     void setDeltaTime(float& new_delta_time) noexcept { this->delta_time_ = new_delta_time; }
-    void setTextureManager(TextureManager& new_manager) noexcept { this->texture_manager_ = new_manager; }
+    void setTextureManager(TextureManager* new_manager) noexcept { this->texture_manager_ = new_manager; }
     
 
 

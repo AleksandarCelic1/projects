@@ -13,10 +13,10 @@ Game::Game()
   this->delta_time_ = 0.0f;
 
   this->gamestate_ = GameState::LOG_IN_SCREEN;
-  this->texture_manager_ = TextureManager(this->main_renderer_);
+  this->texture_manager_ = new TextureManager(this->main_renderer_);
 
-  this->login_ = LoginState(*this);
-  this->current_state_ = &(this->login_);
+  this->login_ = new LoginState(*this);
+  this->current_state_ = (this->login_);
 
   
 }
@@ -61,6 +61,8 @@ void Game::initializeResolution() noexcept
   int width = display_mode.w;
   int height = display_mode.h;
 
+  std::cout << width << " " << height;
+
   if(width >= RESOLUTIONS[2].first && height >= RESOLUTIONS[2].second)
   {
     this->game_settings_.scaling_factor_ = SCALING_FACTOR_FOUR;
@@ -81,6 +83,9 @@ void Game::initializeResolution() noexcept
   }
 
   this->game_settings_.fullscreen_ = false;
+  std::cout << "we are having this resolution" << this->game_settings_.screen_height_ << " " << this->game_settings_.screen_width_;
+
+  
    
   return;
 
@@ -169,7 +174,6 @@ void Game::mainEventHandler(SDL_Event* event)
       case SDL_MOUSEBUTTONUP:
         break;
       default:
-        std::cout << "[EVENT] -> event didnt match any type!" << std::endl;
         break;
     }
   } 

@@ -83,8 +83,7 @@ void Game::initializeResolution() noexcept
   }
 
   this->game_settings_.fullscreen_ = false;
-  std::cout << "we are having this resolution" << this->game_settings_.screen_height_ << " " << this->game_settings_.screen_width_;
-
+  // There are different ways to check for resolutions < ! > look into this 
   
    
   return;

@@ -3,6 +3,8 @@
 
 LoginState::LoginState(Game& game) : State(game.getRenderer())
 {
+  this->validator_ = new LoginValidator();
+  
   this->time_passed_ = 0.0f;
   this->panel_delay_ = 3.0f;
   this->smooth_duration_ = 1.0f;
@@ -79,5 +81,13 @@ void LoginState::renderLoginPanel(Game& game) noexcept
   ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_PANEL];
   SDL_SetTextureAlphaMod(placeholder->getTexture(), alpha);
   SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &placeholder->getRect());
+
+}
+
+void LoginState::dispatch(Game& game) 
+{
+  const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
+
+
 
 }

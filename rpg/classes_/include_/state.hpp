@@ -4,7 +4,7 @@
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"
 #include "../../structs_/structs.hpp"
-#include "elementUI.hpp"
+
 
 class Game;
 
@@ -32,7 +32,7 @@ class State
 
 
 
-
+    virtual void dispatch(Game& game) = 0;
     virtual void render(Game& game) = 0;
     virtual void update(Game& game) = 0;
 };

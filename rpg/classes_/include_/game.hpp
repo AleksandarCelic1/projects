@@ -7,6 +7,7 @@
 #include "camera.hpp"
 #include "login.hpp"
 #include "state.hpp"
+#include "dispatcher.hpp"
 
 typedef struct
 {
@@ -27,6 +28,7 @@ class Game
 
     LoginState* login_;
     State* current_state_;
+    Dispatcher* dispatcher_;
 
     GameSettings game_settings_;
     GameState gamestate_;
@@ -52,12 +54,14 @@ class Game
     SDL_Window* getMainWindow() const noexcept { return this->main_window_;  }
     SDL_Renderer* getRenderer() const noexcept { return this->main_renderer_;}
 
+
     Account& getAccount() noexcept { return this->current_account_logged_in_; }
     World& getWorld() noexcept { return this->world_; }
     Camera& getCamera() noexcept { return this->camera_; }
     LoginState* getLogin() noexcept { return this->login_; }
     State* getCurrentState() noexcept { return this->current_state_; }
     TextureManager* getTextureManager() noexcept { return this->texture_manager_; }
+    Dispatcher* getDispatcher() noexcept { return this->dispatcher_; }
 
     GameState getGameState() const noexcept { return this->gamestate_; }
     
@@ -76,6 +80,7 @@ class Game
     void setCurrentState(State* new_current_state) noexcept { this->current_state_ = new_current_state; }
     void setDeltaTime(float& new_delta_time) noexcept { this->delta_time_ = new_delta_time; }
     void setTextureManager(TextureManager* new_manager) noexcept { this->texture_manager_ = new_manager; }
+    void setDispatcher(Dispatcher* new_dispatcher) noexcept { this->dispatcher_ = new_dispatcher; }
     
 
 

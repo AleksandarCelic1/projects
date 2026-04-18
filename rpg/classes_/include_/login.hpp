@@ -3,11 +3,14 @@
 
 #include "state.hpp"
 #include "login_validator.hpp"
+#include "elementUI.hpp"
 
 class LoginState : virtual public State
 {
   private:
-    LoginValidator validator_;
+    LoginValidator* validator_;
+
+    
     
     // Login Panel Delay < ! > 
     float time_passed_;
@@ -33,13 +36,14 @@ class LoginState : virtual public State
     ~LoginState() = default;
 
     // Getters
-    LoginValidator& getValidator() noexcept { return this->validator_; }
+    LoginValidator* getValidator() noexcept { return this->validator_; }
 
     // Setters
-    void setValidator(LoginValidator& new_validator) noexcept { this->validator_ = new_validator; }
+    void setValidator(LoginValidator* new_validator) noexcept { this->validator_ = new_validator; }
 
 
     // Functions
+    void dispatch(Game& game) override;
     void render(Game& game) override;
     void update(Game& game) override;
 

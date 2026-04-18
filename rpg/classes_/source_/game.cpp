@@ -17,6 +17,7 @@ Game::Game()
 
   this->login_ = new LoginState(*this);
   this->current_state_ = (this->login_);
+  this->dispatcher_ = new Dispatcher();
 
   
 }
@@ -61,7 +62,6 @@ void Game::initializeResolution() noexcept
   int width = display_mode.w;
   int height = display_mode.h;
 
-  std::cout << width << " " << height;
 
   if(width >= RESOLUTIONS[2].first && height >= RESOLUTIONS[2].second)
   {
@@ -153,28 +153,15 @@ void Game::update()
   this->current_state_->update(*this);
 }
 
+
 void Game::mainEventHandler(SDL_Event* event)
 {
   // SDL_PollEvent is basically a queue and we ask each frame if there is a new event if no he returns 0 if yes we handle it < !
   while(SDL_PollEvent(event))
   {
-    switch(event->key.keysym.sym)
-    {
-      case SDLK_ESCAPE:
-        this->setGameState(GameState::EXIT);
-        break;
-      case SDL_KEYDOWN:
-        break;
-      case SDL_KEYUP:
-        break;
-      case SDL_MOUSEBUTTONDOWN:
-        if(event->button.button == SDL_BUTTON_LEFT) { } // this is left click 
-        break;
-      case SDL_MOUSEBUTTONUP:
-        break;
-      default:
-        break;
-    }
+    if(event->key.keysym.sym == SDLK_ESCAPE) { this->setGameState(GameState::EXIT); }
+    else if(event->type == SDL_KEYDOWN) { this->dispatcher_->setKeyCode(event->key.keysym.sym); }
+    else if(event->type == SDL_KEYUP) {  this->current_state_->dispatch(*this); }
   } 
 
 

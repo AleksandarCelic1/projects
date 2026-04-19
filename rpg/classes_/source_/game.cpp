@@ -139,8 +139,6 @@ void Game::run()
   // on next load we can continue from where we stopped
 }
 
-
-
 void Game::render()
 {
   SDL_RenderClear(this->main_renderer_);
@@ -152,7 +150,6 @@ void Game::update()
 {
   this->current_state_->update(*this);
 }
-
 
 void Game::mainEventHandler(SDL_Event* event)
 {

@@ -4,6 +4,7 @@
 LoginState::LoginState(Game& game) : State(game.getRenderer())
 {
   this->validator_ = new LoginValidator();
+
   
   this->time_passed_ = 0.0f;
   this->panel_delay_ = 3.0f;
@@ -89,5 +90,44 @@ void LoginState::dispatch(Game& game)
   const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
 
 
+  // press K -> goes here -> sees whats selected/which one is active 
+  // -> goes to update username or password!
+
 
 }
+
+void LoginState::setPassword(PasswordField* new_password) noexcept
+{
+  if(new_password == nullptr)
+  {
+    std::cout << "[FAIL] -> [LoginState::setPassword] -> new_password object is null < ! >" << std::endl;
+    return;
+  }
+
+  if(this->password_ != nullptr)
+  {
+    delete this->password_;
+    this->password_ = nullptr;
+  }
+
+  this->password_ = new_password;
+}
+
+void LoginState::setUsername(TextField* new_username) noexcept
+{
+  if(new_username == nullptr)
+  {
+    std::cout << "[FAIL] -> [LoginState::setUsername] -> new_username object is null < ! >" << std::endl;
+    return;
+  }
+
+  if(this->username_ != nullptr)
+  {
+    delete this->username_;
+    this->username_ = nullptr;
+  }
+
+  this->username_= new_username;
+
+}
+

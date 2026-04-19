@@ -4,11 +4,17 @@
 #include "state.hpp"
 #include "login_validator.hpp"
 #include "elementUI.hpp"
+#include "text_field.hpp"
+#include "password_field.hpp"
 
 class LoginState : virtual public State
 {
   private:
     LoginValidator* validator_;
+    TextField* username_;
+    PasswordField* password_;
+
+
 
     
     
@@ -37,9 +43,13 @@ class LoginState : virtual public State
 
     // Getters
     LoginValidator* getValidator() noexcept { return this->validator_; }
+    TextField* getUsername() noexcept { return this->username_; }
+    PasswordField* getPassword() noexcept { return this->password_; }
 
     // Setters
     void setValidator(LoginValidator* new_validator) noexcept { this->validator_ = new_validator; }
+    void setUsername(TextField* new_username ) noexcept;
+    void setPassword(PasswordField* new_password) noexcept;
 
 
     // Functions

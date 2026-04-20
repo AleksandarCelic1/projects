@@ -39,6 +39,9 @@ class TextField
     void setY(int new_y) noexcept { this->y_ = new_y; }
 
     // Functions
+
+    void handleBackspace() noexcept;
+    void handleNewLetter() noexcept;
 };
 
 

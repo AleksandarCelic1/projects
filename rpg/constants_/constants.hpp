@@ -38,6 +38,6 @@ inline const int FPS = 60;
 inline const int FRAME_DELAY = 1000 / FPS;
 inline const float ONE_SECOND = 1000.0f; 
 
-
+extern std::unordered_map<SDL_Keycode, char> SDL_KEYS;
 
 #endif

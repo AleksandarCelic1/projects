@@ -14,6 +14,8 @@ class LoginState : virtual public State
     TextField* username_;
     PasswordField* password_;
 
+    TextField* currently_selected_;
+
 
 
     

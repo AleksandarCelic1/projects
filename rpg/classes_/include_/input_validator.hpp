@@ -19,7 +19,7 @@ class InputValidator
 
 
     // Functions 
-    virtual void validate(Game& game, const std::string& username, const std::string& password) = 0;
+    virtual bool validate(Game& game, const std::string& username, const std::string& password) = 0;
 };
 
 

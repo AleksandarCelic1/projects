@@ -26,6 +26,8 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
   panel->setX(this->centerX(0, screen_width, panel->getW()));
   panel->setY(this->centerY(0, screen_height, panel->getH()));
 
+  // Im gonna need 5 more textfields 
+
   
 
 
@@ -88,6 +90,17 @@ void LoginState::renderLoginPanel(Game& game) noexcept
 void LoginState::dispatch(Game& game) 
 {
   const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
+
+  if(keycode == SDLK_KP_ENTER)
+  {
+    if(this->validator_->validate(game, this->getUsername()->getTextConst(), this->getPassword()->getTextConst()))
+    {
+      // If this is true it means the username and password are okay regarding the syntax
+      // can now query the DB to see if there is a possible match < ! >
+    }
+  }
+
+  
 
 
   // press K -> goes here -> sees whats selected/which one is active 

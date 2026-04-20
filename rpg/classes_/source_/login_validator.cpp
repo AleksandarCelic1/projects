@@ -1,15 +1,17 @@
 #include "../include_/login_validator.hpp"
 
 
-void LoginValidator::validate(Game& game, const std::string& username, const std::string& password)
+bool LoginValidator::validate(Game& game, const std::string& username, const std::string& password)
 { 
   UsernamePasswordConstraints constraints;
   UsernamePasswordSizes sizes;
 
-  if(this->validateUsername(username, constraints, sizes) && this->validatePassword(password, constraints, sizes))
-  {
-    // try to log in -- > auth via database
-  }
+  bool result = false;
+
+  result = (this->validateUsername(username, constraints, sizes) && this->validatePassword(password, constraints, sizes));
+
+  return result;
+
 }
 
 bool LoginValidator::validateUsername(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept

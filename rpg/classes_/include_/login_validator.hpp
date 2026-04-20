@@ -16,7 +16,7 @@ class LoginValidator : virtual public InputValidator
     ~LoginValidator() = default; //check
 
     // Functions
-    void validate(Game& game, const std::string& username, const std::string& password) override;
+    bool validate(Game& game, const std::string& username, const std::string& password) override;
 
     
     bool validateUsername(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept;

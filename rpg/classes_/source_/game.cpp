@@ -159,6 +159,7 @@ void Game::mainEventHandler(SDL_Event* event)
     if(event->key.keysym.sym == SDLK_ESCAPE) { this->setGameState(GameState::EXIT); }
     else if(event->type == SDL_KEYDOWN) { this->dispatcher_->setKeyCode(event->key.keysym.sym); }
     else if(event->type == SDL_KEYUP) {  this->current_state_->dispatch(*this); }
+    
   } 
 
 

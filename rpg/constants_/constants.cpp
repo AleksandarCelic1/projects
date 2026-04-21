@@ -1,6 +1,6 @@
 #include "constants.hpp"
 
-std::unordered_map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS =
+std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS =
 {
   // Letters
   {{SDLK_a, false}, 'a'}, {{SDLK_a, true}, 'A'},

@@ -41,7 +41,7 @@ class TextField
     // Functions
 
     void handleBackspace() noexcept;
-    void handleNewLetter() noexcept;
+    void handleNewLetter(char character) noexcept;
 };
 
 

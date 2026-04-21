@@ -90,6 +90,19 @@ void LoginState::renderLoginPanel(Game& game) noexcept
 void LoginState::dispatch(Game& game) 
 {
   const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
+  bool shift_pressed = game.getDispatcher()->getShiftHeld();
+  bool control_pressed = game.getDispatcher()->getControlHeld();
+  
+
+  std::pair<SDL_Keycode, bool> key = {keycode, shift_pressed};
+  auto iterator = SDL_KEYS.find(key);
+  if(iterator == SDL_KEYS.end())
+  {
+    return;
+  }
+
+  char new_char = iterator->second;
+
 
   if(keycode == SDLK_KP_ENTER)
   {
@@ -99,6 +112,21 @@ void LoginState::dispatch(Game& game)
       // can now query the DB to see if there is a possible match < ! >
     }
   }
+
+  if(this->username_->getActive())
+  {
+    keycode == SDLK_BACKSPACE ? this->username_->handleBackspace() : this->username_->handleNewLetter(new_char);
+  }
+  else if(this->password_->getActive())
+  {
+    keycode == SDLK_BACKSPACE ? this->password_->handleBackspace() : this->password_->handleNewLetter(new_char);
+  }
+
+
+
+
+
+
 
   
 

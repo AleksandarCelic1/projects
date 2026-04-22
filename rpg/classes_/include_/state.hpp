@@ -32,7 +32,8 @@ class State
 
 
 
-    virtual void dispatch(Game& game) = 0;
+    virtual void dispatchKeyboardInput(Game& game) = 0;
+    virtual void dispatchMouseInput(Game& game) = 0;
     virtual void render(Game& game) = 0;
     virtual void update(Game& game) = 0;
 };

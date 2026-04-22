@@ -55,7 +55,8 @@ class LoginState : virtual public State
 
 
     // Functions
-    void dispatch(Game& game) override;
+    void dispatchKeyboardInput(Game& game) override;
+    void dispatchMouseInput(Game& game) override;
     void render(Game& game) override;
     void update(Game& game) override;
 

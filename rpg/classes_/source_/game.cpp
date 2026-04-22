@@ -154,16 +154,43 @@ void Game::update()
 void Game::mainEventHandler(SDL_Event* event)
 {
   // SDL_PollEvent is basically a queue and we ask each frame if there is a new event if no he returns 0 if yes we handle it < !
+  SDL_Keymod modifier; // Is a Bitmask 
+
   while(SDL_PollEvent(event))
   {
-    if(event->key.keysym.sym == SDLK_ESCAPE) { this->setGameState(GameState::EXIT); }
-    else if(event->type == SDL_KEYDOWN) { this->dispatcher_->setKeyCode(event->key.keysym.sym); }
-    else if(event->type == SDL_KEYUP) {  this->current_state_->dispatch(*this); }
-    
+    if(event->key.keysym.sym == SDLK_ESCAPE)
+    {
+      this->setGameState(GameState::EXIT);
+    }
+    else if(event->type == SDL_KEYDOWN) 
+    { 
+      modifier = SDL_GetModState(); 
+      if(modifier & KMOD_SHIFT) 
+      {
+        this->dispatcher_->setShiftHeld(true);
+      }
+
+      if(modifier & KMOD_CTRL)
+      {
+        this->dispatcher_->setControlHeld(true);
+      }
+      
+      this->dispatcher_->setKeyCode(event->key.keysym.sym); 
+    }
+    else if(event->type == SDL_KEYUP) {
+      this->current_state_->dispatchKeyboardInput(*this);
+      this->dispatcher_->setShiftHeld(false);
+      this->dispatcher_->setControlHeld(false);
+    }
+    else if(event->type == SDL_MOUSEBUTTONDOWN)
+    {
+      this->dispatcher_->setMouseButton(event->button.button);
+    }
+    else if(event->type == SDL_MOUSEBUTTONUP)
+    {
+      this->current_state_->dispatchMouseInput(*this);
+    }
   } 
-
-
-
 }
 
 void Game::calculateDeltaTime(Uint32& last_frame) noexcept

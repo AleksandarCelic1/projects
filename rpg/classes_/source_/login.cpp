@@ -87,12 +87,12 @@ void LoginState::renderLoginPanel(Game& game) noexcept
 
 }
 
-void LoginState::dispatch(Game& game) 
+void LoginState::dispatchKeyboardInput(Game& game) 
 {
   const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
   bool shift_pressed = game.getDispatcher()->getShiftHeld();
   bool control_pressed = game.getDispatcher()->getControlHeld();
-  
+
 
   std::pair<SDL_Keycode, bool> key = {keycode, shift_pressed};
   auto iterator = SDL_KEYS.find(key);
@@ -135,6 +135,22 @@ void LoginState::dispatch(Game& game)
   // -> goes to update username or password!
 
 
+}
+
+void LoginState::dispatchMouseInput(Game& game)
+{
+  Uint8 mouse_button = game.getDispatcher()->getMouseButton();
+
+  if(mouse_button == SDL_BUTTON_LEFT)
+  {
+    // handle left click
+  }
+  else if (mouse_button == SDL_BUTTON_RIGHT)
+  {
+    // handle right click
+  }
+
+  
 }
 
 void LoginState::setPassword(PasswordField* new_password) noexcept

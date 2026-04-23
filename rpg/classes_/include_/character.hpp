@@ -4,6 +4,7 @@
 #include "attributes.hpp"
 #include "stats.hpp"
 #include "inventory.hpp"
+#include "armory.hpp"
 
 class Character
 {
@@ -16,6 +17,7 @@ class Character
     Attributes attributes_;
     ClassType class_;
     Inventory* inventory_;
+    Armory* armory_;
 
     CharacterAnimationState animation_state_;
     size_t animation_index_;

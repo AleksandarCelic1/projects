@@ -66,6 +66,8 @@ class LoginState : virtual public State
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
     void renderLoginPanel(Game& game) noexcept;
+    void renderUsernameText(Game& game) noexcept;
+    void renderPasswordText(Game& game) noexcept;
 
 };
 

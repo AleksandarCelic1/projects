@@ -39,6 +39,8 @@ void LoginState::render(Game& game)
 {
   this->renderBackground(game);
   this->renderLoginPanel(game);
+  this->renderUsernameText(game);
+  this->renderPasswordText(game);
 }
 
 void LoginState::update(Game& game) 
@@ -84,6 +86,17 @@ void LoginState::renderLoginPanel(Game& game) noexcept
   ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_PANEL];
   SDL_SetTextureAlphaMod(placeholder->getTexture(), alpha);
   SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &placeholder->getRect());
+
+}
+
+void LoginState::renderUsernameText(Game& game) noexcept
+{
+  // Take the coordinates from the placeholders and then 
+  // render the corresponding username text
+}
+
+void LoginState::renderPasswordText(Game& game) noexcept
+{
 
 }
 
@@ -149,8 +162,10 @@ void LoginState::dispatchMouseInput(Game& game)
   {
     // handle right click
   }
-
-  
+  else
+  {
+    std::cout << "[FAIL] -> [dispatchMouseInput] -> what did user press ?!" << std::endl;
+  }
 }
 
 void LoginState::setPassword(PasswordField* new_password) noexcept

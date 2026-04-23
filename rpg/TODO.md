@@ -10,3 +10,5 @@
 - we extract the info from database to load the current character < ! >
 <5>
 - TODO for 15.4. look into posgreSQL how to connect C++ and the DataBase in order to query and authenticate the account so its able to load
+<6>
+- Can start rendering the username/password fields and start detecting input from the user and maybe introduce some settings button but for start make the not interactable!

@@ -66,7 +66,8 @@ enum class UI
 enum class LoginUI
 {
   LOGIN_BACKGROUND = 0,
-  LOGIN_PANEL = 1
+  LOGIN_PANEL = 1,
+  LOGIN_SETTINGS = 2,
 };
 
 

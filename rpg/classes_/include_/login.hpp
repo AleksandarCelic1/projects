@@ -4,22 +4,15 @@
 #include "state.hpp"
 #include "login_validator.hpp"
 #include "elementUI.hpp"
-#include "text_field.hpp"
-#include "password_field.hpp"
+#include "login_panel.hpp"
 
 class LoginState : virtual public State
 {
   private:
     LoginValidator* validator_;
-    TextField* username_;
-    PasswordField* password_;
+    LoginPanel* panel_;
 
-    TextField* currently_selected_;
-
-
-
-    
-    
+  
     // Login Panel Delay < ! > 
     float time_passed_;
     float panel_delay_;
@@ -45,15 +38,12 @@ class LoginState : virtual public State
 
     // Getters
     LoginValidator* getValidator() noexcept { return this->validator_; }
-    TextField* getUsername() noexcept { return this->username_; }
-    PasswordField* getPassword() noexcept { return this->password_; }
-
+    LoginPanel* getPanel() noexcept { return this->panel_; }
+    
     // Setters
     void setValidator(LoginValidator* new_validator) noexcept { this->validator_ = new_validator; }
-    void setUsername(TextField* new_username ) noexcept;
-    void setPassword(PasswordField* new_password) noexcept;
-
-
+    void setPanel(LoginPanel* new_panel) noexcept { this->panel_ = new_panel; }
+    
     // Functions
     void dispatchKeyboardInput(Game& game) override;
     void dispatchMouseInput(Game& game) override;

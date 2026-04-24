@@ -4,7 +4,6 @@
 LoginState::LoginState(Game& game) : State(game.getRenderer())
 {
   this->validator_ = new LoginValidator();
-
   
   this->time_passed_ = 0.0f;
   this->panel_delay_ = 3.0f;
@@ -18,13 +17,16 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
   this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = new ElementUI(game.getTextureManager()->getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
   this->ui_elements_[LoginUI::LOGIN_PANEL] = new ElementUI(game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
 
+  this->panel_ = new LoginPanel(game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
+  panel_->setX(this->centerX(0, screen_width, panel_->getW()));
+  panel_->setY(this->centerY(0, screen_height, panel_->getH()));
+
 
 
   // Assign Correct (X,Y)
   ElementUI* panel = this->ui_elements_[LoginUI::LOGIN_PANEL];  
   
-  panel->setX(this->centerX(0, screen_width, panel->getW()));
-  panel->setY(this->centerY(0, screen_height, panel->getH()));
+  
 
   // Im gonna need 5 more textfields 
 
@@ -115,44 +117,19 @@ void LoginState::dispatchKeyboardInput(Game& game)
   }
 
   char new_char = iterator->second;
-
-
-  if(keycode == SDLK_KP_ENTER)
+  TextField* placeholder = this->getPanel()->getActiveField();
+  if(placeholder != nullptr)
   {
-    if(this->validator_->validate(game, this->getUsername()->getTextConst(), this->getPassword()->getTextConst()))
-    {
-      // If this is true it means the username and password are okay regarding the syntax
-      // can now query the DB to see if there is a possible match < ! >
-    }
+    keycode == SDLK_BACKSPACE ? placeholder->handleBackspace() : placeholder->handleNewLetter(new_char);
   }
-
-  if(this->username_->getActive())
-  {
-    keycode == SDLK_BACKSPACE ? this->username_->handleBackspace() : this->username_->handleNewLetter(new_char);
-  }
-  else if(this->password_->getActive())
-  {
-    keycode == SDLK_BACKSPACE ? this->password_->handleBackspace() : this->password_->handleNewLetter(new_char);
-  }
-
-
-
-
-
-
-
   
-
-
-  // press K -> goes here -> sees whats selected/which one is active 
-  // -> goes to update username or password!
-
-
 }
 
 void LoginState::dispatchMouseInput(Game& game)
 {
   Uint8 mouse_button = game.getDispatcher()->getMouseButton();
+
+  // I need to somehow 
 
   if(mouse_button == SDL_BUTTON_LEFT)
   {
@@ -168,38 +145,4 @@ void LoginState::dispatchMouseInput(Game& game)
   }
 }
 
-void LoginState::setPassword(PasswordField* new_password) noexcept
-{
-  if(new_password == nullptr)
-  {
-    std::cout << "[FAIL] -> [LoginState::setPassword] -> new_password object is null < ! >" << std::endl;
-    return;
-  }
-
-  if(this->password_ != nullptr)
-  {
-    delete this->password_;
-    this->password_ = nullptr;
-  }
-
-  this->password_ = new_password;
-}
-
-void LoginState::setUsername(TextField* new_username) noexcept
-{
-  if(new_username == nullptr)
-  {
-    std::cout << "[FAIL] -> [LoginState::setUsername] -> new_username object is null < ! >" << std::endl;
-    return;
-  }
-
-  if(this->username_ != nullptr)
-  {
-    delete this->username_;
-    this->username_ = nullptr;
-  }
-
-  this->username_= new_username;
-
-}
 

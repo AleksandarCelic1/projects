@@ -31,6 +31,11 @@ add_executable(
   classes_/source_/tile.cpp
   classes_/source_/world.cpp
   classes_/source_/login_validator.cpp
+  classes_/source_/login_panel.cpp
+  classes_/source_/text_field.cpp
+  classes_/source_/password_field.cpp
+  classes_/source_/dispatcher.cpp
+  constants_/constants.cpp
 )
 
 target_link_libraries(main PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)

@@ -1,11 +1,11 @@
 #include "../include_/text_field.hpp"
 
-void TextField::handleNewLetter(char character)
+void TextField::handleNewLetter(char character) noexcept
 {
   this->text_.push_back(character);
 }
 
-void TextField::handleBackspace()
+void TextField::handleBackspace() noexcept
 {
   if(this->text_.size() == 0)
   {

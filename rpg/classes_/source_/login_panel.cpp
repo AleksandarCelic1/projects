@@ -1,6 +1,13 @@
 #include "../include_/login_panel.hpp"
+#include "../include_/game.hpp"
 
+LoginPanel::LoginPanel(const TextureAsset& asset, int scaling_factor) : ElementUI(asset, scaling_factor) 
+{
+  this->time_passed_ = 0.0f;
+  this->panel_delay_ = 3.0f;
+  this->smooth_duration_ = 1.0f;
 
+};
 
 void LoginPanel::setUsernameLogin(TextField* new_username) noexcept
 {
@@ -91,3 +98,33 @@ void LoginPanel::setPasswordConfirmation(PasswordField* new_password) noexcept
   this->password_confirmation_ = new_password;
 }
 
+void LoginPanel::render(Game& game) noexcept
+{
+  this->renderPanel(game);
+  // Render the five  
+}
+
+
+void LoginPanel::renderPanel(Game& game) noexcept
+{
+  if(this->time_passed_ < this->panel_delay_)
+  {
+    // Print out a error message just so we know where we are currently << !  Consider Error Constant File with all messages
+    return;
+  }
+
+  float fade_time = this->time_passed_ - this->panel_delay_;
+
+  if(fade_time > this->smooth_duration_)
+  {
+    fade_time = this->smooth_duration_;
+  }
+
+  float progress = fade_time / this->smooth_duration_; 
+  // This goes "slowly" from 0 to 1 
+
+  Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
+
+  SDL_SetTextureAlphaMod(this->getTexture(), alpha);
+  SDL_RenderCopy(game.getRenderer(), this->getTexture(), nullptr, &this->getRect());
+}

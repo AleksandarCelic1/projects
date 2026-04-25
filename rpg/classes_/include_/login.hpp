@@ -6,6 +6,8 @@
 #include "elementUI.hpp"
 #include "login_panel.hpp"
 
+#include "../../constants_/constants.hpp"
+
 class LoginState : virtual public State
 {
   private:
@@ -13,11 +15,6 @@ class LoginState : virtual public State
     LoginPanel* panel_;
 
   
-    // Login Panel Delay < ! > 
-    float time_passed_;
-    float panel_delay_;
-    float smooth_duration_;
-
     // Local map to known UI elements
     std::unordered_map<LoginUI, ElementUI*> ui_elements_;
 
@@ -51,13 +48,11 @@ class LoginState : virtual public State
     void update(Game& game) override;
 
     // Mini Update Functions
-    void updateTimePassed(Game& game) noexcept;
+    void updatePanelTimePassed(Game& game) noexcept;
 
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
-    void renderLoginPanel(Game& game) noexcept;
-    void renderUsernameText(Game& game) noexcept;
-    void renderPasswordText(Game& game) noexcept;
+    
 
 };
 

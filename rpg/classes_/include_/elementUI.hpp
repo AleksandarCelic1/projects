@@ -5,6 +5,7 @@
 #include "../../enums_/enums.hpp"
 #include "../../structs_/structs.hpp"
 
+class Game;
 
 class ElementUI
 {
@@ -37,6 +38,7 @@ class ElementUI
     
     // Functions
     bool detectMouseClick(int mouse_x, int mouse_y) noexcept;
+    virtual void render(Game& game) noexcept;
   
   
 };

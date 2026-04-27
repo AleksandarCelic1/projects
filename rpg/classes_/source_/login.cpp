@@ -4,6 +4,7 @@
 LoginState::LoginState(Game& game) : State(game.getRenderer())
 {
   this->validator_ = new LoginValidator();
+  this->initializeUIOffsets(game);
   
   int screen_width = game.getWindowWidth();
   int screen_height = game.getWindowHeight();
@@ -15,6 +16,29 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
   this->panel_ = new LoginPanel(game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
   panel_->setX(this->centerX(0, screen_width, panel_->getW()));
   panel_->setY(this->centerY(0, screen_height, panel_->getH()));
+
+}
+
+void LoginState::initializeUIOffsets(Game& game) 
+{
+  int scaling_factor = game.getScalingFactor();
+
+  /*
+    Username Login 141 117
+    Password Login 141 170
+    Username Registration 343 117
+    Password Registration 343 170
+    Password Confirmation Registration 343 223
+  */
+
+  std::unordered_map<Offsets, std::pair<int, int>>& map = this->getOffsetMap();
+
+  map.insert({Offsets::LOGIN_USERNAME, { 141 * scaling_factor, 117 * scaling_factor }});
+  map.insert({Offsets::LOGIN_PASSWORD, { 141 * scaling_factor, 170 * scaling_factor }});
+  map.insert({Offsets::REGISTRATION_USERNAME, { 343 * scaling_factor, 117 * scaling_factor }});
+  map.insert({Offsets::REGISTRATION_PASSWORD, { 343 * scaling_factor, 170 * scaling_factor }}); 
+  map.insert({Offsets::REGISTRATION_PASSWORD_CONFIRMATION, { 343 * scaling_factor, 223 * scaling_factor }});
+
 
 }
 
@@ -33,8 +57,9 @@ void LoginState::update(Game& game)
 void LoginState::renderBackground(Game& game) noexcept
 {
   ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_BACKGROUND];
-  SDL_Rect copy = placeholder->getRect();
-  SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &copy);
+  placeholder->render(game); // this change should work <!>
+  //SDL_Rect copy = placeholder->getRect();
+  //SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &copy);
 
   // nullprt for SRC rect means -> that we take a specific part of the texture and then render 
   // it with DST rect and DST holds x,y,w,h if we do nullprt for SRC we just use the entire Texture
@@ -90,5 +115,7 @@ void LoginState::dispatchMouseInput(Game& game)
     std::cout << "[FAIL] -> [dispatchMouseInput] -> what did user press ?!" << std::endl;
   }
 }
+
+
 
 

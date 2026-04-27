@@ -40,6 +40,9 @@ inline const int FPS = 60;
 inline const int FRAME_DELAY = 1000 / FPS;
 inline const float ONE_SECOND = 1000.0f; 
 
+inline const int LOGIN_TEXT_PLACEHOLDER_WIDTH = 151;
+inline const int LOGIN_TEXT_PLACEHOLDER_HEIGHT = 28;
+
 extern std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS;
 
 #endif

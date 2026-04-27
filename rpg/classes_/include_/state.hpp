@@ -12,6 +12,7 @@ class State
 {
   private:
     SDL_Renderer* renderer_;
+    std::unordered_map<Offsets, std::pair<int, int>> offsets_;
 
   public:
     // Constructor Copy Constructor Desctructor
@@ -22,6 +23,8 @@ class State
 
     // Getters 
     SDL_Renderer* getRenderer() const { return this->renderer_; }
+    std::unordered_map<Offsets, std::pair<int,int>>& getOffsetMap() noexcept { return this->offsets_; }
+    const std::pair<int, int>& getOffset(Offsets key)  { return this->offsets_.at(key); } 
 
     // Setters
     void setRenderer(SDL_Renderer* new_rend) noexcept { this->renderer_ = new_rend; }
@@ -36,6 +39,7 @@ class State
     virtual void dispatchMouseInput(Game& game) = 0;
     virtual void render(Game& game) = 0;
     virtual void update(Game& game) = 0;
+    virtual void initializeUIOffsets(Game& game) = 0;
 };
 
 #endif

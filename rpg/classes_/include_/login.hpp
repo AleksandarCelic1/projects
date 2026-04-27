@@ -46,6 +46,7 @@ class LoginState : virtual public State
     void dispatchMouseInput(Game& game) override;
     void render(Game& game) override;
     void update(Game& game) override;
+    void initializeUIOffsets(Game& game) override;
 
     // Mini Update Functions
     void updatePanelTimePassed(Game& game) noexcept;

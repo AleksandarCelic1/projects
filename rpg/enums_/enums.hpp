@@ -6,6 +6,7 @@
 #include "texture_enums.hpp"
 #include "game_state.hpp"
 #include "floor_types.hpp"
+#include "offsets_ui.hpp"
 
 typedef enum 
 {

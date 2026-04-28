@@ -11,6 +11,7 @@ class PasswordField : virtual public TextField
   public:
     // Constructor Destructor Copy Constructor
     PasswordField() = default;
+    PasswordField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor);
     PasswordField(const PasswordField& copy ) = delete;
     ~PasswordField() = default;
 
@@ -22,7 +23,8 @@ class PasswordField : virtual public TextField
     void setPassword(std::string& new_string) noexcept { this->password_ = new_string; }
 
     // Functions
-    std::string getPasswordForRendering() noexcept;
+    void render(Game& game) noexcept override;
+
 };
 
 

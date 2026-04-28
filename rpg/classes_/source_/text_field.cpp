@@ -15,13 +15,14 @@ TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int
   this->text_ = "";
   this->max_length_ = 16; // Not concluded yet
 
-  this->setRect(placeholder);
+  this->setDstRect(placeholder);
 
 }
 
 void TextField::handleNewLetter(char character) noexcept
 {
   this->text_.push_back(character);
+  this->text_changed_ = true;
 }
 
 
@@ -34,6 +35,7 @@ void TextField::handleBackspace() noexcept
   }
   
   this->text_.pop_back();
+  this->text_changed_ = true;
 
 }
 

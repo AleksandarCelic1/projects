@@ -1,11 +1,19 @@
 #include "../include_/login_panel.hpp"
 #include "../include_/game.hpp"
 
-LoginPanel::LoginPanel(const TextureAsset& asset, int scaling_factor) : ElementUI(asset, scaling_factor) 
+LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor) : ElementUI(asset, scaling_factor) 
 {
   this->time_passed_ = 0.0f;
   this->panel_delay_ = 3.0f;
   this->smooth_duration_ = 1.0f;
+
+  const SDL_Rect& dst_rect = this->getDstRect();
+
+  this->username_login_ = new TextField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_USERNAME), scaling_factor);
+  this->username_registration_ = new TextField( {dst_rect.x , dst_rect.y }, map.at(Offsets::REGISTRATION_USERNAME), scaling_factor);
+  this->password_login_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_PASSWORD), scaling_factor);
+  this->password_registration_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD), scaling_factor);
+  this->password_confirmation_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD_CONFIRMATION), scaling_factor);
 
 };
 
@@ -101,6 +109,14 @@ void LoginPanel::setPasswordConfirmation(PasswordField* new_password) noexcept
 void LoginPanel::render(Game& game) noexcept
 {
   this->renderPanel(game);
+
+  if(this->username_login_->getActive()) { this->username_login_->render(game); }
+  if(this->username_registration_->getActive()) { this->username_registration_->render(game); }
+  if(this->password_login_->getActive()) { this->password_login_->render(game); }
+  if(this->password_registration_->getActive()) { this->password_registration_->render(game); }
+  if(this->password_confirmation_->getActive()) { this->password_confirmation_->render(game); }
+
+
   // Render the five  
 }
 
@@ -126,5 +142,5 @@ void LoginPanel::renderPanel(Game& game) noexcept
   Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
 
   SDL_SetTextureAlphaMod(this->getTexture(), alpha);
-  SDL_RenderCopy(game.getRenderer(), this->getTexture(), nullptr, &this->getRect());
+  SDL_RenderCopy(game.getRenderer(), this->getTexture(), nullptr, &this->getDstRect());
 }

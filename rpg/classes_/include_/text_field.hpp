@@ -7,9 +7,10 @@ class TextField : virtual public ElementUI
 {
   private:
     std::string text_;
+    size_t max_length_;
     bool active_;
     bool text_changed_;
-    size_t max_length_;
+    
     
   public:
 

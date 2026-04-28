@@ -26,7 +26,7 @@ class ElementUI
     int getW() const { return this->dst_rect_.w; }
     int getH() const { return this->dst_rect_.h; }
 
-    const SDL_Rect& getRect() { return this->dst_rect_; }
+    const SDL_Rect& getDstRect() { return this->dst_rect_; }
 
     // Setters
     void setTexture(SDL_Texture* ptr) noexcept { this->texture_ = ptr; }
@@ -34,7 +34,7 @@ class ElementUI
     void setY(int new_y) noexcept { this->dst_rect_.y = new_y; }
     void setW(int new_w) noexcept { this->dst_rect_.w = new_w; }
     void setH(int new_h) noexcept { this->dst_rect_.h = new_h; }
-    void setRect(SDL_Rect& new_rect) noexcept { this->dst_rect_ = new_rect; }
+    void setDstRect(SDL_Rect& new_rect) noexcept { this->dst_rect_ = new_rect; }
     
     // Functions
     bool detectMouseClick(int mouse_x, int mouse_y) noexcept;

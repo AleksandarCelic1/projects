@@ -1,6 +1,3 @@
 #include "../include_/password_field.hpp"
 
-std::string PasswordField::getPasswordForRendering() noexcept
-{
-  return std::string(this->password_.size(), '*');
-}
+PasswordField::PasswordField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor) : TextField(coords, offsets, scaling_factor) {}

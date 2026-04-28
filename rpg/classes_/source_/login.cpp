@@ -13,7 +13,7 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
   this->ui_elements_[LoginUI::LOGIN_BACKGROUND] = new ElementUI(game.getTextureManager()->getUITexture(UI::LOGIN_BACKGROUND), game.getScalingFactor());
 
   // Assign Correct (X,Y)
-  this->panel_ = new LoginPanel(game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
+  this->panel_ = new LoginPanel(this->getOffsetMap(), game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
   panel_->setX(this->centerX(0, screen_width, panel_->getW()));
   panel_->setY(this->centerY(0, screen_height, panel_->getH()));
 
@@ -99,12 +99,19 @@ void LoginState::dispatchKeyboardInput(Game& game)
 void LoginState::dispatchMouseInput(Game& game)
 {
   Uint8 mouse_button = game.getDispatcher()->getMouseButton();
+  Dispatcher* dispatcher = game.getDispatcher();
 
-  // I need to somehow 
+  /*
+    Now we can introduce a simple for loop/ big switch to detect clicks,
+    which would be fine in LoginState, since there arent many widgets/clickable items,
+    but in the PlayingState there should already be some sort of better dispatch for mouse input
+    there are some viable gamedev techniques found -> grid spatial partitioning, quadtree, layers/z-order hit testing
+  */
 
   if(mouse_button == SDL_BUTTON_LEFT)
   {
     // handle left click
+    
   }
   else if (mouse_button == SDL_BUTTON_RIGHT)
   {

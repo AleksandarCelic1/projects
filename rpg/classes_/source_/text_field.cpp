@@ -46,7 +46,15 @@ void TextField::render(Game& game) noexcept
   {
     if(this->text_changed_)
     {
-      // recompile the texture with GLYPHS
+      /*
+        When the text changes we are not going to remake SDL_Texture* for every letter
+        as that would be too expensive on runtime, instead of that we are going to take
+        certain parts of a big texture thats called a bitmap, which is essentailly a container
+        for letters/special chars etc. and then we would take certain letters (so called glyphs)
+        and with that we are going to construct a new Word without recompiling the texture
+      */
     }
+
+    // Else render it 
   }
 }

@@ -84,6 +84,7 @@ void Game::initializeResolution() noexcept
 
   this->game_settings_.fullscreen_ = false;
   // There are different ways to check for resolutions < ! > look into this 
+
   
    
   return;
@@ -118,6 +119,28 @@ void Game::initializeWindowAndRenderer() noexcept
 
   this->main_window_ = window;
   this->main_renderer_ = renderer;
+
+  /*
+    After reading the documentation there is a difference between the monitors physical pixels
+    and logical ones, as its stated on my Personal Laptop my Monitor is 2560x1664 but the logical
+    screen is 1771x1110 and therefore this functions does what its supposed to do as there isnt really
+    a great way to detect physical pixels but reather just use the logical ones, and probably in the future 
+    we will have to make it full screen as windowed game aren't really fan favourite !
+  
+    int logical_w;
+    int logical_h;
+
+    SDL_GetWindowSize(this->main_window_, &logical_w, &logical_h);
+
+
+    int pixel_w;
+    int pixel_h;
+
+    SDL_GetRendererOutputSize(this->main_renderer_, &pixel_w, &pixel_h);
+
+    std::cout << "Window Size: " << logical_w << "x" << logical_h << std::endl;
+    std::cout << "Renderer output size: " << pixel_w << "x" << pixel_h << std::endl;
+  */
 
 
 }
@@ -184,11 +207,24 @@ void Game::mainEventHandler(SDL_Event* event)
     }
     else if(event->type == SDL_MOUSEBUTTONDOWN)
     {
+      this->dispatcher_->setMouseX(event->button.x);
+      this->dispatcher_->setMouseY(event->button.y);
       this->dispatcher_->setMouseButton(event->button.button);
     }
     else if(event->type == SDL_MOUSEBUTTONUP)
     {
       this->current_state_->dispatchMouseInput(*this);
+      this->dispatcher_->setMouseX(INVALID_NUMBER);
+      this->dispatcher_->setMouseY(INVALID_NUMBER);
+      //this->dispatcher_->setMouseButton(INVALID_NUMBER); 
+
+      /*
+        This is done so we dont happen to handle an stale event, but the setMouseButton
+        is essentially Uint8 as thats what SDL demands so putting INVALID_NUMBER on it 
+        which is -1 wont stay that why and its going to be a whole "cycle" behind 
+        so its going to surpass the future Error Checks <!>
+      */
+  
     }
   } 
 }

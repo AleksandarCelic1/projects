@@ -1,9 +1,9 @@
 #include "../include_/dispatcher.hpp"
 #include "../include_/elementUI.hpp"
 
-bool Dispatcher::detectingClick(int mouse_x, int mouse_y, ElementUI* element)
+bool Dispatcher::detectingClick(int mouse_x, int mouse_y, ElementUI* element) noexcept
 {
-  const SDL_Rect& placeholder = element->getRect();
+  const SDL_Rect& placeholder = element->getDstRect();
 
   int x = placeholder.x;
   int y = placeholder.y;

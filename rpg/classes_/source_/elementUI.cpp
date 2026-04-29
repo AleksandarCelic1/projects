@@ -20,5 +20,6 @@ bool ElementUI::detectMouseClick(int mouse_x, int mouse_y) noexcept
 
 void ElementUI::render(Game& game) noexcept
 {
-  
+  // This is the most basic Render for the most simple Widgets/UI Elements
+  SDL_RenderCopy(game.getRenderer(), this->texture_, nullptr, &this->dst_rect_);
 }

@@ -43,6 +43,8 @@ inline const float ONE_SECOND = 1000.0f;
 inline const int LOGIN_TEXT_PLACEHOLDER_WIDTH = 151;
 inline const int LOGIN_TEXT_PLACEHOLDER_HEIGHT = 28;
 
+inline const int INVALID_NUMBER = -1;
+
 extern std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS;
 
 #endif

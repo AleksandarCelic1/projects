@@ -112,7 +112,7 @@ void LoginState::dispatchMouseInput(Game& game)
   {
     // handle left click
     LoginPanel* panel = this->getPanel();
-    if(panel->detectMouseClick())
+    /*if(panel->detectMouseClick())
     {
 
     }
@@ -140,8 +140,8 @@ void LoginState::dispatchMouseInput(Game& game)
 
     if(panel->getPasswordConfirmation()->detectMouseClick())
     {
-      
-    }
+
+    }*/
     
   }
   else if (mouse_button == SDL_BUTTON_RIGHT)

@@ -24,7 +24,7 @@ class Game
     Account current_account_logged_in_;
     World world_;
     TextureManager* texture_manager_;
-    Camera camera_;
+    Camera camera_; // Probably should be in PlayingState <!>
 
     LoginState* login_;
     State* current_state_;

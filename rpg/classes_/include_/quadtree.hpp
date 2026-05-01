@@ -30,7 +30,7 @@ class QuadTree
 
     void subdivision(ElementUI* elem) noexcept;
     bool intersectDetection(const SDL_Rect& rect) noexcept;
-
+    bool detectMouseClick(int mouse_x, int mouse_y) noexcept;
 
 };
 

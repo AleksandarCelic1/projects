@@ -17,6 +17,7 @@
 #include <cctype>
 
 
+// Resolution - Scaling Factors
 inline const int INTERNAL_SCREEN_WIDTH = 1280; //   640 * 2
 inline const int INTERNAL_SCRREN_HEIGHT = 720; //   360 * 2
 
@@ -30,21 +31,28 @@ inline const int SCALING_FACTOR_TWO = 2;
 inline const int SCALING_FACTOR_THREE = 3;
 inline const int SCALING_FACTOR_FOUR = 4;
 
+// In-game Currency
 inline const int MAXIMUM_BRONZE_AND_SILVER = 99;
 inline const int MAXIMUM_GOLD = 999999;
 
 inline const int STARTING_CHARACTER_WORLD_X = 0;
 inline const int STARTING_CHARACTER_WORLD_Y = 0;
 
+// Delta Time
 inline const int FPS = 60;
 inline const int FRAME_DELAY = 1000 / FPS;
 inline const float ONE_SECOND = 1000.0f; 
 
+// UI Width x Height 
 inline const int LOGIN_TEXT_PLACEHOLDER_WIDTH = 151;
 inline const int LOGIN_TEXT_PLACEHOLDER_HEIGHT = 28;
 
 inline const int INVALID_NUMBER = -1;
 
+// QuadTree
+inline const int QUADTREE_CAPACITY = 4;
+
+// SDL_Keycode map -> char -> glyph
 extern std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS;
 
 #endif

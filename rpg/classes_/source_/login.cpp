@@ -1,7 +1,7 @@
 #include "../include_/login.hpp"
 #include "../include_/game.hpp"
 
-LoginState::LoginState(Game& game) : State(game.getRenderer())
+LoginState::LoginState(Game& game) : State(game.getRenderer(), game.getWindowWidth(), game.getWindowHeight())
 {
   this->validator_ = new LoginValidator();
   this->initializeUIOffsets(game);
@@ -16,6 +16,15 @@ LoginState::LoginState(Game& game) : State(game.getRenderer())
   this->panel_ = new LoginPanel(this->getOffsetMap(), game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
   panel_->setX(this->centerX(0, screen_width, panel_->getW()));
   panel_->setY(this->centerY(0, screen_height, panel_->getH()));
+
+  // QuadTree - Insert Chain
+  QuadTree* quad_tree = this->getQuadTree();
+  quad_tree->insert(this->panel_->getUsernameLogin());
+  quad_tree->insert(this->panel_->getPasswordLogin());
+  quad_tree->insert(this->panel_->getUsernameRegistration());
+  quad_tree->insert(this->panel_->getPasswordRegistration());
+  quad_tree->insert(this->panel_->getPasswordConfirmation());
+  
 
 }
 

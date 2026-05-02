@@ -1,8 +1,16 @@
 #include "../include_/state.hpp"
 
-State::State(SDL_Renderer* main_renderer)
+State::State(SDL_Renderer* main_renderer, int window_width, int window_height)
 {
+  SDL_Rect placeholder;
+  placeholder.x = 0;
+  placeholder.y = 0;
+  placeholder.w = window_width;
+  placeholder.h = window_height;
+
+  this->quad_tree_ = new QuadTree(placeholder);
   this->renderer_ = main_renderer;
+
 }
 
 int State::centerX(int x, int screen_width, int object_width)

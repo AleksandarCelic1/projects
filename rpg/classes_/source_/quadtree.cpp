@@ -29,6 +29,19 @@ QuadTree::~QuadTree()
   }
 }
 
+
+void QuadTree::categorize(ElementUI* elem) noexcept
+{
+  for (auto iterator : this->children_)
+  {
+    if(iterator->intersectDetection(elem->getDstRect()))
+    {
+      iterator->insert(elem);
+    }
+  }
+}
+
+
 void QuadTree::insert(ElementUI* elem) noexcept 
 {
 
@@ -39,7 +52,7 @@ void QuadTree::insert(ElementUI* elem) noexcept
 
   if(this->parent_ == true)
   {
-    // put the elem in one of your kids!
+    this->categorize(elem);
     return;
   }
 
@@ -111,7 +124,7 @@ void QuadTree::subdivision(ElementUI* elem) noexcept
 
 void QuadTree::search(int mouse_x, int mouse_y) noexcept
 {
-  
+
 }
 
 /*
@@ -120,21 +133,11 @@ void QuadTree::search(int mouse_x, int mouse_y) noexcept
 */
 bool QuadTree::intersectDetection(const SDL_Rect& rect) noexcept
 {
-  SDL_Rect& placeholder = this->bounds_;
+  return RectUtils::intersectDetection(this->bounds_, rect);
+}
 
-  int x = rect.x;
-  int y = rect.y;
-  int w = rect.w;
-  int h = rect.h;
-
-  if((x <= placeholder.x + placeholder.w)
-  && (x + w >= placeholder.x)
-  && (y <= placeholder.y + placeholder.h)
-  && (y + h >= placeholder.y))
-  {
-    return true;
-  }
-
-  return false;
+bool QuadTree::detectingMouseClick(const SDL_Rect& source, int mouse_x, int mouse_y) noexcept
+{
+  return RectUtils::detectMouseClick(source, mouse_x, mouse_y);
 }
 

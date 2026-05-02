@@ -4,6 +4,7 @@
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"
 #include "../../structs_/structs.hpp"
+#include "../../namespaces_/namespaces.hpp"
 
 class ElementUI;
 

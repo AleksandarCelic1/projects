@@ -27,10 +27,11 @@ class QuadTree
     // Functions
     void insert(ElementUI* elem) noexcept;
     void search(int mouse_x, int mouse_y) noexcept;
-
     void subdivision(ElementUI* elem) noexcept;
+    void categorize(ElementUI* elem) noexcept;
+
     bool intersectDetection(const SDL_Rect& rect) noexcept;
-    bool detectMouseClick(int mouse_x, int mouse_y) noexcept;
+    bool detectingMouseClick(const SDL_Rect& source, int mouse_x, int mouse_y) noexcept;
 
 };
 

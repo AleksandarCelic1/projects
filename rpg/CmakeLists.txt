@@ -35,6 +35,8 @@ add_executable(
   classes_/source_/text_field.cpp
   classes_/source_/password_field.cpp
   classes_/source_/dispatcher.cpp
+  classes_/source_/quadtree.cpp
+  namespaces_/source_/rect_utils.cpp
   constants_/constants.cpp
 )
 

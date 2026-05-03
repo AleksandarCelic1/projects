@@ -119,12 +119,46 @@ void QuadTree::subdivision(ElementUI* elem) noexcept
   this->children_.push_back(child_three);
   this->children_.push_back(child_four);
 
+
+  for (auto iterator : this->elements_)
+  {
+    categorize(iterator);
+  }
+
   return;
 }
 
-void QuadTree::search(int mouse_x, int mouse_y) noexcept
+ElementUI* QuadTree::search(int mouse_x, int mouse_y) noexcept
 {
+  if(!detectingMouseClick(this->bounds_, mouse_x, mouse_y))
+  {
+    return nullptr;
+  }
 
+  if(this->parent_ == true)
+  {
+    for(auto iterator : this->children_)
+    {
+      ElementUI* tmp = iterator->search(mouse_x, mouse_y);
+      
+      if(tmp != nullptr)
+      {
+        return tmp;
+      }
+    }
+    return nullptr;
+  }
+
+  for (auto iterator : this->elements_)
+  {
+    if(iterator->detectMouseClick(mouse_x, mouse_y))
+    {
+      ElementUI* tmp = iterator;
+      return tmp;
+    }
+  }
+
+  return nullptr;
 }
 
 /*
@@ -141,3 +175,22 @@ bool QuadTree::detectingMouseClick(const SDL_Rect& source, int mouse_x, int mous
   return RectUtils::detectMouseClick(source, mouse_x, mouse_y);
 }
 
+void QuadTree::debugOutline(SDL_Renderer* main_renderer) noexcept
+{
+  RectUtils::debugOutline(main_renderer, this->bounds_);
+
+  if(this->parent_ == true)
+  {
+    for (auto iterator : this->children_)
+    {
+      iterator->debugOutline(main_renderer);
+    }
+  }
+  else
+  {
+    for (auto iterator : this->elements_)
+    {
+      RectUtils::debugOutline(main_renderer, iterator->getDstRect());
+    }
+  }
+}

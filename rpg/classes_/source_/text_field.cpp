@@ -57,4 +57,6 @@ void TextField::render(Game& game) noexcept
 
     // Else render it 
   }
+
+  RectUtils::debugOutline(game.getRenderer(), this->getDstRect());
 }

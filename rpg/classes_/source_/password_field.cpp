@@ -6,4 +6,5 @@ PasswordField::PasswordField(std::pair<int, int> coords, std::pair<int,int> offs
 void PasswordField::render(Game& game) noexcept
 {
  // still not implemented
+  RectUtils::debugOutline(game.getRenderer(), this->getDstRect());
 }

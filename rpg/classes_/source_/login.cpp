@@ -17,7 +17,7 @@ LoginState::LoginState(Game& game) : State(game.getRenderer(), game.getWindowWid
   panel_->setX(this->centerX(0, screen_width, panel_->getW()));
   panel_->setY(this->centerY(0, screen_height, panel_->getH()));
 
-  // QuadTree - Insert Chain
+  // QuadTree - Insert Chain -> Think about making a seperate functions for this <!>
   QuadTree* quad_tree = this->getQuadTree();
   quad_tree->insert(this->panel_->getUsernameLogin());
   quad_tree->insert(this->panel_->getPasswordLogin());
@@ -44,9 +44,9 @@ void LoginState::initializeUIOffsets(Game& game)
 
   map.insert({Offsets::LOGIN_USERNAME, { 141 * scaling_factor, 117 * scaling_factor }});
   map.insert({Offsets::LOGIN_PASSWORD, { 141 * scaling_factor, 170 * scaling_factor }});
-  map.insert({Offsets::REGISTRATION_USERNAME, { 343 * scaling_factor, 117 * scaling_factor }});
-  map.insert({Offsets::REGISTRATION_PASSWORD, { 343 * scaling_factor, 170 * scaling_factor }}); 
-  map.insert({Offsets::REGISTRATION_PASSWORD_CONFIRMATION, { 343 * scaling_factor, 223 * scaling_factor }});
+  map.insert({Offsets::REGISTRATION_USERNAME, { 344 * scaling_factor, 117 * scaling_factor }});
+  map.insert({Offsets::REGISTRATION_PASSWORD, { 344 * scaling_factor, 170 * scaling_factor }}); 
+  map.insert({Offsets::REGISTRATION_PASSWORD_CONFIRMATION, { 344 * scaling_factor, 223 * scaling_factor }});
 
 
 }
@@ -56,6 +56,10 @@ void LoginState::render(Game& game)
 {
   this->renderBackground(game);
   this->getPanel()->render(game);
+
+
+  /* Debugging Render*/
+  this->getQuadTree()->debugOutline(game.getRenderer());
 }
 
 void LoginState::update(Game& game) 
@@ -107,8 +111,11 @@ void LoginState::dispatchKeyboardInput(Game& game)
 
 void LoginState::dispatchMouseInput(Game& game)
 {
-  Uint8 mouse_button = game.getDispatcher()->getMouseButton();
   Dispatcher* dispatcher = game.getDispatcher();
+  Uint8 mouse_button = dispatcher->getMouseButton();
+  int mouse_x = dispatcher->getMouseX();
+  int mouse_y = dispatcher->getMouseY();
+  
 
   /*
     Now we can introduce a simple for loop/ big switch to detect clicks,
@@ -121,37 +128,14 @@ void LoginState::dispatchMouseInput(Game& game)
   {
     // handle left click
     LoginPanel* panel = this->getPanel();
-    /*if(panel->detectMouseClick())
-    {
+    ElementUI* tmp = this->getQuadTree()->search(mouse_x, mouse_y);
 
+    if(tmp == nullptr)
+    {
+      return;
     }
 
-    if(panel->getUsernameLogin()->detectMouseClick())
-    {
-
-    }
-
-    if(panel->getPasswordLogin()->detectMouseClick())
-    {
-
-    }
-
-    if(panel->getUsernameRegistration()->detectMouseClick())
-    {
-
-    }
-
-    if(panel->getPasswordRegistration()->detectMouseClick())
-    {
-
-    }
-
-
-    if(panel->getPasswordConfirmation()->detectMouseClick())
-    {
-
-    }*/
-    
+    std::cout << " im being clicked !!!!!!!!!" << std::endl;
   }
   else if (mouse_button == SDL_BUTTON_RIGHT)
   {

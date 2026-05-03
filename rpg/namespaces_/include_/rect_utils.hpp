@@ -6,7 +6,7 @@
 namespace RectUtils
 {
   /* Implement a functions that renders a outline for provided rect -> used for debugging purposeses <!> */
-  bool debugOutline(SDL_Renderer* main_renderer, SDL_Rect& rect) noexcept;
+  void debugOutline(SDL_Renderer* main_renderer, const SDL_Rect& rect) noexcept;
 
   /* IntersectDetections -> checks if the provided "rect" is intersecting with "source" */
   bool intersectDetection(const SDL_Rect& source, const SDL_Rect& rect) noexcept;

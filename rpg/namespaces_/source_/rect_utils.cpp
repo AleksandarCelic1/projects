@@ -33,3 +33,22 @@ bool RectUtils::detectMouseClick(const SDL_Rect& source, int mouse_x, int mouse_
 
   return false;
 }
+
+
+void RectUtils::debugOutline(SDL_Renderer* main_renderer, const SDL_Rect& rect) noexcept
+{
+  Uint8 old_r;
+  Uint8 old_g;
+  Uint8 old_b;
+  Uint8 old_a;
+
+  SDL_GetRenderDrawColor(main_renderer, &old_r, &old_g, &old_b, &old_a);
+
+  SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+
+  SDL_RenderDrawRect(main_renderer, &rect);
+
+  SDL_SetRenderDrawColor(main_renderer, old_r, old_g, old_b, old_a);
+
+  return;
+}

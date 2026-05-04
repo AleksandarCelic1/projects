@@ -48,9 +48,6 @@ class LoginState : virtual public State
     void update(Game& game) override;
     void initializeUIOffsets(Game& game) override;
 
-    // Mini Update Functions
-    void updatePanelTimePassed(Game& game) noexcept;
-
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
     

@@ -108,8 +108,10 @@ void LoginPanel::setPasswordConfirmation(PasswordField* new_password) noexcept
 
 void LoginPanel::render(Game& game) noexcept
 {
+  /* Handle Panel rendering */
   this->renderPanel(game);
 
+  /* Handle Kids rendering */
   if(this->username_login_->getActive()) { this->username_login_->render(game); }
   if(this->username_registration_->getActive()) { this->username_registration_->render(game); }
   if(this->password_login_->getActive()) { this->password_login_->render(game); }
@@ -119,7 +121,6 @@ void LoginPanel::render(Game& game) noexcept
 
   // Render the five  
 }
-
 
 void LoginPanel::renderPanel(Game& game) noexcept
 {
@@ -144,3 +145,32 @@ void LoginPanel::renderPanel(Game& game) noexcept
   SDL_SetTextureAlphaMod(this->getTexture(), alpha);
   SDL_RenderCopy(game.getRenderer(), this->getTexture(), nullptr, &this->getDstRect());
 }
+
+
+void LoginPanel::update(Game& game) noexcept
+{
+  /* Handle Panel update timers */
+  this->time_passed_ += game.getDeltaTime();
+
+
+
+  /* Handle Kids update timers */
+  this->username_login_->update(game);
+  this->password_login_->update(game);
+  this->username_registration_->update(game);
+  this->password_registration_->update(game);
+  this->password_confirmation_->update(game);
+}
+
+
+void LoginPanel::setActiveField(TextField* new_active_field) noexcept
+{
+  if(new_active_field == this->currently_selected_)
+  {
+    return;
+  }
+
+  this->currently_selected_ = new_active_field;
+  this->currently_selected_->setActive(true);
+}
+

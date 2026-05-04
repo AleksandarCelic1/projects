@@ -19,8 +19,15 @@ TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int
 
 }
 
+/* 
+  [TextField::handleNewLetter] -> think about setting a max limit here,
+  because a user theorethically can input so much chars that may lead 
+  to insufficient virutal memory, as the input lenght is checked
+  in LoginValidator <!>
+*/
 void TextField::handleNewLetter(char character) noexcept
 {
+  
   this->text_.push_back(character);
   this->text_changed_ = true;
 }
@@ -42,21 +49,32 @@ void TextField::handleBackspace() noexcept
 
 void TextField::render(Game& game) noexcept
 {
-  if(this->active_)
-  {
-    if(this->text_changed_)
-    {
-      /*
-        When the text changes we are not going to remake SDL_Texture* for every letter
-        as that would be too expensive on runtime, instead of that we are going to take
-        certain parts of a big texture thats called a bitmap, which is essentailly a container
-        for letters/special chars etc. and then we would take certain letters (so called glyphs)
-        and with that we are going to construct a new Word without recompiling the texture
-      */
-    }
-
-    // Else render it 
-  }
-
+  
   RectUtils::debugOutline(game.getRenderer(), this->getDstRect());
+}
+
+void TextField::update(Game& game) noexcept
+{
+  if(this->active_ && this->text_changed_)
+  {
+    /*
+      When the text changes we are not going to remake SDL_Texture* for every letter
+      as that would be too expensive on runtime, instead of that we are going to take
+      certain parts of a big texture thats called a bitmap, which is essentailly a container
+      for letters/special chars etc. and then we would take certain letters (so called glyphs)
+      and with that we are going to construct a new Word without recompiling the texture
+    */
+
+    this->rebuildText(game);
+  }
+}
+
+/* 
+  Function rebuildText, should rebuild the text each time the text is updated with new
+  characters, or when some are removed, the rebuild is done with glyphs being taken out of
+  bitmap
+*/
+void TextField::rebuildText(Game& game) noexcept
+{
+  return;
 }

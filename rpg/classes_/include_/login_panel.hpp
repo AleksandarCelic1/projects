@@ -41,7 +41,6 @@ class LoginPanel : virtual public ElementUI
     PasswordField* getPasswordRegistration() noexcept { return this->password_registration_; }
     PasswordField* getPasswordConfirmation() noexcept { return this->password_confirmation_; }
     TextField* getActiveField() noexcept { return this->currently_selected_; }
-
     float getTimePassed() const noexcept { return this->time_passed_; }
     float getPanelDelay() const noexcept { return this->panel_delay_; }
     float getSmoothDuration() const noexcept { return this->smooth_duration_; }
@@ -50,7 +49,6 @@ class LoginPanel : virtual public ElementUI
     void setTimePassed(float new_time_passed) noexcept { this->time_passed_ = new_time_passed; } 
     void setPanelDelay(float new_panel_delay)  noexcept { this->panel_delay_ = new_panel_delay; }
     void setSmoothDuration(float new_smooth_duration) noexcept { this->smooth_duration_ = new_smooth_duration; }
-
     void setUsernameLogin(TextField* new_username_login ) noexcept;
     void setUsernameRegistration(TextField* new_username_registartion) noexcept;
     void setPasswordLogin(PasswordField* new_password) noexcept;
@@ -60,7 +58,8 @@ class LoginPanel : virtual public ElementUI
 
     // Functions 
     void render(Game& game) noexcept override;
-    void renderPanel(Game& game) noexcept;    
+    void update(Game& game) noexcept override;
+    void renderPanel(Game& game) noexcept;   
 
   
 };

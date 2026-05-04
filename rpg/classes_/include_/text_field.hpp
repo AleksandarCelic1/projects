@@ -27,19 +27,20 @@ class TextField : virtual public ElementUI
     bool getTextChanged() const noexcept { return this->text_changed_; }
     size_t getMaxLength() const noexcept { return this->max_length_; }
 
-
-
     // Setters
     void setText(std::string& new_test) noexcept { this->text_ = new_test; }
     void setActive(bool new_active) noexcept { this->active_ = new_active; }
     void setTextChanged(bool new_active) noexcept { this->text_changed_ = new_active; }
     void setMaxLength(size_t new_max_length) noexcept { this->max_length_ = new_max_length; }
 
-
     // Functions
     void render(Game& game) noexcept override;
+    void update(Game& game) noexcept override;
     void handleBackspace() noexcept;
     void handleNewLetter(char character) noexcept;
+
+    // Virtual TextField specific functions
+    virtual void rebuildText(Game& game) noexcept;
 };
 
 

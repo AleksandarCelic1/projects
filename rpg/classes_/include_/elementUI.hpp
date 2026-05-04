@@ -40,6 +40,7 @@ class ElementUI
     // Functions
     bool detectMouseClick(int mouse_x, int mouse_y) noexcept;
     virtual void render(Game& game) noexcept;
+    virtual void update(Game& game) noexcept;
   
   
 };

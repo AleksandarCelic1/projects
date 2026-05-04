@@ -24,6 +24,8 @@ class PasswordField : virtual public TextField
 
     // Functions
     void render(Game& game) noexcept override;
+    void update(Game& game) noexcept override;
+    void rebuildText(Game& game) noexcept override;
 
 };
 

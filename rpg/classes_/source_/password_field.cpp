@@ -8,3 +8,17 @@ void PasswordField::render(Game& game) noexcept
  // still not implemented
   RectUtils::debugOutline(game.getRenderer(), this->getDstRect());
 }
+
+
+void PasswordField::update(Game& game) noexcept
+{
+  if(this->getActive() && this->getTextChanged())
+  {
+    this->rebuildText(game);
+  }
+}
+
+void PasswordField::rebuildText(Game& game) noexcept
+{
+  return;
+}

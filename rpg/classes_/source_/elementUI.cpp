@@ -22,3 +22,12 @@ void ElementUI::render(Game& game) noexcept
   // This is the most basic Render for the most simple Widgets/UI Elements
   SDL_RenderCopy(game.getRenderer(), this->texture_, nullptr, &this->dst_rect_);
 }
+
+/*
+  ElementUI class gets a upgrade with update function as certain widgets
+  will have animations <!>
+*/
+void ElementUI::update(Game& game) noexcept
+{
+  return;
+}

@@ -64,7 +64,7 @@ void LoginState::render(Game& game)
 
 void LoginState::update(Game& game) 
 {
-  this->updatePanelTimePassed(game);
+  this->getPanel()->update(game);
 }
 
 void LoginState::renderBackground(Game& game) noexcept
@@ -77,14 +77,6 @@ void LoginState::renderBackground(Game& game) noexcept
   // nullprt for SRC rect means -> that we take a specific part of the texture and then render 
   // it with DST rect and DST holds x,y,w,h if we do nullprt for SRC we just use the entire Texture
 }
-
-void LoginState::updatePanelTimePassed(Game& game) noexcept
-{
-  LoginPanel* placeholder = this->getPanel();
-  placeholder->setTimePassed(placeholder->getTimePassed() + game.getDeltaTime());
-
-}
-
 
 void LoginState::dispatchKeyboardInput(Game& game) 
 {
@@ -106,7 +98,6 @@ void LoginState::dispatchKeyboardInput(Game& game)
   {
     keycode == SDLK_BACKSPACE ? placeholder->handleBackspace() : placeholder->handleNewLetter(new_char);
   }
-  
 }
 
 void LoginState::dispatchMouseInput(Game& game)
@@ -135,7 +126,14 @@ void LoginState::dispatchMouseInput(Game& game)
       return;
     }
 
-    std::cout << " im being clicked !!!!!!!!!" << std::endl;
+    TextField* txt_field = dynamic_cast<TextField*>(tmp);
+    if(txt_field == nullptr)
+    {
+      std::cout << "[ERROR] -> [LoginState::dispatchMouseInput] -> dynamic_cast failed <!> " << std::endl;
+      return;
+    }
+
+    panel->setActiveField(txt_field);
   }
   else if (mouse_button == SDL_BUTTON_RIGHT)
   {

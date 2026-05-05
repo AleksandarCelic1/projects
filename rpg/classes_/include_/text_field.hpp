@@ -2,11 +2,14 @@
 #define TEXT_FIELD_HPP
 
 #include "elementUI.hpp"
+#include "glyph.hpp"
+#include "bitmap.hpp"
 
 class TextField : virtual public ElementUI
 {
   private:
     std::string text_;
+    std::vector<Glyph*> glyphs_;
     size_t max_length_;
     bool active_;
     bool text_changed_;
@@ -21,6 +24,8 @@ class TextField : virtual public ElementUI
     ~TextField() = default;
 
     // Getters
+    const std::vector<Glyph*>& getGlyphsConst() noexcept { return this->glyphs_; }
+    std::vector<Glyph*>& getGlyphsModifiable() noexcept { return this->glyphs_; }
     std::string getTextConst() const noexcept { return this->text_; }
     std::string& getTextModifiable() noexcept { return this->text_; }
     bool getActive() const noexcept { return this->active_; }

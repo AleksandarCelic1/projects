@@ -8,6 +8,7 @@
 #include "login.hpp"
 #include "state.hpp"
 #include "dispatcher.hpp"
+#include "font_manager.hpp"
 
 typedef struct
 {
@@ -24,6 +25,7 @@ class Game
     Account current_account_logged_in_;
     World world_;
     TextureManager* texture_manager_;
+    FontManager* font_manager_;
     Camera camera_; // Probably should be in PlayingState <!>
 
     LoginState* login_;
@@ -62,7 +64,7 @@ class Game
     State* getCurrentState() noexcept { return this->current_state_; }
     TextureManager* getTextureManager() noexcept { return this->texture_manager_; }
     Dispatcher* getDispatcher() noexcept { return this->dispatcher_; }
-
+    FontManager* getFontManager() noexcept { return this->font_manager_; }
     GameState getGameState() const noexcept { return this->gamestate_; }
     
 
@@ -81,6 +83,7 @@ class Game
     void setDeltaTime(float& new_delta_time) noexcept { this->delta_time_ = new_delta_time; }
     void setTextureManager(TextureManager* new_manager) noexcept { this->texture_manager_ = new_manager; }
     void setDispatcher(Dispatcher* new_dispatcher) noexcept { this->dispatcher_ = new_dispatcher; }
+    void setFontManager(FontManager* new_font_manager) noexcept { this->font_manager_ = new_font_manager; }
     
 
 

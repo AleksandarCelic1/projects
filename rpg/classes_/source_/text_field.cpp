@@ -27,7 +27,10 @@ TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int
 */
 void TextField::handleNewLetter(char character) noexcept
 {
-  
+  if(this->text_.size() >= this->max_length_)
+  {
+    return;
+  }
   this->text_.push_back(character);
   this->text_changed_ = true;
 }
@@ -49,8 +52,33 @@ void TextField::handleBackspace() noexcept
 
 void TextField::render(Game& game) noexcept
 {
-  
-  RectUtils::debugOutline(game.getRenderer(), this->getDstRect());
+  SDL_Texture* bitmap_texture = game.getFontManager()->getBitmap()->getTexture();
+  const SDL_Rect& rect = this->getDstRect();
+
+  int x = rect.x;
+  int y = rect.y;
+
+  int position_x = x;
+  int position_y = y;
+  int width = 0;
+  int height = 0;
+
+  for(int index = 0; index < this->max_length_; index++)
+  {
+    /*
+      Make a new namespaces for exception handling purposes<!>
+    */
+   
+    SDL_Rect placeholder;
+    placeholder.x = position_x;
+    placeholder.y = position_y;
+    placeholder.w = width;
+    placeholder.h = height;
+    
+    SDL_RenderCopy(game.getRenderer(), bitmap_texture, &this->glyphs_.at(index)->getRect(), &placeholder);
+  }
+
+  RectUtils::debugOutline(game.getRenderer(), rect);
 }
 
 void TextField::update(Game& game) noexcept
@@ -76,5 +104,23 @@ void TextField::update(Game& game) noexcept
 */
 void TextField::rebuildText(Game& game) noexcept
 {
-  return;
+  std::string& text = this->text_;
+  BitMap* bitmap = game.getFontManager()->getBitmap();
+
+  std::vector<Glyph*> glyphs;
+  
+  
+  for(auto iterator : text)
+  {
+    Glyph* placeholder = bitmap->getGlyph(iterator);
+    if(placeholder == nullptr)
+    {
+      continue;
+    }
+
+    glyphs.push_back(placeholder);
+  }
+
+  this->glyphs_.clear();
+  this->glyphs_ = glyphs;
 }

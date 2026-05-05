@@ -2,8 +2,9 @@
 
 BitMap::BitMap(SDL_Texture* bitmap)
 {
+  this->bitmap_ = bitmap;
   // Here we need to make a WHOLE MAP of Glyphs*
-// Letters lowercase
+  // Letters lowercase
   this->glyphs_['a'] = new Glyph();
   this->glyphs_['b'] = new Glyph();
   this->glyphs_['c'] = new Glyph();

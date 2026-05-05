@@ -6,6 +6,7 @@
 class BitMap
 {
   private:
+    SDL_Texture* bitmap_;
     std::unordered_map<char, Glyph*> glyphs_;
   
   public:
@@ -16,10 +17,12 @@ class BitMap
     ~BitMap();
 
     // Getters
+    SDL_Texture* getTexture() const noexcept { return this->bitmap_; }
     Glyph* getGlyph(char placeholder) const { return this->glyphs_.at(placeholder); }
 
     // Setters
     void setGlyph(char key, Glyph* value) noexcept { this->glyphs_.insert({key, value}); }
+    void setTexture(SDL_Texture* new_texture) noexcept { this->bitmap_ = new_texture; }
 
     // Functions
 

@@ -2,6 +2,7 @@
 #define PASSWORD_FIELD_HPP
 
 #include "text_field.hpp"
+#include "../../namespaces_/namespaces.hpp"
 
 class PasswordField : virtual public TextField
 {

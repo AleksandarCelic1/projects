@@ -12,3 +12,5 @@
 - TODO for 15.4. look into posgreSQL how to connect C++ and the DataBase in order to query and authenticate the account so its able to load
 <6>
 - Can start rendering the username/password fields and start detecting input from the user and maybe introduce some settings button but for start make the not interactable!
+<7>
+- Is it easier to not do "rebuildText" but rather to just do it in handleNewLetter and handleBackspace ?!

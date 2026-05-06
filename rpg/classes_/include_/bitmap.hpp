@@ -2,6 +2,7 @@
 #define BITMAP_HPP
 
 #include "glyph.hpp"
+#include "../../namespaces_/namespaces.hpp"
 
 class BitMap
 {
@@ -18,7 +19,7 @@ class BitMap
 
     // Getters
     SDL_Texture* getTexture() const noexcept { return this->bitmap_; }
-    Glyph* getGlyph(char placeholder) const { return this->glyphs_.at(placeholder); }
+    Glyph* getGlyph(char placeholder) const;
 
     // Setters
     void setGlyph(char key, Glyph* value) noexcept { this->glyphs_.insert({key, value}); }

@@ -1,5 +1,6 @@
 #include "../include_/bitmap.hpp"
 
+
 BitMap::BitMap(SDL_Texture* bitmap)
 {
   this->bitmap_ = bitmap;
@@ -121,4 +122,10 @@ BitMap::~BitMap()
       iterator.second = nullptr;
     }
   }
+}
+
+Glyph* BitMap::getGlyph(char key) const 
+{
+  Glyph* retval = ExceptionHandler::get(this->glyphs_, key);
+  return retval;
 }

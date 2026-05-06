@@ -7,6 +7,7 @@
 #include "login_panel.hpp"
 
 #include "../../constants_/constants.hpp"
+#include "../../namespaces_/namespaces.hpp"
 
 class LoginState : virtual public State
 {

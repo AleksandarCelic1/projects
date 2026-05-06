@@ -5,6 +5,8 @@
 #include "glyph.hpp"
 #include "bitmap.hpp"
 
+#include "../../namespaces_/namespaces.hpp"
+
 class TextField : virtual public ElementUI
 {
   private:
@@ -37,6 +39,7 @@ class TextField : virtual public ElementUI
     void setActive(bool new_active) noexcept { this->active_ = new_active; }
     void setTextChanged(bool new_active) noexcept { this->text_changed_ = new_active; }
     void setMaxLength(size_t new_max_length) noexcept { this->max_length_ = new_max_length; }
+    void setGlyphs(std::vector<Glyph*>& new_glyph_vector) noexcept { this->glyphs_ = new_glyph_vector; }
 
     // Functions
     void render(Game& game) noexcept override;

@@ -52,6 +52,7 @@ void TextField::handleBackspace() noexcept
 
 void TextField::render(Game& game) noexcept
 {
+  SDL_Renderer* main_renderer = game.getRenderer();
   SDL_Texture* bitmap_texture = game.getFontManager()->getBitmap()->getTexture();
   const SDL_Rect& rect = this->getDstRect();
 
@@ -63,11 +64,14 @@ void TextField::render(Game& game) noexcept
   int width = 0;
   int height = 0;
 
-  for(int index = 0; index < this->max_length_; index++)
+  int size = this->text_.size();
+  for(int index = 0; index < size; index++)
   {
-    /*
-      Make a new namespaces for exception handling purposes<!>
-    */
+    Glyph* glyph = ExceptionHandler::get(this->glyphs_, index);
+    if(glyph == nullptr)
+    {
+      continue;
+    }
    
     SDL_Rect placeholder;
     placeholder.x = position_x;
@@ -75,10 +79,10 @@ void TextField::render(Game& game) noexcept
     placeholder.w = width;
     placeholder.h = height;
     
-    SDL_RenderCopy(game.getRenderer(), bitmap_texture, &this->glyphs_.at(index)->getRect(), &placeholder);
+    SDL_RenderCopy(main_renderer, bitmap_texture, &glyph->getRect(), &placeholder);
   }
 
-  RectUtils::debugOutline(game.getRenderer(), rect);
+  RectUtils::debugOutline(main_renderer, rect);
 }
 
 void TextField::update(Game& game) noexcept
@@ -123,4 +127,5 @@ void TextField::rebuildText(Game& game) noexcept
 
   this->glyphs_.clear();
   this->glyphs_ = glyphs;
+  this->text_changed_ = false;
 }

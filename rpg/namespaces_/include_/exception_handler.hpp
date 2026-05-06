@@ -7,7 +7,18 @@
 namespace ExceptionHandler
 {
   template <typename Map, typename Key> 
-  void contains(std::vector<Map>& map, Key& key);
+  auto get(Map& container, Key& key)
+  {
+    try
+    {
+      return container.at(key);
+    }
+    catch(const std::exception& exception)
+    {
+      std::cout << "[Exception Caught] -> [ExceptionHandler::contains]" << std::endl;
+      return nullptr;
+    }
+  }
 
 };
 

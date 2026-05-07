@@ -17,6 +17,7 @@ class LoginValidator : virtual public InputValidator
 
     // Functions
     bool validate(Game& game, const std::string& username, const std::string& password) override;
+    bool validateRegistration(Game& game, const std::string& username, const std::string& password, const std::string& confirmation_password) noexcept;
 
     
     bool validateUsername(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept;
@@ -34,6 +35,7 @@ class LoginValidator : virtual public InputValidator
     bool validatePasswordNumber(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept;
     bool validatePasswordSpecialCharacter(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept;
     bool validatePasswordSpaces(const std::string& password, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept;
+    bool validatePasswordConfirmation(const std::string& password, const std::string& confirmation_password) noexcept;
 
 
 

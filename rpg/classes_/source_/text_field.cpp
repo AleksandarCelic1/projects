@@ -33,6 +33,9 @@ void TextField::handleNewLetter(char character) noexcept
   }
   this->text_.push_back(character);
   this->text_changed_ = true;
+
+  /* Debug Logs */
+  std::cout << this->text_ << std::endl;
 }
 
 
@@ -47,6 +50,8 @@ void TextField::handleBackspace() noexcept
   this->text_.pop_back();
   this->text_changed_ = true;
 
+  /* Debug Logs */
+  std::cout << this->text_ << std::endl;
 }
 
 
@@ -67,7 +72,7 @@ void TextField::render(Game& game) noexcept
   int size = this->text_.size();
   for(int index = 0; index < size; index++)
   {
-    Glyph* glyph = ExceptionHandler::get(this->glyphs_, index);
+    Glyph* glyph = static_cast<Glyph*>(ExceptionHandler::get(this->glyphs_, index));
     if(glyph == nullptr)
     {
       continue;

@@ -59,7 +59,7 @@ void LoginState::render(Game& game)
 
 
   /* Debugging Render*/
-  this->getQuadTree()->debugOutline(game.getRenderer());
+  // this->getQuadTree()->debugOutline(game.getRenderer());
 }
 
 void LoginState::update(Game& game) 
@@ -134,6 +134,11 @@ void LoginState::dispatchMouseInput(Game& game)
     }
 
     panel->setActiveField(txt_field);
+    /*
+      We will introduce a button for login and registartion
+      so player when he filled out the form he can click the corresponding button and 
+      go to LoginValidator with the corresponding username and password <!>
+    */
   }
   else if (mouse_button == SDL_BUTTON_RIGHT)
   {

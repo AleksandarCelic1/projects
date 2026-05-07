@@ -18,7 +18,7 @@ void PasswordField::render(Game& game) noexcept
   int height = 0;
 
   int reference = 0;
-  Glyph* star = ExceptionHandler::get(this->getGlyphsConst(), reference);
+  Glyph* star = static_cast<Glyph*>(ExceptionHandler::get(this->getGlyphsConst(), reference));
   if(star == nullptr)
   {
     return;
@@ -36,7 +36,7 @@ void PasswordField::render(Game& game) noexcept
     SDL_RenderCopy(main_renderer, bitmap_texture, &star->getRect(), &placeholder);
   }
 
-  RectUtils::debugOutline(main_renderer, rect);
+  RectUtils::debugOutline(game.getRenderer(), this->getDstRect());
 }
 
 

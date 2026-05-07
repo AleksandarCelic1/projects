@@ -14,6 +14,7 @@ LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, con
   this->password_login_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_PASSWORD), scaling_factor);
   this->password_registration_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD), scaling_factor);
   this->password_confirmation_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD_CONFIRMATION), scaling_factor);
+  this->currently_selected_ = nullptr;
 
 };
 
@@ -112,12 +113,13 @@ void LoginPanel::render(Game& game) noexcept
   this->renderPanel(game);
 
   /* Handle Kids rendering */
+  
   if(this->username_login_->getActive()) { this->username_login_->render(game); }
   if(this->username_registration_->getActive()) { this->username_registration_->render(game); }
   if(this->password_login_->getActive()) { this->password_login_->render(game); }
   if(this->password_registration_->getActive()) { this->password_registration_->render(game); }
   if(this->password_confirmation_->getActive()) { this->password_confirmation_->render(game); }
-
+  
 
   // Render the five  
 }
@@ -165,12 +167,14 @@ void LoginPanel::update(Game& game) noexcept
 
 void LoginPanel::setActiveField(TextField* new_active_field) noexcept
 {
-  if(new_active_field == this->currently_selected_)
+  if(this->currently_selected_ == new_active_field)
   {
     return;
   }
 
+  
   this->currently_selected_ = new_active_field;
   this->currently_selected_->setActive(true);
+
 }
 

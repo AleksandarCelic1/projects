@@ -126,6 +126,6 @@ BitMap::~BitMap()
 
 Glyph* BitMap::getGlyph(char key) const 
 {
-  Glyph* retval = ExceptionHandler::get(this->glyphs_, key);
+  Glyph* retval = static_cast<Glyph*>(ExceptionHandler::get(this->glyphs_, key));
   return retval;
 }

@@ -7,7 +7,7 @@
 namespace ExceptionHandler
 {
   template <typename Map, typename Key> 
-  auto get(Map& container, Key& key)
+  void* get(Map& container, Key& key)
   {
     try
     {

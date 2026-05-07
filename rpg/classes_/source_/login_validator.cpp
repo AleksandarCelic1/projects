@@ -1,6 +1,5 @@
 #include "../include_/login_validator.hpp"
 
-
 bool LoginValidator::validate(Game& game, const std::string& username, const std::string& password)
 { 
   UsernamePasswordConstraints constraints;
@@ -13,6 +12,22 @@ bool LoginValidator::validate(Game& game, const std::string& username, const std
   return result;
 
 }
+
+bool LoginValidator::validateRegistration(Game& game, const std::string& username, const std::string& password, const std::string& confirmation_password) noexcept
+{
+  if(!validate(game, username, password))
+  {
+    return false;
+  }
+
+  if(!validatePasswordConfirmation(password, confirmation_password))
+  {
+    return false;
+  }
+
+  return true;
+}
+
 
 bool LoginValidator::validateUsername(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
@@ -217,3 +232,24 @@ bool LoginValidator::validatePasswordSize(const std::string& password, UsernameP
   return true;
 }
 
+bool LoginValidator::validatePasswordConfirmation(const std::string& password, const std::string& confirmation_password) noexcept
+{
+  int password_size = password.size();
+  int password_confirmation_size = confirmation_password.size();
+
+  if(password_size != password_confirmation_size)
+  {
+    return false;
+  }
+
+  for(int index = 0; index < password_size; index++)
+  {
+    if(password.at(index) != confirmation_password.at(index))
+    {
+      return false;
+    }
+  }
+
+
+  return true;
+}

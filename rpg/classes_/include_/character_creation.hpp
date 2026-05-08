@@ -3,7 +3,7 @@
 
 #include "state.hpp"
 
-class CharCreationState : virtual public State
+class CharacterCreationState : virtual public State
 {
   private:
   public:

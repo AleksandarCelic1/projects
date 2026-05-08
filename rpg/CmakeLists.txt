@@ -37,6 +37,7 @@ add_executable(
   classes_/source_/dispatcher.cpp
   classes_/source_/quadtree.cpp
   classes_/source_/bitmap.cpp
+  classes_/source_/character_overview.cpp
   namespaces_/source_/rect_utils.cpp
   constants_/constants.cpp
 )

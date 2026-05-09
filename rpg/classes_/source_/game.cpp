@@ -24,18 +24,31 @@ Game::Game()
 
 Game::~Game()
 {
-   if(this->main_renderer_)
+  if(this->main_renderer_ != nullptr)
   {
     SDL_DestroyRenderer(this->main_renderer_);
     this->main_renderer_ = nullptr;
   }
 
-  if(this->main_window_)
+  if(this->main_window_ != nullptr)
   {
     SDL_DestroyWindow(this->main_window_);
     this->main_window_ = nullptr;
   }
 
+  if(this->dispatcher_ != nullptr)
+  {
+    delete this->dispatcher_;
+    this->dispatcher_ = nullptr;
+  }
+  
+  if(this->login_ != nullptr)
+  {
+    delete this->login_;
+    this->login_ = nullptr;
+  }
+
+  
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();

@@ -2,32 +2,10 @@
 
 void TextureManager::clear() noexcept
 {
-  for(auto& [id, texture_asset] : this->char_animations_)
-  {
-    if(texture_asset.texture_ != nullptr)
-    {
-      SDL_DestroyTexture(texture_asset.texture_);
-      texture_asset.texture_ = nullptr;
-    }
-  }
-
-  for(auto& [id, texture_asset] : this->ui_textures_)
-  {
-    if(texture_asset.texture_ != nullptr)
-    {
-      SDL_DestroyTexture(texture_asset.texture_);
-      texture_asset.texture_ = nullptr;
-    }
-  }
-
-  for(auto& [id, texture_asset] : this->visual_effects_)
-  {
-    if(texture_asset.texture_ != nullptr)
-    {
-      SDL_DestroyTexture(texture_asset.texture_);
-      texture_asset.texture_ = nullptr;
-    }
-  }
+  MemoryFreeingUtils::clearTextureAssets(this->char_animations_);
+  MemoryFreeingUtils::clearTextureAssets(this->ui_textures_);
+  MemoryFreeingUtils::clearTextureAssets(this->visual_effects_);
+  MemoryFreeingUtils::clearTextureAssets(this->floor_textures_);
 }
 
 TextureManager::TextureManager(SDL_Renderer* new_renderer) 

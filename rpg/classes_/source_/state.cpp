@@ -13,6 +13,15 @@ State::State(SDL_Renderer* main_renderer, int window_width, int window_height)
 
 }
 
+State::~State()
+{
+  if(this->quad_tree_ != nullptr)
+  {
+    delete this->quad_tree_;
+    this->quad_tree_ = nullptr;
+  }
+}
+
 int State::centerX(int x, int screen_width, int object_width)
 {
   return (x + ((screen_width / 2) - (object_width / 2)));

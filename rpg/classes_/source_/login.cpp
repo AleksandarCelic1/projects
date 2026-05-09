@@ -28,6 +28,24 @@ LoginState::LoginState(Game& game) : State(game.getRenderer(), game.getWindowWid
 
 }
 
+LoginState::~LoginState()
+{
+  if(this->validator_ != nullptr)
+  {
+    delete this->validator_;
+    this->validator_ = nullptr;
+  }
+
+  if(this->panel_ != nullptr)
+  {
+    delete this->panel_;
+    this->panel_ = nullptr;
+  }
+
+  MemoryFreeingUtils::clearMap(this->ui_elements_);
+}
+
+
 void LoginState::initializeUIOffsets(Game& game) 
 {
   int scaling_factor = game.getScalingFactor();

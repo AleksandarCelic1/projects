@@ -21,7 +21,7 @@ class State
     State() = default;
     State(SDL_Renderer* main_renderer, int window_width, int window_height);
     State(const State& copy) = delete;
-    virtual ~State() = default;
+    virtual ~State();
 
     // Getters 
     QuadTree* getQuadTree() noexcept { return this->quad_tree_; }

@@ -9,6 +9,8 @@
 #include "state.hpp"
 #include "dispatcher.hpp"
 #include "font_manager.hpp"
+#include "character_overview.hpp"
+#include "character_creation.hpp"
 
 typedef struct
 {
@@ -29,6 +31,8 @@ class Game
     Camera camera_; // Probably should be in PlayingState <!>
 
     LoginState* login_;
+    CharacterOverviewState* overview_;
+    CharacterCreationState* char_creation_;
     State* current_state_;
     Dispatcher* dispatcher_;
 
@@ -66,6 +70,8 @@ class Game
     Dispatcher* getDispatcher() noexcept { return this->dispatcher_; }
     FontManager* getFontManager() noexcept { return this->font_manager_; }
     GameState getGameState() const noexcept { return this->gamestate_; }
+    CharacterOverviewState* getCharOverview() const noexcept { return this->overview_; }
+    CharacterCreationState* getCharCreation() const noexcept { return this->char_creation_; }
     
 
 
@@ -84,6 +90,8 @@ class Game
     void setTextureManager(TextureManager* new_manager) noexcept { this->texture_manager_ = new_manager; }
     void setDispatcher(Dispatcher* new_dispatcher) noexcept { this->dispatcher_ = new_dispatcher; }
     void setFontManager(FontManager* new_font_manager) noexcept { this->font_manager_ = new_font_manager; }
+    void setCharOverview(CharacterOverviewState* new_char_overview_state) noexcept { this->overview_ = new_char_overview_state; }
+    void setCharCreation(CharacterCreationState* new_char_creation_state) noexcept { this->char_creation_ = new_char_creation_state; }
     
 
 

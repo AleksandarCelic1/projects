@@ -32,7 +32,7 @@ class LoginState : virtual public State
     LoginState() = default;
     LoginState(Game& game);      
     LoginState(const LoginState& copy) = delete;
-    ~LoginState() = default;
+    ~LoginState();
 
     // Getters
     LoginValidator* getValidator() noexcept { return this->validator_; }

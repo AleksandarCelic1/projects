@@ -124,6 +124,17 @@ BitMap::~BitMap()
   }
 }
 
+void BitMap::makeAllGlyphs() noexcept
+{
+
+}
+
+void BitMap::makeGlyph() noexcept
+{
+  
+}
+
+
 Glyph* BitMap::getGlyph(char key) const 
 {
   Glyph* retval = static_cast<Glyph*>(ExceptionHandler::get(this->glyphs_, key));

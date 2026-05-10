@@ -26,6 +26,8 @@ class BitMap
     void setTexture(SDL_Texture* new_texture) noexcept { this->bitmap_ = new_texture; }
 
     // Functions
+    void makeAllGlyphs() noexcept;
+    void makeGlyph() noexcept;
 
 };
 

@@ -15,6 +15,7 @@ class Glyph
   public:
     // Constructor Destructor Copy Constructor
     Glyph() = default;
+    Glyph(SDL_Rect& src_rect);
     Glyph(const Glyph& copy) = delete;
     ~Glyph() = default;
 

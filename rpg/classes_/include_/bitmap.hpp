@@ -3,6 +3,7 @@
 
 #include "glyph.hpp"
 #include "../../namespaces_/namespaces.hpp"
+#include "../../enums_/enums.hpp"
 
 class BitMap
 {
@@ -27,8 +28,8 @@ class BitMap
 
     // Functions
     void makeAllGlyphs() noexcept;
-    void makeGlyph() noexcept;
-
+    void makeGlyph(char key, SDL_Rect src_rect) noexcept;
+    std::unordered_map<BitMapOffsets, SDL_Rect> makeOffsetsMap() noexcept;
 };
 
 

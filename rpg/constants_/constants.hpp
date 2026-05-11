@@ -52,7 +52,13 @@ inline const int INVALID_NUMBER = -1;
 // QuadTree
 inline const int QUADTREE_CAPACITY = 4;
 
+// BitMap 
+inline const int LETTER_WIDTH_AND_HEIGHT = 8;
+inline const int AMOUNT_OF_LETTERS = 62;
+
 // SDL_Keycode map -> char -> glyph
 extern std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS;
+
+
 
 #endif

@@ -6,7 +6,7 @@ BitMap::BitMap(SDL_Texture* bitmap)
   this->bitmap_ = bitmap;
   // Here we need to make a WHOLE MAP of Glyphs*
   // Letters lowercase
-  this->glyphs_['a'] = new Glyph();
+  /*this->glyphs_['a'] = new Glyph();
   this->glyphs_['b'] = new Glyph();
   this->glyphs_['c'] = new Glyph();
   this->glyphs_['d'] = new Glyph();
@@ -109,7 +109,7 @@ BitMap::BitMap(SDL_Texture* bitmap)
   this->glyphs_['/'] = new Glyph();
   this->glyphs_['?'] = new Glyph();
   this->glyphs_['`'] = new Glyph();
-  this->glyphs_['~'] = new Glyph();
+  this->glyphs_['~'] = new Glyph();*/
 }
 
 BitMap::~BitMap()
@@ -126,12 +126,56 @@ BitMap::~BitMap()
 
 void BitMap::makeAllGlyphs() noexcept
 {
+  std::unordered_map<BitMapOffsets, SDL_Rect> map = makeOffsetsMap();
 
+  char key = 'A';
+
+  for(auto iterator : map)
+  {
+    this->makeGlyph(key, iterator.second);
+    key++;
+
+    if(key == 'Z' + 1)
+    {
+      key = 'a';
+    }
+  }
 }
 
-void BitMap::makeGlyph() noexcept
+void BitMap::makeGlyph(char key, SDL_Rect src_rect) noexcept
 {
-  
+  this->glyphs_.insert({key, new Glyph(src_rect)});
+}
+
+std::unordered_map<BitMapOffsets, SDL_Rect> BitMap::makeOffsetsMap() noexcept
+{
+  std::unordered_map<BitMapOffsets, SDL_Rect> map;
+
+  int x_offset = 0;
+  int y_offset = 0;
+
+  for(int index = 0; index < AMOUNT_OF_LETTERS; index++)
+  {
+    /*First we have 26 capital letters and then 26 lowercase letters and then numbers 0-9*/
+    if(index % 26 == 0 && index != 0)
+    {
+      y_offset += LETTER_WIDTH_AND_HEIGHT;
+    }
+
+    SDL_Rect placeholder;
+    placeholder.x = x_offset;
+    placeholder.y = y_offset;
+    placeholder.w = LETTER_WIDTH_AND_HEIGHT;
+    placeholder.h = LETTER_WIDTH_AND_HEIGHT;
+
+    BitMapOffsets key = static_cast<BitMapOffsets>(index);
+    map.insert({key, placeholder});
+
+    x_offset += LETTER_WIDTH_AND_HEIGHT;
+
+  }
+
+  return map;
 }
 
 

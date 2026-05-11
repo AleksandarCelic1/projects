@@ -5,10 +5,9 @@
 
 class Game;
 
-class FontManager  // Probably will use two bitmaps the 1270 will be scaled to 2560 instead of holding another one <!>
+class FontManager
 {
   private:
-    // Only one will be loaded, when we switch then we load the targeted one <!>
     BitMap* bitmap_;
 
   public:

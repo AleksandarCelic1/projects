@@ -10,16 +10,15 @@ QuadTree::QuadTree(SDL_Rect& boundary)
 
 QuadTree::~QuadTree()
 {
-  for(auto iterator : this->elements_)
-  {
-    if(iterator != nullptr)
-    {
-      delete iterator;
-      iterator = nullptr;
-    }
-  }
+  /*
+    QuadTree Shouldnt delete the elements as he doesnt really own them but reather
+    just reads them/ obersves them and it should be handled by some other class, but
+    to do this correctly to be visible to across every other object that uses the same elementUI* allocated
+    object we must pass a reference and EVERYONE must use the same reference <!>
+  */
+  this->elements_.clear();
 
-  for(auto iterator : this->children_)
+  for(auto& iterator : this->children_)
   {
     if(iterator != nullptr)
     {
@@ -32,7 +31,7 @@ QuadTree::~QuadTree()
 
 void QuadTree::categorize(ElementUI* elem) noexcept
 {
-  for (auto iterator : this->children_)
+  for (auto& iterator : this->children_)
   {
     if(iterator->intersectDetection(elem->getDstRect()))
     {

@@ -14,6 +14,7 @@ Game::Game()
 
   this->gamestate_ = GameState::LOG_IN_SCREEN;
   this->texture_manager_ = new TextureManager(this->main_renderer_);
+  this->font_manager_ = new FontManager(*this);
 
   this->login_ = new LoginState(*this);
   this->current_state_ = (this->login_);

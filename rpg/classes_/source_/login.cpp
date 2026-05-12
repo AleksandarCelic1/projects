@@ -88,9 +88,7 @@ void LoginState::update(Game& game)
 void LoginState::renderBackground(Game& game) noexcept
 {
   ElementUI* placeholder = this->ui_elements_[LoginUI::LOGIN_BACKGROUND];
-  placeholder->render(game); // this change should work <!>
-  //SDL_Rect copy = placeholder->getRect();
-  //SDL_RenderCopy(game.getRenderer(), placeholder->getTexture(), nullptr, &copy);
+  placeholder->render(game); 
 
   // nullprt for SRC rect means -> that we take a specific part of the texture and then render 
   // it with DST rect and DST holds x,y,w,h if we do nullprt for SRC we just use the entire Texture
@@ -98,7 +96,7 @@ void LoginState::renderBackground(Game& game) noexcept
 
 void LoginState::dispatchKeyboardInput(Game& game) 
 {
-  const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
+  const SDL_Keycode keycode = game.getDispatcher()->getKeyCode();
   bool shift_pressed = game.getDispatcher()->getShiftHeld();
   bool control_pressed = game.getDispatcher()->getControlHeld();
 
@@ -110,6 +108,7 @@ void LoginState::dispatchKeyboardInput(Game& game)
     return;
   }
 
+  /* BUG -> cant detect backspace <!> /*/
   char new_char = iterator->second;
   TextField* placeholder = this->getPanel()->getActiveField();
   if(placeholder != nullptr)

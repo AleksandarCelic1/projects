@@ -29,7 +29,7 @@ class BitMap
     // Functions
     void makeAllGlyphs() noexcept;
     void makeGlyph(char key, SDL_Rect src_rect) noexcept;
-    std::unordered_map<BitMapOffsets, SDL_Rect> makeOffsetsMap() noexcept;
+    std::vector<SDL_Rect> makeOffsetsVector() noexcept;
 };
 
 

@@ -35,13 +35,13 @@ void TextField::handleNewLetter(char character) noexcept
   this->text_changed_ = true;
 
   /* Debug Logs */
-  std::cout << this->text_ << std::endl;
+  //std::cout << this->text_ << std::endl;
 }
 
 
 void TextField::handleBackspace() noexcept
 {
-  if(this->text_.size() == 0)
+ if(this->text_.size() == 0)
   {
     // Nothing to "erase"
     return;
@@ -64,10 +64,11 @@ void TextField::render(Game& game) noexcept
   int x = rect.x;
   int y = rect.y;
 
-  int position_x = x;
-  int position_y = y;
-  int width = 0;
-  int height = 0;
+  int position_x = x + TEXT_X_OFFSET * game.getScalingFactor(); 
+  //int position_y = y + TEXT_X_OFFSET * game.getScalingFactor(); // - LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor();
+  int position_y = y + rect.h / 2;
+  int width = LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
+  int height = LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
 
   int size = this->text_.size();
   for(int index = 0; index < size; index++)
@@ -77,14 +78,19 @@ void TextField::render(Game& game) noexcept
     {
       continue;
     }
+
    
     SDL_Rect placeholder;
     placeholder.x = position_x;
     placeholder.y = position_y;
     placeholder.w = width;
     placeholder.h = height;
-    
+
+    position_x += LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
     SDL_RenderCopy(main_renderer, bitmap_texture, &glyph->getRect(), &placeholder);
+
+    /* Debug Printfs <!> */
+    //std::cout << glyph->getRect().x << " " << glyph->getRect().y << std::endl;
   }
 
   RectUtils::debugOutline(main_renderer, rect);
@@ -124,6 +130,7 @@ void TextField::rebuildText(Game& game) noexcept
     Glyph* placeholder = bitmap->getGlyph(iterator);
     if(placeholder == nullptr)
     {
+      std::cout << "[ERROR] -> [TextField::rebuildText] -> glyph is nullptr <!> " << std::endl;
       continue;
     }
 

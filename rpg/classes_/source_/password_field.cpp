@@ -21,6 +21,7 @@ void PasswordField::render(Game& game) noexcept
   Glyph* star = static_cast<Glyph*>(ExceptionHandler::get(this->getGlyphsConst(), reference));
   if(star == nullptr)
   {
+    this->setActive(false);
     return;
   }
 

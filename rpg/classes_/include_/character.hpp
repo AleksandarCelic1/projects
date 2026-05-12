@@ -26,7 +26,7 @@ class Character
     // Constructor, Copy Constructor, Destructor
     Character(ClassType type);
     Character(const Character& copy) = delete;
-    ~Character() = default; // see later if there is something to be deleted << !
+    virtual ~Character() = default; // see later if there is something to be deleted << !
 
     // Getters
     int getWorldX() const { return this->world_x_; }

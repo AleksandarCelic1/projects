@@ -38,6 +38,8 @@ add_executable(
   classes_/source_/quadtree.cpp
   classes_/source_/bitmap.cpp
   classes_/source_/character_overview.cpp
+  classes_/source_/glyph.cpp
+  classes_/source_/font_manager.cpp
   namespaces_/source_/rect_utils.cpp
   constants_/constants.cpp
 )

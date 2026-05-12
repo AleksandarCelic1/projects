@@ -32,7 +32,7 @@ class LoginPanel : virtual public ElementUI
     LoginPanel() = default;
     LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor);
     LoginPanel(const LoginPanel& copy ) = delete;
-    ~LoginPanel() = default;
+    ~LoginPanel();
 
     // Getters
     TextField* getUsernameLogin() noexcept { return this->username_login_; }

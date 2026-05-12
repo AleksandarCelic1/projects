@@ -18,6 +18,41 @@ LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, con
 
 };
 
+LoginPanel::~LoginPanel()
+{
+  /* make maybe a memory utils for this */
+
+  if(this->username_login_ != nullptr) 
+  {
+    delete this->username_login_; 
+    this->username_login_ = nullptr;
+  }
+
+  if(this->username_registration_ != nullptr)
+  { 
+    delete this->username_registration_;
+    this->username_registration_ = nullptr;
+  }
+
+  if(this->password_login_ != nullptr)
+  {
+    delete this->password_login_;
+    this->password_login_ = nullptr;
+  }
+
+  if(this->password_registration_ != nullptr)
+  {
+    delete this->password_registration_;
+    this->password_registration_ = nullptr;
+  }
+
+  if(this->password_confirmation_ != nullptr)
+  {
+    delete this->password_confirmation_;
+    this->password_confirmation_ = nullptr;
+  }
+}
+
 void LoginPanel::setUsernameLogin(TextField* new_username) noexcept
 {
   if(new_username == nullptr)

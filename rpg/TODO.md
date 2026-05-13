@@ -14,3 +14,5 @@
 - Can start rendering the username/password fields and start detecting input from the user and maybe introduce some settings button but for start make the not interactable!
 <7>
 - Is it easier to not do "rebuildText" but rather to just do it in handleNewLetter and handleBackspace ?!
+<8>
+- Do memoryfreeutils functions for just a simple pointer like clearPointer etc. then we can do text rendering better and refactor the DTORS <!>

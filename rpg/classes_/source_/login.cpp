@@ -30,21 +30,10 @@ LoginState::LoginState(Game& game) : State(game.getRenderer(), game.getWindowWid
 
 LoginState::~LoginState()
 {
-  if(this->validator_ != nullptr)
-  {
-    delete this->validator_;
-    this->validator_ = nullptr;
-  }
-
-  if(this->panel_ != nullptr)
-  {
-    delete this->panel_;
-    this->panel_ = nullptr;
-  }
-
+  MemoryFreeingUtils::clearPointer(this->validator_);
+  MemoryFreeingUtils::clearPointer(this->panel_);
   MemoryFreeingUtils::clearMap(this->ui_elements_);
 }
-
 
 void LoginState::initializeUIOffsets(Game& game) 
 {
@@ -68,7 +57,6 @@ void LoginState::initializeUIOffsets(Game& game)
 
 
 }
-
 
 void LoginState::render(Game& game)
 {
@@ -96,7 +84,7 @@ void LoginState::renderBackground(Game& game) noexcept
 
 void LoginState::dispatchKeyboardInput(Game& game) 
 {
-  const SDL_Keycode keycode = game.getDispatcher()->getKeyCode();
+  const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
   bool shift_pressed = game.getDispatcher()->getShiftHeld();
   bool control_pressed = game.getDispatcher()->getControlHeld();
 
@@ -105,6 +93,7 @@ void LoginState::dispatchKeyboardInput(Game& game)
   auto iterator = SDL_KEYS.find(key);
   if(iterator == SDL_KEYS.end())
   {
+    std::cout << "[ERROR] -> [LoginState::dispatchKeyboardInput] -> key not found <!> " << std::endl;
     return;
   }
 

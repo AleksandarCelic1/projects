@@ -60,7 +60,7 @@ TextureAsset TextureManager::makeTextureAsset(const std::string& path) noexcept
   return placeholder;
 
 }
-// #include "../../photos_/player_classes_/"
+
 void TextureManager::loadCharAnimations() noexcept
 {
   this->char_animations_[CharacterAnimationState::TEMPLAR_IDLE] = makeTextureAsset("../photos_/player_classes_/templar_/templar_idle_.png");
@@ -101,7 +101,6 @@ void TextureManager::loadUITextures() noexcept
 {
   this->ui_textures_[UI::LOGIN_BACKGROUND] = makeTextureAsset("../photos_/UI_/login_/background_for_login.png");
   this->ui_textures_[UI::LOGIN_PANEL] = makeTextureAsset("../photos_/UI_/login_/login_panel_not_finished.png");
-
 }
 
 void TextureManager::loadVisualEffects() noexcept
@@ -117,7 +116,6 @@ void TextureManager::loadFloorTextures() noexcept
 {
   this->floor_textures_[FloorType::PLAINS_GRASS] = makeTextureAsset("../photos_/floors_/PlainsGrass.png");
   this->floor_textures_[FloorType::PLAINS_GRASS_WITH_LEAVES_ONE] = makeTextureAsset("../photos_/floors_/PlainsGrassLeavesOne.png");
-
 }
 
 

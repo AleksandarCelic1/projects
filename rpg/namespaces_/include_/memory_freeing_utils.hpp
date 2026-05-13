@@ -5,16 +5,22 @@
 
 namespace MemoryFreeingUtils
 {
+  template <typename T>
+  void clearPointer(T& pointer) noexcept
+  {
+    if(pointer != nullptr)
+    {
+      delete pointer;
+      pointer = nullptr;
+    }
+  }
+
   template <typename T> 
   void clearMap(T& container) noexcept
   {
     for(auto& iterator : container)
     {
-      if(iterator.second != nullptr)
-      {
-        delete iterator.second;
-        iterator.second = nullptr;
-      }
+      clearPointer(iterator.second);
     }
 
     container.clear();
@@ -25,11 +31,7 @@ namespace MemoryFreeingUtils
   {
     for(auto& iterator : vec)
     {
-      if(iterator != nullptr)
-      {
-        delete iterator;
-        iterator = nullptr;
-      }
+      clearPointer(iterator);
     }
 
     vec.clear();

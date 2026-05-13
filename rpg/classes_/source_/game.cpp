@@ -37,19 +37,9 @@ Game::~Game()
     this->main_window_ = nullptr;
   }
 
-  if(this->dispatcher_ != nullptr)
-  {
-    delete this->dispatcher_;
-    this->dispatcher_ = nullptr;
-  }
-  
-  if(this->login_ != nullptr)
-  {
-    delete this->login_;
-    this->login_ = nullptr;
-  }
+  MemoryFreeingUtils::clearPointer(this->dispatcher_);
+  MemoryFreeingUtils::clearPointer(this->login_);
 
-  
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();
@@ -215,9 +205,27 @@ void Game::mainEventHandler(SDL_Event* event)
       this->dispatcher_->setKeyCode(event->key.keysym.sym); 
     }
     else if(event->type == SDL_KEYUP) {
-      this->current_state_->dispatchKeyboardInput(*this);
-      this->dispatcher_->setShiftHeld(false);
-      this->dispatcher_->setControlHeld(false);
+
+      SDL_Keycode placeholder = this->dispatcher_->getKeyCode();
+
+      /* BUG -> when shift is released last character is appended again <!> */
+      if(placeholder != SDLK_RSHIFT
+      && placeholder != SDLK_LSHIFT
+      && placeholder != SDLK_LCTRL
+      && placeholder != SDLK_RCTRL)
+      {
+        this->current_state_->dispatchKeyboardInput(*this);
+      }
+      
+      if(placeholder == SDLK_RSHIFT || placeholder == SDLK_LSHIFT)
+      {
+        this->dispatcher_->setShiftHeld(false);
+      }
+
+      if(placeholder == SDLK_RCTRL || placeholder == SDLK_LCTRL)
+      {
+        this->dispatcher_->setControlHeld(false);
+      }
     }
     else if(event->type == SDL_MOUSEBUTTONDOWN)
     {
@@ -228,17 +236,10 @@ void Game::mainEventHandler(SDL_Event* event)
     else if(event->type == SDL_MOUSEBUTTONUP)
     {
       this->current_state_->dispatchMouseInput(*this);
+
       this->dispatcher_->setMouseX(INVALID_NUMBER);
       this->dispatcher_->setMouseY(INVALID_NUMBER);
       //this->dispatcher_->setMouseButton(INVALID_NUMBER); 
-
-      /*
-        This is done so we dont happen to handle an stale event, but the setMouseButton
-        is essentially Uint8 as thats what SDL demands so putting INVALID_NUMBER on it 
-        which is -1 wont stay that why and its going to be a whole "cycle" behind 
-        so its going to surpass the future Error Checks <!>
-      */
-  
     }
   } 
 }

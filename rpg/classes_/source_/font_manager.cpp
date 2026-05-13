@@ -25,10 +25,5 @@ FontManager::FontManager(Game& game)
 
 FontManager::~FontManager()
 {
-  if(this->bitmap_ != nullptr)
-  {
-    delete this->bitmap_;
-    this->bitmap_ = nullptr;
-  }
-
+  MemoryFreeingUtils::clearPointer(this->bitmap_);
 }

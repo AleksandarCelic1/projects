@@ -17,15 +17,7 @@ QuadTree::~QuadTree()
     object we must pass a reference and EVERYONE must use the same reference <!>
   */
   this->elements_.clear();
-
-  for(auto& iterator : this->children_)
-  {
-    if(iterator != nullptr)
-    {
-      delete iterator;
-      iterator = nullptr;
-    }
-  }
+  MemoryFreeingUtils::clearVector(this->children_);
 }
 
 

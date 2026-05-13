@@ -46,6 +46,7 @@ std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS =
   {{SDLK_SPACE, false}, ' '}, {{SDLK_SPACE, true}, ' '},
 
   // Special characters
+  {{SDLK_BACKSPACE, false}, '\b'},   {{SDLK_BACKSPACE, true}, '\b'},
   {{SDLK_MINUS, false}, '-'},        {{SDLK_MINUS, true}, '_'},
   {{SDLK_EQUALS, false}, '='},       {{SDLK_EQUALS, true}, '+'},
   {{SDLK_LEFTBRACKET, false}, '['},  {{SDLK_LEFTBRACKET, true}, '{'},

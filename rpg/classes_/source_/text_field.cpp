@@ -3,7 +3,6 @@
 
 TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor)
 {
-
   SDL_Rect placeholder;
   placeholder.x = coords.first + offsets.first;
   placeholder.y = coords.second + offsets.second;
@@ -13,10 +12,9 @@ TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int
   this->active_ = false;
   this->text_changed_ = false;
   this->text_ = "";
-  this->max_length_ = 16; // Not concluded yet
+  this->max_length_ = 16;
 
   this->setDstRect(placeholder);
-
 }
 
 /* 
@@ -33,9 +31,6 @@ void TextField::handleNewLetter(char character) noexcept
   }
   this->text_.push_back(character);
   this->text_changed_ = true;
-
-  /* Debug Logs */
-  //std::cout << this->text_ << std::endl;
 }
 
 
@@ -43,7 +38,6 @@ void TextField::handleBackspace() noexcept
 {
  if(this->text_.size() == 0)
   {
-    // Nothing to "erase"
     return;
   }
   
@@ -65,10 +59,9 @@ void TextField::render(Game& game) noexcept
   int y = rect.y;
 
   int position_x = x + TEXT_X_OFFSET * game.getScalingFactor(); 
-  //int position_y = y + TEXT_X_OFFSET * game.getScalingFactor(); // - LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor();
   int position_y = y + rect.h / 2;
-  int width = LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
-  int height = LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
+  int width = LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 1);
+  int height = LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 1);
 
   int size = this->text_.size();
   for(int index = 0; index < size; index++)
@@ -88,9 +81,6 @@ void TextField::render(Game& game) noexcept
 
     position_x += LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
     SDL_RenderCopy(main_renderer, bitmap_texture, &glyph->getRect(), &placeholder);
-
-    /* Debug Printfs <!> */
-    //std::cout << glyph->getRect().x << " " << glyph->getRect().y << std::endl;
   }
 
   RectUtils::debugOutline(main_renderer, rect);

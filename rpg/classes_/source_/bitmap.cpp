@@ -12,14 +12,7 @@ BitMap::BitMap(SDL_Texture* bitmap)
 
 BitMap::~BitMap()
 {
-  for(auto& iterator : this->glyphs_)
-  {
-    if(iterator.second != nullptr)
-    {
-      delete iterator.second;
-      iterator.second = nullptr;
-    }
-  }
+  MemoryFreeingUtils::clearMap(this->glyphs_);
 }
 
 void BitMap::makeAllGlyphs() noexcept
@@ -31,7 +24,6 @@ void BitMap::makeAllGlyphs() noexcept
 
   for(auto iterator : vec)
   {
-    std::cout << key << " " << iterator.x << " " << iterator.y << std::endl;
     this->makeGlyph(key, iterator);
     key++;
 

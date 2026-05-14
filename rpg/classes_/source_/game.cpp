@@ -181,6 +181,7 @@ void Game::update()
 void Game::mainEventHandler(SDL_Event* event)
 {
   // SDL_PollEvent is basically a queue and we ask each frame if there is a new event if no he returns 0 if yes we handle it < !
+  std::queue<KeyboardInput*>& queue = this->dispatcher_->getInputQueue();
   SDL_Keymod modifier; // Is a Bitmask 
 
   while(SDL_PollEvent(event))
@@ -191,40 +192,40 @@ void Game::mainEventHandler(SDL_Event* event)
     }
     else if(event->type == SDL_KEYDOWN) 
     { 
-      modifier = SDL_GetModState(); 
+      modifier = SDL_GetModState();
+      
+      bool shift = false;
+      bool control = false;
       if(modifier & KMOD_SHIFT) 
       {
-        this->dispatcher_->setShiftHeld(true);
+        shift = true;
       }
 
       if(modifier & KMOD_CTRL)
       {
-        this->dispatcher_->setControlHeld(true);
+        control = true;
       }
       
-      this->dispatcher_->setKeyCode(event->key.keysym.sym); 
+      SDL_Keycode key_code = event->key.keysym.sym;
+      if(ParserUtility::isShiftPressed(key_code) || ParserUtility::isControlPressed(key_code))
+      {
+        std::cout << "[CAUGHT] -> [Game::mainEventHandler] -> shift or control pressed <!> " << std::endl;
+        continue;
+      }
+
+    
+      KeyboardInput* new_input = new KeyboardInput();
+      new_input->control_held_ = control;
+      new_input->shift_held_ = shift;
+      new_input->key_pressed_ = key_code;
+
+      queue.push(new_input);
     }
-    else if(event->type == SDL_KEYUP) {
-
-      SDL_Keycode placeholder = this->dispatcher_->getKeyCode();
-
-      /* BUG -> when shift is released last character is appended again <!> */
-      if(placeholder != SDLK_RSHIFT
-      && placeholder != SDLK_LSHIFT
-      && placeholder != SDLK_LCTRL
-      && placeholder != SDLK_RCTRL)
+    else if(event->type == SDL_KEYUP) 
+    {
+      if(queue.size() > 0)
       {
         this->current_state_->dispatchKeyboardInput(*this);
-      }
-      
-      if(placeholder == SDLK_RSHIFT || placeholder == SDLK_LSHIFT)
-      {
-        this->dispatcher_->setShiftHeld(false);
-      }
-
-      if(placeholder == SDLK_RCTRL || placeholder == SDLK_LCTRL)
-      {
-        this->dispatcher_->setControlHeld(false);
       }
     }
     else if(event->type == SDL_MOUSEBUTTONDOWN)

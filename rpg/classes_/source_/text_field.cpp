@@ -45,7 +45,7 @@ void TextField::handleBackspace() noexcept
   this->text_changed_ = true;
 
   /* Debug Logs */
-  std::cout << this->text_ << std::endl;
+  //std::cout << this->text_ << std::endl;
 }
 
 

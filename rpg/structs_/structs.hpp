@@ -4,5 +4,6 @@
 
 #include "texture_structs.hpp"
 #include "account_structs.hpp"
+#include "parser_structs.hpp"
 
 #endif

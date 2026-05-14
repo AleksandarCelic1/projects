@@ -84,9 +84,26 @@ void LoginState::renderBackground(Game& game) noexcept
 
 void LoginState::dispatchKeyboardInput(Game& game) 
 {
-  const SDL_Keycode& keycode = game.getDispatcher()->getKeyCode();
-  bool shift_pressed = game.getDispatcher()->getShiftHeld();
-  bool control_pressed = game.getDispatcher()->getControlHeld();
+  /* THIS FUNCTION HAS MULTIPLE PURPOSES MUST BE REFACTORED IN THE UPCOMING COMMITS */
+  TextField* text = this->getPanel()->getActiveField();
+  std::queue<KeyboardInput*>& queue = game.getDispatcher()->getInputQueue();
+
+  if(text->getTextConst().size() == 0)
+  {
+    ParserUtility::flushQueue(queue);
+  }
+
+  if(queue.empty())
+  {
+    return;
+  }
+
+  KeyboardInput* new_input = queue.front();
+  queue.pop();
+
+  SDL_Keycode keycode = new_input->key_pressed_;
+  bool shift_pressed = new_input->shift_held_;
+  bool control_pressed = new_input->control_held_;
 
 
   std::pair<SDL_Keycode, bool> key = {keycode, shift_pressed};
@@ -94,16 +111,18 @@ void LoginState::dispatchKeyboardInput(Game& game)
   if(iterator == SDL_KEYS.end())
   {
     std::cout << "[ERROR] -> [LoginState::dispatchKeyboardInput] -> key not found <!> " << std::endl;
+    delete new_input;
     return;
   }
 
-  /* BUG -> cant detect backspace <!> /*/
   char new_char = iterator->second;
-  TextField* placeholder = this->getPanel()->getActiveField();
-  if(placeholder != nullptr)
+  
+  if(text != nullptr)
   {
-    keycode == SDLK_BACKSPACE ? placeholder->handleBackspace() : placeholder->handleNewLetter(new_char);
+    keycode == SDLK_BACKSPACE ? text->handleBackspace() : text->handleNewLetter(new_char);
   }
+
+  delete new_input;
 }
 
 void LoginState::dispatchMouseInput(Game& game)

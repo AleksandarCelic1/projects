@@ -15,6 +15,7 @@
 #include <unordered_set>
 #include <set>
 #include <cctype>
+#include <queue>
 
 
 // Resolution - Scaling Factors

@@ -13,7 +13,7 @@ class State
 {
   private:
     QuadTree* quad_tree_;
-    SDL_Renderer* renderer_; // is this used?
+    SDL_Renderer* renderer_;
     std::unordered_map<Offsets, std::pair<int, int>> offsets_;
 
   public:

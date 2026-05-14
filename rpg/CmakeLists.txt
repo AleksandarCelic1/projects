@@ -41,6 +41,7 @@ add_executable(
   classes_/source_/glyph.cpp
   classes_/source_/font_manager.cpp
   namespaces_/source_/rect_utils.cpp
+  namespaces_/source_/parser_utility.cpp
   constants_/constants.cpp
 )
 

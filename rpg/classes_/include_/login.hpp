@@ -51,6 +51,9 @@ class LoginState : virtual public State
 
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
+
+    // Mini Helpers
+    KeyboardInput* getKeyboardInput(TextField* text, std::queue<KeyboardInput*>& queue) noexcept;
     
 
 };

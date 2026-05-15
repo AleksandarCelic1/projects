@@ -88,18 +88,7 @@ void LoginState::dispatchKeyboardInput(Game& game)
   TextField* text = this->getPanel()->getActiveField();
   std::queue<KeyboardInput*>& queue = game.getDispatcher()->getInputQueue();
 
-  if(text->getTextConst().size() == 0)
-  {
-    ParserUtility::flushQueue(queue);
-  }
-
-  if(queue.empty())
-  {
-    return;
-  }
-
-  KeyboardInput* new_input = queue.front();
-  queue.pop();
+  KeyboardInput* new_input = this->getKeyboardInput(text, queue);
 
   SDL_Keycode keycode = new_input->key_pressed_;
   bool shift_pressed = new_input->shift_held_;
@@ -175,6 +164,18 @@ void LoginState::dispatchMouseInput(Game& game)
   }
 }
 
+KeyboardInput* LoginState::getKeyboardInput(TextField* text, std::queue<KeyboardInput*>& queue) noexcept
+{
+  if(text->getTextConst().size() == 0)
+  {
+    ParserUtility::flushQueue(queue);
+  }
 
+  if(queue.empty())
+  {
+    return;
+  }
 
-
+  KeyboardInput* new_input = queue.front();
+  queue.pop();
+}

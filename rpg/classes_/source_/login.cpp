@@ -84,11 +84,19 @@ void LoginState::renderBackground(Game& game) noexcept
 
 void LoginState::dispatchKeyboardInput(Game& game) 
 {
-  /* THIS FUNCTION HAS MULTIPLE PURPOSES MUST BE REFACTORED IN THE UPCOMING COMMITS */
-  TextField* text = this->getPanel()->getActiveField();
   std::queue<KeyboardInput*>& queue = game.getDispatcher()->getInputQueue();
+  TextField* text = this->getPanel()->getActiveField();
+  if(text == nullptr)
+  {
+    ParserUtility::flushQueue(queue);
+    return;
+  }
 
   KeyboardInput* new_input = this->getKeyboardInput(text, queue);
+  if(new_input == nullptr)
+  {
+    return;
+  }
 
   SDL_Keycode keycode = new_input->key_pressed_;
   bool shift_pressed = new_input->shift_held_;
@@ -137,12 +145,14 @@ void LoginState::dispatchMouseInput(Game& game)
 
     if(tmp == nullptr)
     {
+      panel->setActiveField(nullptr);
       return;
     }
 
     TextField* txt_field = dynamic_cast<TextField*>(tmp);
     if(txt_field == nullptr)
     {
+      panel->setActiveField(nullptr);
       std::cout << "[ERROR] -> [LoginState::dispatchMouseInput] -> dynamic_cast failed <!> " << std::endl;
       return;
     }
@@ -168,14 +178,16 @@ KeyboardInput* LoginState::getKeyboardInput(TextField* text, std::queue<Keyboard
 {
   if(text->getTextConst().size() == 0)
   {
-    ParserUtility::flushQueue(queue);
+    ParserUtility::flushBackspacesQueue(queue);
   }
 
   if(queue.empty())
   {
-    return;
+    return nullptr;
   }
 
   KeyboardInput* new_input = queue.front();
   queue.pop();
+
+  return new_input;
 }

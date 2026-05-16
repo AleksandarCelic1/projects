@@ -183,7 +183,9 @@ void LoginPanel::setActiveField(TextField* new_active_field) noexcept
 
   
   this->currently_selected_ = new_active_field;
-  this->currently_selected_->setActive(true);
-
+  if(this->currently_selected_ != nullptr)
+  {
+    this->currently_selected_->setActive(true);
+  }
 }
 

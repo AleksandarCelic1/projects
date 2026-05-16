@@ -20,7 +20,7 @@ bool ParserUtility::isControlPressed(SDL_Keycode key_code) noexcept
   return false;
 }
 
-void ParserUtility::flushQueue(std::queue<KeyboardInput*>& queue) noexcept
+void ParserUtility::flushBackspacesQueue(std::queue<KeyboardInput*>& queue) noexcept
 {
   while(!queue.empty())
   {
@@ -30,9 +30,22 @@ void ParserUtility::flushQueue(std::queue<KeyboardInput*>& queue) noexcept
     {
       queue.pop();
       delete placeholder;
+      std::cout << "[CAUGHT] -> [ParserUtility::flushQueue] -> backspace caught <!> " << std::endl;
       continue;
     }
 
     break;
   }
 }
+
+void ParserUtility::flushQueue(std::queue<KeyboardInput*>& queue) noexcept
+{
+  while(!queue.empty())
+  {
+    KeyboardInput* placeholder = queue.front();
+    delete placeholder;
+    queue.pop();
+  }
+}
+
+

@@ -9,6 +9,7 @@ namespace ParserUtility
 {
   bool isShiftPressed(SDL_Keycode key_code) noexcept;
   bool isControlPressed(SDL_Keycode key_code) noexcept;
+  void flushBackspacesQueue(std::queue<KeyboardInput*>& queue) noexcept;
   void flushQueue(std::queue<KeyboardInput*>& queue) noexcept;
 
 };

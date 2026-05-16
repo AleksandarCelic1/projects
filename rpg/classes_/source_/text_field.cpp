@@ -113,14 +113,16 @@ void TextField::rebuildText(Game& game) noexcept
   BitMap* bitmap = game.getFontManager()->getBitmap();
 
   std::vector<Glyph*> glyphs;
-  
-  
-  for(auto iterator : text)
+  int size = text.size();
+  for(int index = 0; index < size; index++)
   {
-    Glyph* placeholder = bitmap->getGlyph(iterator);
+    Glyph* placeholder = bitmap->getGlyph(text.at(index));
     if(placeholder == nullptr)
     {
       std::cout << "[ERROR] -> [TextField::rebuildText] -> glyph is nullptr <!> " << std::endl;
+      text.erase(text.begin() + index);
+      size = text.size();
+      index--;
       continue;
     }
 

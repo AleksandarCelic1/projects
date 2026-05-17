@@ -79,7 +79,7 @@ void TextField::render(Game& game) noexcept
     placeholder.w = width;
     placeholder.h = height;
 
-    position_x += LETTER_WIDTH_AND_HEIGHT * game.getScalingFactor() + 1;
+    position_x += LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 1);
     SDL_RenderCopy(main_renderer, bitmap_texture, &glyph->getRect(), &placeholder);
   }
 
@@ -110,9 +110,10 @@ void TextField::update(Game& game) noexcept
 void TextField::rebuildText(Game& game) noexcept
 {
   std::string& text = this->text_;
-  BitMap* bitmap = game.getFontManager()->getBitmap();
-
   std::vector<Glyph*> glyphs;
+  BitMap* bitmap = game.getFontManager()->getBitmap();
+  
+
   int size = text.size();
   for(int index = 0; index < size; index++)
   {

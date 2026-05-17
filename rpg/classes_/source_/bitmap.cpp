@@ -31,6 +31,11 @@ void BitMap::makeAllGlyphs() noexcept
     {
       key = 'a';
     }
+
+    if(key == 'z' + 1)
+    {
+      key = '!';
+    }
   }
 }
 

@@ -48,6 +48,7 @@ inline const float ONE_SECOND = 1000.0f;
 inline const int LOGIN_TEXT_PLACEHOLDER_WIDTH = 151;
 inline const int LOGIN_TEXT_PLACEHOLDER_HEIGHT = 28;
 inline const int TEXT_X_OFFSET = 10; 
+inline const int LIMIT_LETTER_TEXT_PLACEHOLDER = 12;
 
 inline const int INVALID_NUMBER = -1;
 

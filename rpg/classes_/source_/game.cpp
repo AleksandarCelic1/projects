@@ -192,28 +192,14 @@ void Game::mainEventHandler(SDL_Event* event)
     }
     else if(event->type == SDL_KEYDOWN) 
     { 
-      modifier = SDL_GetModState();
-      
-      bool shift = false;
-      bool control = false;
-      if(modifier & KMOD_SHIFT) 
-      {
-        shift = true;
-      }
-
-      if(modifier & KMOD_CTRL)
-      {
-        control = true;
-      }
-      
       SDL_Keycode key_code = event->key.keysym.sym;
-      if(ParserUtility::isShiftPressed(key_code) || ParserUtility::isControlPressed(key_code))
+      auto [valid, shift, control] = ParserUtility::handleKeyMod(key_code);
+      
+      if(valid == false)
       {
-        std::cout << "[CAUGHT] -> [Game::mainEventHandler] -> shift or control pressed <!> " << std::endl;
         continue;
       }
-
-    
+      
       KeyboardInput* new_input = new KeyboardInput();
       new_input->control_held_ = control;
       new_input->shift_held_ = shift;

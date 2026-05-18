@@ -63,8 +63,12 @@ void TextField::render(Game& game) noexcept
   int width = LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 1);
   int height = LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 1);
 
+
   int size = this->text_.size();
-  for(int index = 0; index < size; index++)
+  int index = 0;
+  this->getCorrectIndexPosition(size, index);
+
+  for(; index < size; index++)
   {
     Glyph* glyph = static_cast<Glyph*>(ExceptionHandler::get(this->glyphs_, index));
     if(glyph == nullptr)
@@ -133,4 +137,12 @@ void TextField::rebuildText(Game& game) noexcept
   this->glyphs_.clear();
   this->glyphs_ = glyphs;
   this->text_changed_ = false;
+}
+
+void TextField::getCorrectIndexPosition(int& size, int& index) noexcept
+{
+  if(size > LIMIT_LETTER_TEXT_PLACEHOLDER)
+  {
+    index = size - LIMIT_LETTER_TEXT_PLACEHOLDER;
+  }
 }

@@ -46,6 +46,9 @@ class TextField : virtual public ElementUI
     void update(Game& game) noexcept override;
     void handleBackspace() noexcept;
     void handleNewLetter(char character) noexcept;
+    
+    // Tiny helpers 
+    void getCorrectIndexPosition(int& size, int& index) noexcept;
 
     // Virtual TextField specific functions
     virtual void rebuildText(Game& game) noexcept;

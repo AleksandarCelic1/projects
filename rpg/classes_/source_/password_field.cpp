@@ -21,19 +21,12 @@ void PasswordField::render(Game& game) noexcept
 
   int reference = 0;
   Glyph* star = static_cast<Glyph*>(ExceptionHandler::get(this->getGlyphsConst(), reference));
-  /*if(star == nullptr)
-  {
-    std::cout << "[ERROR] -> [PasswordField::render] -> glyph star is nullptr <!> " << std::endl;
-    return;
-  }*/
-
+  
   int size = this->getTextConst().size();
+  int index = 0;
+  this->getCorrectIndexPosition(size, index);
 
-  /* Debug Printfs */
-  std::cout << "Current text size: " << size << std::endl;
-  std::cout << "Current text: " << this->getTextConst() << std::endl;
-
-  for(int index = 0; index < size; index++)
+  for(; index < size; index++)
   {
     SDL_Rect placeholder;
     placeholder.x = position_x;
@@ -43,7 +36,7 @@ void PasswordField::render(Game& game) noexcept
     
     SDL_RenderCopy(main_renderer, bitmap_texture, &star->getRect(), &placeholder);
 
-    position_x += LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 0.5);
+    position_x += LETTER_WIDTH_AND_HEIGHT * (game.getScalingFactor() + 1);
   }
 
   RectUtils::debugOutline(game.getRenderer(), this->getDstRect());

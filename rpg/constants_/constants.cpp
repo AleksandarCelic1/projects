@@ -58,4 +58,7 @@ std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS =
   {{SDLK_PERIOD, false}, '.'},       {{SDLK_PERIOD, true}, '>'},
   {{SDLK_SLASH, false}, '/'},        {{SDLK_SLASH, true}, '?'},
   {{SDLK_BACKQUOTE, false}, '`'},    {{SDLK_BACKQUOTE, true}, '~'},
+
+  // Enter
+  {{SDLK_RETURN, false}, '\n'},      {{SDLK_RETURN, true}, '\n'}
 };

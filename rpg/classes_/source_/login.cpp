@@ -116,8 +116,33 @@ void LoginState::dispatchKeyboardInput(Game& game)
   
   if(text != nullptr)
   {
+    if(keycode == SDLK_RETURN)
+    {
+      LoginValidator* validator = this->getValidator();
+      
+      if(text == this->panel_->getUsernameLogin() || text == this->panel_->getPasswordLogin())
+      {
+        if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
+        {
+          std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
+        }
+      }
+      else
+      {
+        if(validator->validateRegistration(game, panel_->getUsernameRegistration()->getTextConst(), 
+        panel_->getPasswordRegistration()->getTextConst(), panel_->getPasswordConfirmation()->getTextConst()))
+        {
+          std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
+        }
+      }
+    }
+
     keycode == SDLK_BACKSPACE ? text->handleBackspace() : text->handleNewLetter(new_char);
+
+    
   }
+
+
 
   delete new_input;
 }
@@ -128,18 +153,10 @@ void LoginState::dispatchMouseInput(Game& game)
   Uint8 mouse_button = dispatcher->getMouseButton();
   int mouse_x = dispatcher->getMouseX();
   int mouse_y = dispatcher->getMouseY();
-  
 
-  /*
-    Now we can introduce a simple for loop/ big switch to detect clicks,
-    which would be fine in LoginState, since there arent many widgets/clickable items,
-    but in the PlayingState there should already be some sort of better dispatch for mouse input
-    there are some viable gamedev techniques found -> grid spatial partitioning, quadtree, layers/z-order hit testing
-  */
 
   if(mouse_button == SDL_BUTTON_LEFT)
   {
-    // handle left click
     LoginPanel* panel = this->getPanel();
     ElementUI* tmp = this->getQuadTree()->search(mouse_x, mouse_y);
 
@@ -158,11 +175,6 @@ void LoginState::dispatchMouseInput(Game& game)
     }
 
     panel->setActiveField(txt_field);
-    /*
-      We will introduce a button for login and registartion
-      so player when he filled out the form he can click the corresponding button and 
-      go to LoginValidator with the corresponding username and password <!>
-    */
   }
   else if (mouse_button == SDL_BUTTON_RIGHT)
   {

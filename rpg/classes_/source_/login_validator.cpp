@@ -105,7 +105,7 @@ bool LoginValidator::validateUsernameSize(const std::string& username, UsernameP
 bool LoginValidator::validateUsernameSpecialChars(const std::string& username, UsernamePasswordConstraints& constraints, UsernamePasswordSizes& sizes) noexcept
 {
   int count = 0; 
-  for(int index = 0; username.size(); index++)
+  for(int index = 0; index < username.size(); index++)
   {
     if(ispunct(username.at(index)))
     {

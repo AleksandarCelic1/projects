@@ -47,5 +47,15 @@ add_executable(
 
 target_link_libraries(main PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)
 
+target_include_directories(main PRIVATE
+    /opt/homebrew/opt/libpq/include
+)
+
+target_link_directories(main PRIVATE
+    /opt/homebrew/opt/libpq/lib
+)
+
+target_link_libraries(main PRIVATE pq)
+
 message(STATUS "SDL2 include dirs: ${SDL2_INCLUDE_DIRS}")
 message(STATUS "SDL2_image include dirs: ${SDL2_IMAGE_INCLUDE_DIRS}")

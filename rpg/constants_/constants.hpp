@@ -16,6 +16,8 @@
 #include <set>
 #include <cctype>
 #include <queue>
+#include <libpq-fe.h>
+
 
 
 // Resolution - Scaling Factors

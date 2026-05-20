@@ -120,11 +120,18 @@ void LoginState::dispatchKeyboardInput(Game& game)
     {
       LoginValidator* validator = this->getValidator();
       
+      /*
+        Now when users presses Return = Enter, we need to validate if this is acutally a valid username and password,
+        with what we are going to query the database to try and see if there is an existing account with that username and
+        password
+      */
+
       if(text == this->panel_->getUsernameLogin() || text == this->panel_->getPasswordLogin())
       {
         if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
         {
           std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
+
         }
       }
       else
@@ -136,10 +143,13 @@ void LoginState::dispatchKeyboardInput(Game& game)
         }
       }
     }
-
-    keycode == SDLK_BACKSPACE ? text->handleBackspace() : text->handleNewLetter(new_char);
-
+    else if(keycode == SDLK_BACKSPACE)
+    {
+      text->handleBackspace();
+    }
     
+    text->handleNewLetter(new_char);
+
   }
 
 

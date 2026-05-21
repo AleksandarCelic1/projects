@@ -7,6 +7,7 @@
 #include "game_state.hpp"
 #include "floor_types.hpp"
 #include "offsets_ui.hpp"
+#include "query_enums.hpp"
 
 typedef enum 
 {

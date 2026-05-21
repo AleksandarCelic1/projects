@@ -131,7 +131,9 @@ void LoginState::dispatchKeyboardInput(Game& game)
         if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
         {
           std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-
+          /*
+            In those true if blocks we should query the DB, from here should DBManager be a static class ? 
+          */
         }
       }
       else

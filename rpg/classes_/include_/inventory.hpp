@@ -3,15 +3,20 @@
 
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"
+#include "container.hpp"
 
-
+/*
+  Inventory could use a list of some sort of Containers(new_class), which are obtainable/upgradable
+  through the playthrough, which are essentially a 2D arrays which contain items(new_class) <!> 
+*/
 class Inventory
 {
   private:
+    std::vector<Container*> containers_;
     size_t gold_;
     size_t silver_;
     size_t bronze_;
-    size_t level_;
+    
   
   public:
   // Constructor Destructor Copy Constructor
@@ -20,6 +25,7 @@ class Inventory
   ~Inventory() = default;
 
   // Getters
+  std::vector<Container*>& getContainers() noexcept { return this->containers_; } 
   size_t getGold() const { return this->gold_; }
   size_t getSilver() const { return this->silver_; }
   size_t getBronze() const { return this->bronze_; }
@@ -27,6 +33,8 @@ class Inventory
   // Setters
 
   // Functions 
+  void setNewContainers(std::vector<Container*>& new_containers) noexcept { this->containers_ = new_containers; }
+  void addNewContainer(Container* new_container) noexcept;
   void addGold(int& gold) noexcept;
   void addSilver(int& silver) noexcept;
   void addBronze(int& bronze) noexcept;

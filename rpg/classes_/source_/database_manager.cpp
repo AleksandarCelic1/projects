@@ -56,7 +56,7 @@ void DataBaseManager::initializeQueryMap() noexcept
     map.insert(QUERY_SOME_KEY, "SELECT user_id FROM users;")
 
     So when a query happens we just do the appopriate query to the DB
-    
   */
+ 
 }
 

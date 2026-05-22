@@ -11,6 +11,7 @@ class Character
   private:
     int world_x_;
     int world_y_; 
+    size_t level_;
 
 
     Stats stats_;

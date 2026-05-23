@@ -229,6 +229,7 @@ void Game::mainEventHandler(SDL_Event* event)
       //this->dispatcher_->setMouseButton(INVALID_NUMBER); 
     }
   } 
+
 }
 
 void Game::calculateDeltaTime(Uint32& last_frame) noexcept

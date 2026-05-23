@@ -92,7 +92,7 @@ void LoginState::dispatchKeyboardInput(Game& game)
     return;
   }
 
-  KeyboardInput* new_input = this->getKeyboardInput(text, queue);
+  KeyboardInput* new_input =  ParserUtility::getKeyboardInput(text, queue);
   if(new_input == nullptr)
   {
     return;
@@ -101,7 +101,6 @@ void LoginState::dispatchKeyboardInput(Game& game)
   SDL_Keycode keycode = new_input->key_pressed_;
   bool shift_pressed = new_input->shift_held_;
   bool control_pressed = new_input->control_held_;
-
 
   std::pair<SDL_Keycode, bool> key = {keycode, shift_pressed};
   auto iterator = SDL_KEYS.find(key);
@@ -117,41 +116,15 @@ void LoginState::dispatchKeyboardInput(Game& game)
   if(text != nullptr)
   {
     if(keycode == SDLK_RETURN)
-    {
-      LoginValidator* validator = this->getValidator();
-      
-      /*
-        Now when users presses Return = Enter, we need to validate if this is acutally a valid username and password,
-        with what we are going to query the database to try and see if there is an existing account with that username and
-        password
-      */
-
-      if(text == this->panel_->getUsernameLogin() || text == this->panel_->getPasswordLogin())
-      {
-        if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
-        {
-          std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-          /*
-            In those true if blocks we should query the DB, from here should DBManager be a static class ? 
-          */
-        }
-      }
-      else
-      {
-        if(validator->validateRegistration(game, panel_->getUsernameRegistration()->getTextConst(), 
-        panel_->getPasswordRegistration()->getTextConst(), panel_->getPasswordConfirmation()->getTextConst()))
-        {
-          std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-        }
-      }
+    { 
+      this->handleEnter(game);
     }
     else if(keycode == SDLK_BACKSPACE)
     {
       text->handleBackspace();
     }
-    
+  
     text->handleNewLetter(new_char);
-
   }
 
 
@@ -198,20 +171,30 @@ void LoginState::dispatchMouseInput(Game& game)
   }
 }
 
-KeyboardInput* LoginState::getKeyboardInput(TextField* text, std::queue<KeyboardInput*>& queue) noexcept
+void LoginState::handleEnter(Game& game) 
 {
-  if(text->getTextConst().size() == 0)
+  
+  LoginValidator* validator = this->getValidator();
+  TextField* text = this->panel_->getActiveField();
+
+
+  if(text == this->panel_->getUsernameLogin() 
+  || text == this->panel_->getPasswordLogin())
   {
-    ParserUtility::flushBackspacesQueue(queue);
+    if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
+    {
+      std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
+      /*
+        In those true if blocks we should query the DB, from here should DBManager be a static class ? 
+      */
+    }
+  }
+  
+  if(validator->validateRegistration(game, panel_->getUsernameRegistration()->getTextConst(), 
+  panel_->getPasswordRegistration()->getTextConst(), panel_->getPasswordConfirmation()->getTextConst()))
+  {
+    std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
   }
 
-  if(queue.empty())
-  {
-    return nullptr;
-  }
-
-  KeyboardInput* new_input = queue.front();
-  queue.pop();
-
-  return new_input;
 }
+

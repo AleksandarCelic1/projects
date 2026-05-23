@@ -48,12 +48,13 @@ class LoginState : virtual public State
     void render(Game& game) override;
     void update(Game& game) override;
     void initializeUIOffsets(Game& game) override;
+    void handleEnter(Game& game) override;
 
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
 
     // Mini Helpers
-    KeyboardInput* getKeyboardInput(TextField* text, std::queue<KeyboardInput*>& queue) noexcept;
+    
     
 
 };

@@ -22,15 +22,9 @@ DataBaseManager::DataBaseManager()
     if its successful if not we'd have to consider a robust way to handle this.
 
   */
-
-  this->connection_parameters_ = 
-    "host=localhost "
-    "port=5432 "
-    "dbname= WE DONT HAVE ONE YET "
-    "user=postgres "
-    "password= WE DONT HAVE ONE YET ";
-
-  this->connection_ = PQconnectdb(this->connection_parameters_);
+  this->initializeConnectionParameters();
+  this->connection_ = PQconnectdb(this->connection_parameters_.c_str());
+  this->connection_parameters_.clear();
 
   if(PQstatus(this->connection_) != CONNECTION_OK)
   {
@@ -57,6 +51,69 @@ void DataBaseManager::initializeQueryMap() noexcept
 
     So when a query happens we just do the appopriate query to the DB
   */
- 
+
+}
+
+void DataBaseManager::initializeConnectionParameters() noexcept
+{
+  std::string result;
+  std::vector<std::string> credentials;
+
+  /*
+    We have to parse the env folder <!> 
+  */
+
+  std::ifstream file("../../env_/database_credentials.env");
+  if(!file.is_open())
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::initializeConnectionParameters] -> File couldn't be opened <!> " << std::endl;
+    return;
+  }
+
+  std::string line;
+
+  while(std::getline(file, line))
+  {
+    if(line.empty())
+    {
+      continue;
+    }
+
+    size_t index = line.find('=');
+    if(index == std::string::npos)
+    {
+      continue;
+    }
+
+    result += line;
+    result += " ";
+
+  }
+
+
+  this->connection_parameters_ = result;
+
+  /* Debug Log */
+  std::cout << "[DEBUG] -> [DataBaseManager::initializeConnectionParameters] -> " << this->connection_parameters_ << std::endl;
+}
+
+DataBaseManager* DataBaseManager::instance()
+{
+  if(instance_ == nullptr)
+  {
+    instance_ = new DataBaseManager();
+  }
+
+  return instance_;
+}
+
+void DataBaseManager::destroy()
+{
+  if(instance_ != nullptr)
+  {
+    delete instance_;
+    instance_ = nullptr;
+  }
+  
 }
 

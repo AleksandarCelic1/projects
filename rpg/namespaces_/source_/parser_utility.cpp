@@ -1,5 +1,7 @@
 #include "../include_/parser_utility.hpp"
 
+#include "../../classes_/include_/text_field.hpp"
+
 bool ParserUtility::isShiftPressed(SDL_Keycode key_code) noexcept
 {
   if(key_code == SDLK_LSHIFT || key_code == SDLK_RSHIFT)
@@ -104,4 +106,20 @@ void ParserUtility::flushQueue(std::queue<KeyboardInput*>& queue) noexcept
   }
 }
 
+KeyboardInput* ParserUtility::getKeyboardInput(TextField* text, std::queue<KeyboardInput*>& queue) noexcept
+{
+  if(text->getTextConst().size() == 0)
+  {
+    ParserUtility::flushBackspacesQueue(queue);
+  }
 
+  if(queue.empty())
+  {
+    return nullptr;
+  }
+
+  KeyboardInput* new_input = queue.front();
+  queue.pop();
+
+  return new_input;
+}

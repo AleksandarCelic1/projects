@@ -5,6 +5,9 @@
 #include "../../constants_/constants.hpp"
 #include "../../structs_/structs.hpp"
 
+// Forward declarations
+class TextField;
+
 namespace ParserUtility
 {
   bool isShiftPressed(SDL_Keycode key_code) noexcept;
@@ -13,6 +16,7 @@ namespace ParserUtility
   void flushBackspacesQueue(std::queue<KeyboardInput*>& queue) noexcept;
   void flushQueue(std::queue<KeyboardInput*>& queue) noexcept;
   std::tuple<bool, bool, bool> handleKeyMod(SDL_Keycode key_code) noexcept;
+  KeyboardInput* getKeyboardInput(TextField* text, std::queue<KeyboardInput*>& queue) noexcept;
 
 };
 

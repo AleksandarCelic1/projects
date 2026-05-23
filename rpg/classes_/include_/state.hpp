@@ -44,6 +44,7 @@ class State
     virtual void render(Game& game) = 0;
     virtual void update(Game& game) = 0;
     virtual void initializeUIOffsets(Game& game) = 0;
+    virtual void handleEnter(Game& game) = 0;
 };
 
 #endif

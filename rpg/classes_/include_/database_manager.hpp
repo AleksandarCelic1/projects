@@ -29,13 +29,19 @@ class DataBaseManager
     void setConnectionParameters(std::string new_params) noexcept { this->connection_parameters_ = new_params; }
     void setQueryMap(std::unordered_map<QueryEnums, std::string> new_map) noexcept { this->query_map_ = new_map; }
 
-    // Functions
+    // Class related functions
     void initializeConnectionParameters() noexcept;
     void initializeQueryMap() noexcept;
+
+    // Database related functions
+    Account* loadAccount(std::string& username, std::string& password) noexcept; 
 
     // Static Functions
     static DataBaseManager* instance();
     static void destroy();
+
+    // Queries <!> 
+    std::pair<bool, std::string> queryAccount(std::string& username, std::string& password) noexcept;
 
 
 };

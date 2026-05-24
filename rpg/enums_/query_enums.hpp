@@ -11,7 +11,7 @@
 */
 enum class QueryEnums
 {
-  QUERY_ = 0
+  QUERY_LOGIN = 0
 };
 
 

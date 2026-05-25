@@ -53,7 +53,11 @@ void DataBaseManager::initializeQueryMap() noexcept
     So when a query happens we just do the appopriate query to the DB
   */
 
-  this->query_map_.insert({QueryEnums::QUERY_LOGIN, "SELECT account_id, username_, password_ FROM Accounts WHERE username_ = $1 AND password_ = $2 "});
+  this->query_map_.insert({QueryEnums::QUERY_LOGIN, "SELECT account_id_, username_, password_ FROM Accounts WHERE username_ = $1 AND password_ = $2 "});
+  this->query_map_.insert({QueryEnums::QUERY_CHARACTERS, "SELECT * FROM Characters WHERE account_id_ = $1 "});
+
+
+  
 }
 
 void DataBaseManager::initializeConnectionParameters() noexcept
@@ -119,6 +123,12 @@ void DataBaseManager::destroy()
   
 }
 
+bool tryLogin(std::string& username, std::string& password) noexcept
+{
+  
+}
+
+
 Account* DataBaseManager::loadAccount(std::string& username, std::string& password) noexcept
 {
   auto [valid, account_id] = this->queryAccount(username, password);
@@ -132,8 +142,54 @@ Account* DataBaseManager::loadAccount(std::string& username, std::string& passwo
     load stats, attr, inventory, armory and etc.
   */
 
+}
+
+std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id) noexcept
+{
+  std::vector<std::string> char_ids = this->queryCharacters(account_id);
+  if(char_ids.empty())
+  {
+    return {};
+  }
 
 
+  int size = char_ids.size();
+  for(int index = 0; index < size; index++)
+  {
+    /* query for stats,attrs, inventory, armory and etc. */
+  }
+}
+
+std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_id) noexcept
+{
+  const char* values[1] = { account_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_CHARACTERS); 
+  
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(result == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryCharacters] -> Query result is nullptr <!> " << std::endl;
+    return {};
+  }
+
+  if(PQresultStatus(result) != PGRES_TUPLES_OK)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryCharacters] -> Query failed <!> " << std::endl;
+    return {};
+  }
+
+  int rows = PQntuples(result);
+  std::vector<std::string> char_ids;
+
+  for(int index = 0; index < rows; index++)
+  {
+    std::string placeholder = PQgetvalue(result, index, 0);
+    /* Do i need to check if this is valid !? */
+    char_ids.push_back(placeholder);
+  }
+
+  return char_ids;
 }
 
 
@@ -167,7 +223,6 @@ std::pair<bool, std::string> DataBaseManager::queryAccount(std::string& username
       7. paramFormats -> nullptr -> meaning all params are text format 
       8. resultFormat -> it controls how many columns are given back to us  
   */
-
 
   if(result == nullptr)
   {

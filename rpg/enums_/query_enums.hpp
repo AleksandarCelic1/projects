@@ -11,7 +11,12 @@
 */
 enum class QueryEnums
 {
-  QUERY_LOGIN = 0
+  QUERY_LOGIN = 0,
+  QUERY_CHARACTERS = 1,
+  QUERY_STATS = 2,
+  QUERY_ATTRIBUTES = 3,
+  QUERY_INVENTORY = 4,
+  QUERY_ARMORY = 5
 };
 
 

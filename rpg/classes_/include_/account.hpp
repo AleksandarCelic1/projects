@@ -15,7 +15,7 @@ class Account
   public:
     // Constructor Destructor Copy Constructor
     Account() = default;
-    Account(const std::string& username, size_t account_id,const std::vector<Character*>& characters);
+    Account(const std::string& username, size_t account_id, const std::vector<Character*>& characters);
     Account(const Account& copy ) = delete;
     ~Account() = default; // <-- free the runtime chars and save the game in the database << !
 

@@ -13,10 +13,10 @@ class Character
     int world_y_; 
     size_t level_;
 
-
-    Stats stats_;
-    Attributes attributes_;
     ClassType class_;
+
+    Stats* stats_;
+    Attributes* attributes_;
     Inventory* inventory_;
     Armory* armory_;
 
@@ -26,6 +26,7 @@ class Character
   public:
     // Constructor, Copy Constructor, Destructor
     Character(ClassType type);
+    Character(int world_x, int world_y, size_t level, Stats* stats, Attributes* attr, ClassType type, Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, size_t animation_index);
     Character(const Character& copy) = delete;
     virtual ~Character() = default; // see later if there is something to be deleted << !
 
@@ -34,8 +35,8 @@ class Character
     int getWorldY() const { return this->world_y_; }
 
     
-    Stats& getStats() { return this->stats_; }
-    Attributes& getAttributes() { return this->attributes_; }
+    Stats* getStats() { return this->stats_; }
+    Attributes* getAttributes() { return this->attributes_; }
     ClassType getClassType() { return this->class_; }
     Inventory* getInvetory() { return this->inventory_; }
 

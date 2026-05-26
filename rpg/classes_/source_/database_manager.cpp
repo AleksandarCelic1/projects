@@ -55,6 +55,12 @@ void DataBaseManager::initializeQueryMap() noexcept
 
   this->query_map_.insert({QueryEnums::QUERY_LOGIN, "SELECT account_id_, username_, password_ FROM Accounts WHERE username_ = $1 AND password_ = $2 "});
   this->query_map_.insert({QueryEnums::QUERY_CHARACTERS, "SELECT * FROM Characters WHERE account_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_STATS, "SELECT * FROM CharactersStats WHERE character_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_ATTRIBUTES, "SELECT * FROM CharactersAttributes WHERE character_id_ = $1 "});
+
+  /* Look into last 2 <!> */
+  this->query_map_.insert({QueryEnums::QUERY_INVENTORY, "SELECT * FROM Inventory WHERE character_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_ARMORY, "SELECT * FROM Armory WHERE character_id_ = $1 "});
 
 
   
@@ -123,24 +129,35 @@ void DataBaseManager::destroy()
   
 }
 
-bool tryLogin(std::string& username, std::string& password) noexcept
+Account* DataBaseManager::tryLogin(std::string& username, std::string& password) noexcept
 {
-  
-}
-
-
-Account* DataBaseManager::loadAccount(std::string& username, std::string& password) noexcept
-{
-  auto [valid, account_id] = this->queryAccount(username, password);
-  if(valid == false)
+  std::string account_id = this->loadAccount(username, password);
+  if(account_id.empty())
   {
+    std::cout << "[ERROR] -> [DataBaseManager::tryLogin] -> Account does not exist <!> " << std::endl;
     return nullptr;
   }
 
-  /*
-    We need to query for characters related to each account, and of course to load a single char we need to
-    load stats, attr, inventory, armory and etc.
-  */
+  std::vector<Character*> characters = this->loadCharacters(account_id);
+  if(characters.empty())
+  {
+    std::cout << "[INFORMATION] -> [DataBaseManager::tryLogin] -> Account has no Characters <!> " << std::endl;
+  }
+
+  size_t acc_id = static_cast<size_t>(std::stoi(account_id));
+  Account* acc = new Account(username, acc_id, characters);
+
+}
+
+std::string DataBaseManager::loadAccount(std::string& username, std::string& password) noexcept
+{
+  std::string account_id = this->queryAccount(username, password);
+  if(account_id.empty())
+  {
+    return "";
+  }
+
+  return account_id;
 
 }
 
@@ -153,11 +170,79 @@ std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id)
   }
 
 
+  std::vector<Character*> characters;
   int size = char_ids.size();
   for(int index = 0; index < size; index++)
   {
+    std::string char_id = char_ids.at(index);
     /* query for stats,attrs, inventory, armory and etc. */
+    Stats* stats = this->queryStats(char_id);
+    Attributes* attr = this->queryAttributes(char_id);
+    Armory* armory = this->queryArmory(char_id);
+    Inventory* Inventory = this->queryInventory(char_id);
+
+    /* To make char i need world x,y and state/index for animation still ? */
   }
+}
+
+
+// <---- ! -----> [Queries] <---- ! ----->
+std::string DataBaseManager::queryAccount(std::string& username, std::string& password) noexcept
+{
+  const char* values[2] = { username.c_str(), password.c_str() };
+
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_LOGIN); 
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 2, nullptr, values, nullptr, nullptr, 0);
+  /*
+    This line is a (synchronous) database call. It sends our SQL Query as string and the parameters to PostgreSQL,
+    and waits until PostgreSQL finishes, and gives us back a PGresult*.
+
+    PGresult* is a libpq object that stores the result of the SQL command, it can have 0 rows or more.
+    It is also a heap-managed object by libpq, so we must "release" it with PQclear(result)
+    According to the PostgreSQL's docs every command result should be "released" with PQclear, when 
+    of couse no longer needed
+
+    PostgreSQL describes the PQexecParams as a command execution function that is protected from SQL injection mistakes.
+    Arguments:
+      1. Database connection
+      2. C-style string -> Query 
+      3. # of Parameters
+      4. Parameter type array -> by passing nullptr -> we are saying infer the parameter types yourself
+      5. acutaly parameter value array -> in our case "values"
+      6. paramLengths -> nullptr -> treat values as normal null-terminated C strings. usually this is passed
+        when we use binary parameters or need to pass values with embedded null bytes.
+      7. paramFormats -> nullptr -> meaning all params are text format 
+      8. resultFormat -> it controls how many columns are given back to us  
+  */
+
+  if(result == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Query result is nullptr <!> " << std::endl;
+    return "";
+  }
+
+  if(PQresultStatus(result) != PGRES_TUPLES_OK)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Query failed <!> " << std::endl;
+    return "";
+  }
+
+  int rows = PQntuples(result);
+  std::string account_id;
+
+  if(rows == 1)
+  {
+    std::cout << "[SUCCESS] -> [DataBaseManager::queryAccount] -> Login Success <!> " << std::endl;
+    account_id = PQgetvalue(result, 0, 0);
+  }
+  else
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Login failed <!> " << std::endl;
+  }
+
+  PQclear(result);
+
+  return account_id;
 }
 
 std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_id) noexcept
@@ -192,67 +277,27 @@ std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_i
   return char_ids;
 }
 
-
-
-
-// <---- ! -----> [Queries] <---- ! ----->
-std::pair<bool, std::string> DataBaseManager::queryAccount(std::string& username, std::string& password) noexcept
+Stats* DataBaseManager::queryStats(std::string& character_id) noexcept
 {
-  const char* values[2] = { username.c_str(), password.c_str() };
 
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_LOGIN); 
-  PGresult* result = PQexecParams(this->connection_, query.c_str(), 2, nullptr, values, nullptr, nullptr, 0);
-  /*
-    This line is a (synchronous) database call. It sends our SQL Query as string and the parameters to PostgreSQL,
-    and waits until PostgreSQL finishes, and gives us back a PGresult*.
-
-    PGresult* is a libpq object that stores the result of the SQL command, it can have 0 rows or more.
-    It is also a heap-managed object by libpq, so we must "release" it with PQclear(result)
-    According to the PostgreSQL's docs every command result should be "released" with PQclear, when 
-    of couse no longer needed
-
-    PostgreSQL describes the PQexecParams as a command execution function that is protected from SQL injection mistakes.
-    Arguments:
-      1. Database connection
-      2. C-style string -> Query 
-      3. # of Parameters
-      4. Parameter type array -> by passing nullptr -> we are saying infer the parameter types yourself
-      5. acutaly parameter value array -> in our case "values"
-      6. paramLengths -> nullptr -> treat values as normal null-terminated C strings. usually this is passed
-        when we use binary parameters or need to pass values with embedded null bytes.
-      7. paramFormats -> nullptr -> meaning all params are text format 
-      8. resultFormat -> it controls how many columns are given back to us  
-  */
-
-  if(result == nullptr)
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Query result is nullptr <!> " << std::endl;
-    return {false, nullptr};
-  }
-
-  if(PQresultStatus(result) != PGRES_TUPLES_OK)
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Query failed <!> " << std::endl;
-    return {false, nullptr};
-  }
-
-  int rows = PQntuples(result);
-  std::string account_id;
-
-  if(rows == 1)
-  {
-    std::cout << "[SUCCESS] -> [DataBaseManager::queryAccount] -> Login Success <!> " << std::endl;
-    account_id = PQgetvalue(result, 0, 0);
-  }
-  else
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Login failed <!> " << std::endl;
-  }
-
-  PQclear(result);
-
-  return {true, account_id};
 }
+
+Attributes* queryAttributes(std::string& character_id) noexcept
+{
+
+}
+
+Armory* queryArmory(std::string& character_id) noexcept
+{
+
+}
+
+Inventory* queryInventory(std::string& character_id) noexcept
+{
+
+}
+
+
 
 
 

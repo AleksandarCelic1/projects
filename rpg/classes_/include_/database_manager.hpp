@@ -34,10 +34,8 @@ class DataBaseManager
     void initializeQueryMap() noexcept;
 
     // Database related functions
-    bool tryLogin(std::string& username, std::string& password) noexcept;
-
-    /* Refactor this function, currently load account handles whole login <!> */
-    Account* loadAccount(std::string& username, std::string& password) noexcept;
+    Account* tryLogin(std::string& username, std::string& password) noexcept;
+    std::string loadAccount(std::string& username, std::string& password) noexcept;
     std::vector<Character*> loadCharacters(std::string& account_id) noexcept;
 
     // Static Functions
@@ -45,14 +43,14 @@ class DataBaseManager
     static void destroy();
 
     // Queries <!> 
-    std::pair<bool, std::string> queryAccount(std::string& username, std::string& password) noexcept;
+    std::string queryAccount(std::string& username, std::string& password) noexcept;
     std::vector<std::string> queryCharacters(std::string& account_id) noexcept;
 
     /* Look more into this <!> */
-    void queryStats(std::string& character_id) noexcept;
-    void queryAttributes(std::string& character_id) noexcept;
-    void queryArmory(std::string& character_id) noexcept;
-    void queryInventory(std::string& character_id) noexcept;
+    Stats* queryStats(std::string& character_id) noexcept;
+    Attributes* queryAttributes(std::string& character_id) noexcept;
+    Armory* queryArmory(std::string& character_id) noexcept;
+    Inventory* queryInventory(std::string& character_id) noexcept;
     
 
 

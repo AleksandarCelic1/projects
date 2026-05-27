@@ -175,11 +175,21 @@ std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id)
   for(int index = 0; index < size; index++)
   {
     std::string char_id = char_ids.at(index);
-    /* query for stats,attrs, inventory, armory and etc. */
+
+
     Stats* stats = this->queryStats(char_id);
     Attributes* attr = this->queryAttributes(char_id);
     Armory* armory = this->queryArmory(char_id);
-    Inventory* Inventory = this->queryInventory(char_id);
+    Inventory* inventory = this->queryInventory(char_id);
+
+    if(stats == nullptr
+    || attr == nullptr
+    || armory == nullptr
+    || inventory == nullptr)
+    {
+      std::cout << "[ERROR] -> [DataBaseManager::loadCharacters] -> Char with ID:" << char_id << " can not be loaded <!> " << std::endl;
+      continue;
+    }
 
     /* To make char i need world x,y and state/index for animation still ? */
   }
@@ -279,12 +289,111 @@ std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_i
 
 Stats* DataBaseManager::queryStats(std::string& character_id) noexcept
 {
+  const char* values[1] = { character_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_STATS);
+
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(result == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryStats] -> Query result is nullptr <!> " << std::endl;
+    return nullptr;
+  }
+
+  if(PQresultStatus(result) != PGRES_TUPLES_OK)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryStats] -> Query failed <!> " << std::endl;
+    return nullptr;
+  }
+
+  int rows = PQntuples(result);
+  if(rows != 1)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryStats] -> More than one Stats* exists for a single Char ?! <!> " << std::endl;
+    return nullptr;
+  }
+
+  int base_health = std::stoi(PQgetvalue(result, 0, 1));
+  int current_health = std::stoi(PQgetvalue(result, 0, 2));
+  int base_mana = std::stoi(PQgetvalue(result, 0, 3));
+  int current_mana = std::stoi(PQgetvalue(result, 0, 4));
+  int physical_power = std::stoi(PQgetvalue(result, 0, 5));
+  int spell_power = std::stoi(PQgetvalue(result, 0, 6));
+  int magic_resistance = std::stoi(PQgetvalue(result, 0, 7));
+  int armor = std::stoi(PQgetvalue(result, 0, 8));
+  int melee_range = std::stoi(PQgetvalue(result, 0, 9));
+  int spell_range = std::stoi(PQgetvalue(result, 0, 10));
+  int gcd = std::stoi(PQgetvalue(result, 0, 11));
+  int arp = std::stoi(PQgetvalue(result, 0, 12));
+  int spell_pen = std::stoi(PQgetvalue(result, 0, 13));
+
+  float attack_speed = std::stof(PQgetvalue(result, 0, 14));
+  float spell_haste = std::stof(PQgetvalue(result, 0, 15));
+  float hit_rating = std::stof(PQgetvalue(result, 0, 16));
+  float physical_crit_chance = std::stof(PQgetvalue(result, 0, 17));
+  float magic_crit_chance = std::stof(PQgetvalue(result, 0, 18));
+  float movement_speed = std::stof(PQgetvalue(result, 0, 19));
+  float lifesteal = std::stof(PQgetvalue(result, 0, 20));
+  float tenacity = std::stof(PQgetvalue(result, 0, 21));
+
+  Stats* loaded_stats = new Stats
+    (base_health, current_health, base_mana, current_mana, physical_power, spell_power,
+     attack_speed, spell_haste, hit_rating, physical_crit_chance, magic_crit_chance,
+     magic_resistance, armor, melee_range, spell_range, gcd, arp, spell_pen, movement_speed,
+     lifesteal, tenacity);
+
+  return loaded_stats;
 
 }
 
-Attributes* queryAttributes(std::string& character_id) noexcept
+Attributes* DataBaseManager::queryAttributes(std::string& character_id) noexcept
 {
+  const char* values[1] = { character_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_ATTRIBUTES);
 
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(result == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryAttributes] -> Query result is nullptr <!> " << std::endl;
+    return nullptr;
+  }
+
+  if(PQresultStatus(result) != PGRES_TUPLES_OK)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryAttributes] -> Query failed <!> " << std::endl;
+    return nullptr;
+  }
+
+  int rows = PQntuples(result);
+  if(rows != 1)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryAttributes] -> More than one Attributes* exists for a single Char ?! <!> " << std::endl;
+    return nullptr;
+  }
+
+  int strength = std::stoi(PQgetvalue(result, 0, 1));
+  int dexterity = std::stoi(PQgetvalue(result, 0, 2));
+
+  int intellect = std::stoi(PQgetvalue(result, 0, 3));
+  int wisdom = std::stoi(PQgetvalue(result, 0, 4));
+
+  int havoc = std::stoi(PQgetvalue(result, 0, 5));
+  int chaos = std::stoi(PQgetvalue(result, 0, 6));
+
+  int insight = std::stoi(PQgetvalue(result, 0, 7));
+  int perception = std::stoi(PQgetvalue(result, 0, 8));
+
+  int vamp = std::stoi(PQgetvalue(result, 0, 9));
+  int faith = std::stoi(PQgetvalue(result, 0, 10));
+  int tenacity = std::stoi(PQgetvalue(result, 0, 11));
+
+  Attributes* loaded_attr = new Attributes
+    (strength, dexterity, intellect, 
+     wisdom, havoc,chaos, insight, 
+     perception, vamp, faith, tenacity);
+
+  return loaded_attr;
 }
 
 Armory* queryArmory(std::string& character_id) noexcept

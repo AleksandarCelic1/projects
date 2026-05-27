@@ -8,7 +8,7 @@
 class Stats
 {
   private:
-    int base_health_;
+    int base_health_; // 1
     int current_health_;
 
     int base_mana_;

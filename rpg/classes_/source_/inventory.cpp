@@ -1,5 +1,13 @@
 #include "../include_/inventory.hpp"
 
+Inventory::Inventory(size_t gold, size_t silver, size_t bronze, std::vector<Container*> containers)
+ : gold_(gold),
+   silver_(silver),
+   bronze_(bronze),
+   containers_(containers)
+ {}
+
+
 
 void Inventory::addBronze(int& bronze) noexcept
 {

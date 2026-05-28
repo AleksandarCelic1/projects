@@ -129,6 +129,24 @@ void DataBaseManager::destroy()
   
 }
 
+bool DataBaseManager::validatePGresult(PGresult* result) noexcept
+{
+  if(result == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::validatePGresult] -> Query result is nullptr <!> " << std::endl;
+    return false;
+  }
+
+  if(PQresultStatus(result) != PGRES_TUPLES_OK)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::validatePGresult] -> Query failed <!> " << std::endl;
+    return false;
+  }
+
+  return true;
+}
+    
+
 Account* DataBaseManager::tryLogin(std::string& username, std::string& password) noexcept
 {
   std::string account_id = this->loadAccount(username, password);
@@ -225,15 +243,8 @@ std::string DataBaseManager::queryAccount(std::string& username, std::string& pa
       8. resultFormat -> it controls how many columns are given back to us  
   */
 
-  if(result == nullptr)
+  if(!validatePGresult(result)) 
   {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Query result is nullptr <!> " << std::endl;
-    return "";
-  }
-
-  if(PQresultStatus(result) != PGRES_TUPLES_OK)
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Query failed <!> " << std::endl;
     return "";
   }
 
@@ -262,15 +273,8 @@ std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_i
   
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
-  if(result == nullptr)
+  if(!validatePGresult(result)) 
   {
-    std::cout << "[ERROR] -> [DataBaseManager::queryCharacters] -> Query result is nullptr <!> " << std::endl;
-    return {};
-  }
-
-  if(PQresultStatus(result) != PGRES_TUPLES_OK)
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryCharacters] -> Query failed <!> " << std::endl;
     return {};
   }
 
@@ -294,15 +298,8 @@ Stats* DataBaseManager::queryStats(std::string& character_id) noexcept
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
-  if(result == nullptr)
+  if(!validatePGresult(result)) 
   {
-    std::cout << "[ERROR] -> [DataBaseManager::queryStats] -> Query result is nullptr <!> " << std::endl;
-    return nullptr;
-  }
-
-  if(PQresultStatus(result) != PGRES_TUPLES_OK)
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryStats] -> Query failed <!> " << std::endl;
     return nullptr;
   }
 
@@ -353,16 +350,9 @@ Attributes* DataBaseManager::queryAttributes(std::string& character_id) noexcept
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
-  if(result == nullptr)
+  if(!validatePGresult(result)) 
   {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAttributes] -> Query result is nullptr <!> " << std::endl;
-    return nullptr;
-  }
-
-  if(PQresultStatus(result) != PGRES_TUPLES_OK)
-  {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAttributes] -> Query failed <!> " << std::endl;
-    return nullptr;
+    return {};
   }
 
   int rows = PQntuples(result);
@@ -396,13 +386,48 @@ Attributes* DataBaseManager::queryAttributes(std::string& character_id) noexcept
   return loaded_attr;
 }
 
-Armory* queryArmory(std::string& character_id) noexcept
+Armory* DataBaseManager::queryArmory(std::string& character_id) noexcept
 {
+  const char* values[1] = { character_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_ARMORY);
 
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGresult(result)) 
+  {
+    return nullptr;
+  }
+
+
+  /* Armory will have to wait as we did not design the armory yet <!> */
 }
 
-Inventory* queryInventory(std::string& character_id) noexcept
+Inventory* DataBaseManager::queryInventory(std::string& character_id) noexcept
 {
+  const char* values[1] = { character_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_INVENTORY);
+
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGresult(result)) 
+  {
+    return nullptr;
+  }
+
+  int rows = PQntuples(result);
+  if(rows != 1)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryInventory] -> More than one Inventory* exists for a single Char ?! <!> " << std::endl;
+    return nullptr;
+  }
+
+  int gold = std::stoi(PQgetvalue(result, 0, 1));
+  int silver = std::stoi(PQgetvalue(result, 0, 2));
+  int bronze = std::stoi(PQgetvalue(result, 0, 3));
+
+  /* I still need containers <!> */
+
+  Inventory* loaded_inventroy = new Inventory();
 
 }
 

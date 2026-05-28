@@ -51,6 +51,9 @@ class DataBaseManager
     Attributes* queryAttributes(std::string& character_id) noexcept;
     Armory* queryArmory(std::string& character_id) noexcept;
     Inventory* queryInventory(std::string& character_id) noexcept;
+
+    // Helpers
+    bool validatePGresult(PGresult* result) noexcept;
     
 
 

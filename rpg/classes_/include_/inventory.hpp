@@ -21,6 +21,7 @@ class Inventory
   public:
   // Constructor Destructor Copy Constructor
   Inventory() = default;
+  Inventory(size_t gold, size_t silver, size_t bronze, std::vector<Container*> containers);
   Inventory(const Inventory& copy) = delete;
   ~Inventory() = default;
 

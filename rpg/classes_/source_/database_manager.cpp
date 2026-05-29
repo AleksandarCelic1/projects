@@ -61,7 +61,8 @@ void DataBaseManager::initializeQueryMap() noexcept
   /* Look into last 2 <!> */
   this->query_map_.insert({QueryEnums::QUERY_INVENTORY, "SELECT * FROM Inventory WHERE character_id_ = $1 "});
   this->query_map_.insert({QueryEnums::QUERY_ARMORY, "SELECT * FROM Armory WHERE character_id_ = $1 "});
-
+  this->query_map_.insert({QueryEnums::QUERY_CONTAINERS, "SELECT * FROM Containers WHERE invetory_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_ITEMS, "SELECT * FROM Item WHERE container_id_ = $1 "});
 
   
 }
@@ -431,6 +432,32 @@ Inventory* DataBaseManager::queryInventory(std::string& character_id) noexcept
 
 }
 
+std::vector<Container*> DataBaseManager::queryContainers(std::string& inventory_id) noexcept
+{
+  const char* values[1] = { inventory_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_CONTAINERS);
+
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGresult(result)) 
+  {
+    return {};
+  }
+}
+
+
+std::vector<std::vector<Item*>> DataBaseManager::queryItems(std::string& container_id) noexcept
+{
+  const char* values[1] = { container_id.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_ITEMS);
+
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGresult(result)) 
+  {
+    return {{}};
+  }
+}
 
 
 

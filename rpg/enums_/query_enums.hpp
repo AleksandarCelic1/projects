@@ -16,7 +16,9 @@ enum class QueryEnums
   QUERY_STATS = 2,
   QUERY_ATTRIBUTES = 3,
   QUERY_INVENTORY = 4,
-  QUERY_ARMORY = 5
+  QUERY_ARMORY = 5,
+  QUERY_CONTAINERS = 6,
+  QUERY_ITEMS = 7
 };
 
 

@@ -4,13 +4,21 @@
 
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"
+#include "../../namespaces_/namespaces.hpp"
 
 class Item
 {
   private:
+    size_t sell_value_;
  
 
   public:
+    Item() = default;
+    Item(const Item& copy) = delete;
+    virtual ~Item();
+
+
+
 
 
 

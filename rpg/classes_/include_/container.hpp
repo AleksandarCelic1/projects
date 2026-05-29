@@ -16,6 +16,7 @@ class Container
   public:
     // Constructor Destructor Copy Constructor
     Container() = default;
+    Container(std::vector<std::vector<Item*>> items);
     Container(Container& copy) = delete;
     ~Container();
 

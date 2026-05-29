@@ -70,10 +70,24 @@ CREATE TABLE CharactersAttributes
 
 CREATE TABLE Inventory
 (
+  inventory_id_ SERIAL        PRIMARY KEY,
   character_id_ INTEGER       NOT NULL REFERENCES Characters(character_id_),
   gold_         INTEGER,
   silver_       INTEGER,
   bronze_       INTEGER,
+);
+
+CREATE TABLE Container
+(
+  container_id_ SERIAL      PRIMARY KEY,
+  inventory_id_ INTEGER     NOT NULL REFERENCES Inventory(inventory_id_),
+
+);
+
+CREATE TABLE Item 
+(
+  item_id_      SERIAL    PRIMARY KEY,
+  container_id_ INTEGER.  NOT NULL REFERENCES Container(container_id_)
 );
 
 CREATE TABLE Armory

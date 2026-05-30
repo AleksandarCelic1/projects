@@ -44,9 +44,7 @@ class DataBaseManager
 
     // Queries <!> 
     std::string queryAccount(std::string& username, std::string& password) noexcept;
-    std::vector<std::string> queryCharacters(std::string& account_id) noexcept;
-
-    /* Look more into this <!> */
+    std::vector<loadedCharValues> queryCharacters(std::string& account_id) noexcept;
     Stats* queryStats(std::string& character_id) noexcept;
     Attributes* queryAttributes(std::string& character_id) noexcept;
     Armory* queryArmory(std::string& character_id) noexcept;

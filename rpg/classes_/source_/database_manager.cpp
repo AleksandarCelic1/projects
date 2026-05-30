@@ -58,7 +58,7 @@ void DataBaseManager::initializeQueryMap() noexcept
   this->query_map_.insert({QueryEnums::QUERY_STATS, "SELECT * FROM CharactersStats WHERE character_id_ = $1 "});
   this->query_map_.insert({QueryEnums::QUERY_ATTRIBUTES, "SELECT * FROM CharactersAttributes WHERE character_id_ = $1 "});
 
-  /* Look into last 2 <!> */
+  /* Those 4 queries will be modified later as they are yet to be designed <!>  */
   this->query_map_.insert({QueryEnums::QUERY_INVENTORY, "SELECT * FROM Inventory WHERE character_id_ = $1 "});
   this->query_map_.insert({QueryEnums::QUERY_ARMORY, "SELECT * FROM Armory WHERE character_id_ = $1 "});
   this->query_map_.insert({QueryEnums::QUERY_CONTAINERS, "SELECT * FROM Containers WHERE invetory_id_ = $1 "});
@@ -182,18 +182,19 @@ std::string DataBaseManager::loadAccount(std::string& username, std::string& pas
 
 std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id) noexcept
 {
-  std::vector<std::string> char_ids = this->queryCharacters(account_id);
-  if(char_ids.empty())
+  std::vector<loadedCharValues> char_values = this->queryCharacters(account_id);
+  if(char_values.empty())
   {
     return {};
   }
 
 
   std::vector<Character*> characters;
-  int size = char_ids.size();
+  int size = char_values.size();
   for(int index = 0; index < size; index++)
   {
-    std::string char_id = char_ids.at(index);
+    loadedCharValues placeholder = char_values.at(index);
+    std::string char_id = placeholder.character_id_;
 
 
     Stats* stats = this->queryStats(char_id);
@@ -203,14 +204,15 @@ std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id)
 
     if(stats == nullptr
     || attr == nullptr
-    || armory == nullptr
+    // || armory == nullptr
     || inventory == nullptr)
     {
       std::cout << "[ERROR] -> [DataBaseManager::loadCharacters] -> Char with ID:" << char_id << " can not be loaded <!> " << std::endl;
       continue;
     }
 
-    /* To make char i need world x,y and state/index for animation still ? */
+
+    /* Need to create a Character but no Classes are introduced yet <!> */
   }
 }
 
@@ -267,7 +269,7 @@ std::string DataBaseManager::queryAccount(std::string& username, std::string& pa
   return account_id;
 }
 
-std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_id) noexcept
+std::vector<loadedCharValues> DataBaseManager::queryCharacters(std::string& account_id) noexcept
 {
   const char* values[1] = { account_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_CHARACTERS); 
@@ -280,16 +282,24 @@ std::vector<std::string> DataBaseManager::queryCharacters(std::string& account_i
   }
 
   int rows = PQntuples(result);
-  std::vector<std::string> char_ids;
+  std::vector<loadedCharValues> loaded_char_values;
 
   for(int index = 0; index < rows; index++)
   {
-    std::string placeholder = PQgetvalue(result, index, 0);
-    /* Do i need to check if this is valid !? */
-    char_ids.push_back(placeholder);
+    loadedCharValues placeholder;
+    placeholder.character_id_ = PQgetvalue(result, index, 0);
+    placeholder.world_x_ = std::stoi(PQgetvalue(result, index, 2));
+    placeholder.world_y_ = std::stoi(PQgetvalue(result, index, 3));
+    placeholder.level_ = std::stoi(PQgetvalue(result, index, 4));
+    placeholder.class_ = std::stoi(PQgetvalue(result, index, 5));
+    placeholder.anim_state_ = std::stoi(PQgetvalue(result, index, 6));
+    placeholder.anim_index_ = std::stoi(PQgetvalue(result, index, 7));
+
+    loaded_char_values.push_back(placeholder);
+
   }
 
-  return char_ids;
+  return loaded_char_values;
 }
 
 Stats* DataBaseManager::queryStats(std::string& character_id) noexcept
@@ -399,8 +409,9 @@ Armory* DataBaseManager::queryArmory(std::string& character_id) noexcept
     return nullptr;
   }
 
-
   /* Armory will have to wait as we did not design the armory yet <!> */
+
+  return nullptr;
 }
 
 Inventory* DataBaseManager::queryInventory(std::string& character_id) noexcept
@@ -422,13 +433,16 @@ Inventory* DataBaseManager::queryInventory(std::string& character_id) noexcept
     return nullptr;
   }
 
-  int gold = std::stoi(PQgetvalue(result, 0, 1));
-  int silver = std::stoi(PQgetvalue(result, 0, 2));
-  int bronze = std::stoi(PQgetvalue(result, 0, 3));
+  std::string inventory_id = PQgetvalue(result, 0, 0);
+  int gold = std::stoi(PQgetvalue(result, 0, 2));
+  int silver = std::stoi(PQgetvalue(result, 0, 3));
+  int bronze = std::stoi(PQgetvalue(result, 0, 4));
 
-  /* I still need containers <!> */
+  
+  std::vector<Container*> containers = this->queryContainers(inventory_id);
 
-  Inventory* loaded_inventroy = new Inventory();
+  Inventory* loaded_inventroy = new Inventory(gold, silver, bronze, containers);
+  return loaded_inventroy;
 
 }
 
@@ -443,8 +457,10 @@ std::vector<Container*> DataBaseManager::queryContainers(std::string& inventory_
   {
     return {};
   }
-}
 
+  /* Containers will have to wait as thier design is yet to be finished <!> */
+  return {};
+}
 
 std::vector<std::vector<Item*>> DataBaseManager::queryItems(std::string& container_id) noexcept
 {
@@ -457,6 +473,10 @@ std::vector<std::vector<Item*>> DataBaseManager::queryItems(std::string& contain
   {
     return {{}};
   }
+
+  /* Items will have to wait as their desing is yet to be finished <!> */
+
+  return {{}};
 }
 
 

@@ -34,23 +34,26 @@ class DataBaseManager
     void initializeQueryMap() noexcept;
 
     // Database related functions
-    Account* tryLogin(std::string& username, std::string& password) noexcept;
-    std::string loadAccount(std::string& username, std::string& password) noexcept;
-    std::vector<Character*> loadCharacters(std::string& account_id) noexcept;
+    Account* tryLogin(const std::string username, const std::string password) noexcept;
+    Account* tryRegister(const std::string username, const std::string password) noexcept;
+    std::string loadAccount(const std::string username, const std::string password) noexcept;
+    std::vector<Character*> loadCharacters(const std::string account_id) noexcept;
 
     // Static Functions
     static DataBaseManager* instance();
     static void destroy();
 
     // Queries <!> 
-    std::string queryAccount(std::string& username, std::string& password) noexcept;
-    std::vector<loadedCharValues> queryCharacters(std::string& account_id) noexcept;
-    Stats* queryStats(std::string& character_id) noexcept;
-    Attributes* queryAttributes(std::string& character_id) noexcept;
-    Armory* queryArmory(std::string& character_id) noexcept;
-    Inventory* queryInventory(std::string& character_id) noexcept;
-    std::vector<Container*> queryContainers(std::string& inventory_id) noexcept;
-    std::vector<std::vector<Item*>> queryItems(std::string& container_id) noexcept;
+    std::string                     queryAccount(const std::string username, const std::string password)      noexcept;
+    std::vector<loadedCharValues>   queryCharacters(const std::string account_id)                             noexcept;
+    Stats*                          queryStats(const std::string character_id)                                noexcept;
+    Attributes*                     queryAttributes(const std::string character_id)                           noexcept;
+    Armory*                         queryArmory(const std::string character_id)                               noexcept;
+    Inventory*                      queryInventory(const std::string character_id)                            noexcept;
+    std::vector<Container*>         queryContainers(const std::string inventory_id)                           noexcept;
+    std::vector<std::vector<Item*>> queryItems(const std::string container_id)                                noexcept;
+    bool                            queryRegistration(const std::string username, const std::string password) noexcept;
+
 
     // Helpers
     bool validatePGresult(PGresult* result) noexcept;

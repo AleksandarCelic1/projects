@@ -2,6 +2,7 @@
 #define STATE_HPP
 
 #include "quadtree.hpp"
+#include "database_manager.hpp"
 
 #include "../../constants_/constants.hpp"
 #include "../../enums_/enums.hpp"

@@ -24,7 +24,7 @@ typedef struct
 class Game
 {
   private:
-    Account current_account_logged_in_;
+    Account* current_account_logged_in_;
     World world_;
     TextureManager* texture_manager_;
     FontManager* font_manager_;
@@ -61,7 +61,7 @@ class Game
     SDL_Renderer* getRenderer() const noexcept { return this->main_renderer_;}
 
 
-    Account& getAccount() noexcept { return this->current_account_logged_in_; }
+    Account* getAccount() noexcept { return this->current_account_logged_in_; }
     World& getWorld() noexcept { return this->world_; }
     Camera& getCamera() noexcept { return this->camera_; }
     LoginState* getLogin() noexcept { return this->login_; }
@@ -80,7 +80,7 @@ class Game
     // Setters
     void setSDLWindow(SDL_Window* new_window) noexcept{ this->main_window_ = new_window; }
     void setSDLRenderer(SDL_Renderer* new_renderer) noexcept { this->main_renderer_ = new_renderer; }
-    void setCurrentAccountLoggedIn(Account& new_current_account)  noexcept { this->current_account_logged_in_ = new_current_account; }
+    void setCurrentAccountLoggedIn(Account* new_current_account)  noexcept { this->current_account_logged_in_ = new_current_account; }
     void setWorld(World& world) noexcept { this->world_ = world; }
     void setCamera(Camera& new_camera) noexcept { this->camera_ = new_camera; }
     void setLogin(LoginState* new_login) noexcept { this->login_ = new_login; }

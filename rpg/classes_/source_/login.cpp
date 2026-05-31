@@ -177,6 +177,8 @@ void LoginState::handleEnter(Game& game)
   LoginValidator* validator = this->getValidator();
   TextField* text = this->panel_->getActiveField();
 
+  TextField* username = this->panel_->getUsernameLogin();
+
 
   if(text == this->panel_->getUsernameLogin() 
   || text == this->panel_->getPasswordLogin())
@@ -184,9 +186,14 @@ void LoginState::handleEnter(Game& game)
     if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
     {
       std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-      /*
-        In those true if blocks we should query the DB, from here should DBManager be a static class ? 
-      */
+      Account* loaded_acc = DataBaseManager::instance()->tryLogin
+                            (this->panel_->getUsernameLogin()->getTextConst(), this->panel_->getPasswordLogin()->getTextConst());
+
+      if(loaded_acc)
+      {
+        game.setCurrentAccountLoggedIn(loaded_acc);
+        game.setGameState(GameState::CHARACTER_OVERVIEW);
+      }
     }
   }
   
@@ -194,6 +201,7 @@ void LoginState::handleEnter(Game& game)
   panel_->getPasswordRegistration()->getTextConst(), panel_->getPasswordConfirmation()->getTextConst()))
   {
     std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
+    Account* registered_account = nullptr; // DataBaseManager::instance().tryRegister()
   }
 
 }

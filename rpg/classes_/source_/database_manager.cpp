@@ -65,6 +65,10 @@ void DataBaseManager::initializeQueryMap() noexcept
   this->query_map_.insert({QueryEnums::QUERY_ITEMS, "SELECT * FROM Item WHERE container_id_ = $1 "});
 
   
+  this->query_map_.insert({QueryEnums::QUERY_REGISTARTION, " NOT FINISHED <!> "});
+
+
+  
 }
 
 void DataBaseManager::initializeConnectionParameters() noexcept
@@ -148,7 +152,7 @@ bool DataBaseManager::validatePGresult(PGresult* result) noexcept
 }
     
 
-Account* DataBaseManager::tryLogin(std::string& username, std::string& password) noexcept
+Account* DataBaseManager::tryLogin(const std::string username, const std::string password) noexcept
 {
   std::string account_id = this->loadAccount(username, password);
   if(account_id.empty())
@@ -168,7 +172,7 @@ Account* DataBaseManager::tryLogin(std::string& username, std::string& password)
 
 }
 
-std::string DataBaseManager::loadAccount(std::string& username, std::string& password) noexcept
+std::string DataBaseManager::loadAccount(const std::string username, const std::string password) noexcept
 {
   std::string account_id = this->queryAccount(username, password);
   if(account_id.empty())
@@ -180,7 +184,7 @@ std::string DataBaseManager::loadAccount(std::string& username, std::string& pas
 
 }
 
-std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id) noexcept
+std::vector<Character*> DataBaseManager::loadCharacters(const std::string account_id) noexcept
 {
   std::vector<loadedCharValues> char_values = this->queryCharacters(account_id);
   if(char_values.empty())
@@ -216,9 +220,19 @@ std::vector<Character*> DataBaseManager::loadCharacters(std::string& account_id)
   }
 }
 
+Account* DataBaseManager::tryRegister(const std::string username, const std::string password) noexcept
+{
+  std::string existing_account_id = this->loadAccount(username, password);
+  if(!existing_account_id.empty())
+  {
+    return nullptr;
+  }
 
+
+
+}
 // <---- ! -----> [Queries] <---- ! ----->
-std::string DataBaseManager::queryAccount(std::string& username, std::string& password) noexcept
+std::string DataBaseManager::queryAccount(const std::string username, const std::string password) noexcept
 {
   const char* values[2] = { username.c_str(), password.c_str() };
 
@@ -256,12 +270,16 @@ std::string DataBaseManager::queryAccount(std::string& username, std::string& pa
 
   if(rows == 1)
   {
-    std::cout << "[SUCCESS] -> [DataBaseManager::queryAccount] -> Login Success <!> " << std::endl;
+    std::cout << "[SUCCESS] -> [DataBaseManager::queryAccount] -> Success <!> " << std::endl;
     account_id = PQgetvalue(result, 0, 0);
   }
   else
   {
-    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Login failed <!> " << std::endl;
+    /* 
+      Those debug logs will be deleted as they are confusing due to register needing this to fail,
+      and the login must not fail in order to succeed <!> 
+    */
+    std::cout << "[ERROR] -> [DataBaseManager::queryAccount] -> Failed <!> " << std::endl;
   }
 
   PQclear(result);
@@ -269,7 +287,7 @@ std::string DataBaseManager::queryAccount(std::string& username, std::string& pa
   return account_id;
 }
 
-std::vector<loadedCharValues> DataBaseManager::queryCharacters(std::string& account_id) noexcept
+std::vector<loadedCharValues> DataBaseManager::queryCharacters(const std::string account_id) noexcept
 {
   const char* values[1] = { account_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_CHARACTERS); 
@@ -302,7 +320,7 @@ std::vector<loadedCharValues> DataBaseManager::queryCharacters(std::string& acco
   return loaded_char_values;
 }
 
-Stats* DataBaseManager::queryStats(std::string& character_id) noexcept
+Stats* DataBaseManager::queryStats(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_STATS);
@@ -354,7 +372,7 @@ Stats* DataBaseManager::queryStats(std::string& character_id) noexcept
 
 }
 
-Attributes* DataBaseManager::queryAttributes(std::string& character_id) noexcept
+Attributes* DataBaseManager::queryAttributes(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_ATTRIBUTES);
@@ -397,7 +415,7 @@ Attributes* DataBaseManager::queryAttributes(std::string& character_id) noexcept
   return loaded_attr;
 }
 
-Armory* DataBaseManager::queryArmory(std::string& character_id) noexcept
+Armory* DataBaseManager::queryArmory(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_ARMORY);
@@ -414,7 +432,7 @@ Armory* DataBaseManager::queryArmory(std::string& character_id) noexcept
   return nullptr;
 }
 
-Inventory* DataBaseManager::queryInventory(std::string& character_id) noexcept
+Inventory* DataBaseManager::queryInventory(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_INVENTORY);
@@ -446,7 +464,7 @@ Inventory* DataBaseManager::queryInventory(std::string& character_id) noexcept
 
 }
 
-std::vector<Container*> DataBaseManager::queryContainers(std::string& inventory_id) noexcept
+std::vector<Container*> DataBaseManager::queryContainers(const std::string inventory_id) noexcept
 {
   const char* values[1] = { inventory_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_CONTAINERS);
@@ -462,7 +480,7 @@ std::vector<Container*> DataBaseManager::queryContainers(std::string& inventory_
   return {};
 }
 
-std::vector<std::vector<Item*>> DataBaseManager::queryItems(std::string& container_id) noexcept
+std::vector<std::vector<Item*>> DataBaseManager::queryItems(const std::string container_id) noexcept
 {
   const char* values[1] = { container_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_ITEMS);
@@ -479,6 +497,8 @@ std::vector<std::vector<Item*>> DataBaseManager::queryItems(std::string& contain
   return {{}};
 }
 
+bool queryRegistration(const std::string username, const std::string password) noexcept
+{
 
-
+}
 

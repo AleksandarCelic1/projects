@@ -64,8 +64,7 @@ void DataBaseManager::initializeQueryMap() noexcept
   this->query_map_.insert({QueryEnums::QUERY_CONTAINERS, "SELECT * FROM Containers WHERE invetory_id_ = $1 "});
   this->query_map_.insert({QueryEnums::QUERY_ITEMS, "SELECT * FROM Item WHERE container_id_ = $1 "});
 
-  
-  this->query_map_.insert({QueryEnums::QUERY_REGISTARTION, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_REGISTARTION, "INSERT INTO Accounts (username_, password_) VALUES ( $1, $2);"});
 
 
   
@@ -170,6 +169,7 @@ Account* DataBaseManager::tryLogin(const std::string username, const std::string
   size_t acc_id = static_cast<size_t>(std::stoi(account_id));
   Account* acc = new Account(username, acc_id, characters);
 
+  return acc;
 }
 
 std::string DataBaseManager::loadAccount(const std::string username, const std::string password) noexcept
@@ -228,8 +228,25 @@ Account* DataBaseManager::tryRegister(const std::string username, const std::str
     return nullptr;
   }
 
+  bool retval = this->queryRegistration(username, password);
+
+  if(retval)
+  {
+    std::string account_id = this->queryAccount(username, password);
+    if(account_id.empty())
+    {
+      std::cout << "[ERROR] -> [DataBaseManager::tryRegister] -> Account does not exist <!> " << std::endl;
+      return nullptr;
+    }
+
+    size_t casted_id = static_cast<size_t>(std::stoi(account_id));
 
 
+    Account* new_acc = new Account(username, casted_id, {});
+    return new_acc;
+  }
+
+  return nullptr;
 }
 // <---- ! -----> [Queries] <---- ! ----->
 std::string DataBaseManager::queryAccount(const std::string username, const std::string password) noexcept
@@ -497,8 +514,20 @@ std::vector<std::vector<Item*>> DataBaseManager::queryItems(const std::string co
   return {{}};
 }
 
-bool queryRegistration(const std::string username, const std::string password) noexcept
+bool DataBaseManager::queryRegistration(const std::string username, const std::string password) noexcept
 {
+  const char* values[2] = { username.c_str(), password.c_str() };
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_REGISTARTION);
 
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 2, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGresult(result))
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryRegistration] -> Registration failed <!> " << std::endl;
+    return false;
+  }
+
+
+  return true;
 }
 

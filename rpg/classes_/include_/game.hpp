@@ -11,6 +11,7 @@
 #include "font_manager.hpp"
 #include "character_overview.hpp"
 #include "character_creation.hpp"
+#include "transition_manager.hpp"
 
 typedef struct
 {
@@ -28,6 +29,7 @@ class Game
     World world_;
     TextureManager* texture_manager_;
     FontManager* font_manager_;
+    TransitionManager* transition_manager_;
     Camera camera_; // Probably should be in PlayingState <!>
 
     LoginState* login_;

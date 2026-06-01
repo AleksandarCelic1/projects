@@ -191,8 +191,7 @@ void LoginState::handleEnter(Game& game)
 
       if(loaded_acc)
       {
-        game.setCurrentAccountLoggedIn(loaded_acc);
-        game.setGameState(GameState::CHARACTER_OVERVIEW);
+        /* Activate the transition mode */
       }
     }
   }
@@ -201,7 +200,9 @@ void LoginState::handleEnter(Game& game)
   panel_->getPasswordRegistration()->getTextConst(), panel_->getPasswordConfirmation()->getTextConst()))
   {
     std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-    Account* registered_account = nullptr; // DataBaseManager::instance().tryRegister()
+    Account* registered_account = DataBaseManager::instance()->tryRegister
+                                  (panel_->getUsernameRegistration()->getTextConst(), panel_->getPasswordRegistration()->getTextConst());
+
   }
 
 }

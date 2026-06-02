@@ -169,12 +169,21 @@ void Game::run()
 void Game::render()
 {
   SDL_RenderClear(this->main_renderer_);
+
+  
+  
+
   this->current_state_->render(*this);
   SDL_RenderPresent(this->main_renderer_);
 }
 
 void Game::update()
 {
+  if(this->transition_manager_->getTransitionStatus())
+  {
+    this->transition_manager_->transition(*this); 
+  }
+  
   this->current_state_->update(*this);
 }
 

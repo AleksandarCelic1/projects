@@ -191,7 +191,8 @@ void LoginState::handleEnter(Game& game)
 
       if(loaded_acc)
       {
-        /* Activate the transition mode */
+        game.setCurrentAccountLoggedIn(loaded_acc);
+        game.getTransitionManager()->activateTransition(GameState::CHARACTER_OVERVIEW);
       }
     }
   }
@@ -203,7 +204,13 @@ void LoginState::handleEnter(Game& game)
     Account* registered_account = DataBaseManager::instance()->tryRegister
                                   (panel_->getUsernameRegistration()->getTextConst(), panel_->getPasswordRegistration()->getTextConst());
 
+    if(registered_account) 
+    {
+      game.setCurrentAccountLoggedIn(registered_account);
+      game.getTransitionManager()->activateTransition(GameState::CHARACTER_OVERVIEW);
+    }
   }
 
+  return;
 }
 

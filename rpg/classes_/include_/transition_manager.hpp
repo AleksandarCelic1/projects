@@ -22,7 +22,7 @@ class TransitionManager
 
 
   public:
-    TransitionManager() = default;
+    TransitionManager();
     TransitionManager(const TransitionManager& copy) = delete;
     ~TransitionManager() = default;
 
@@ -46,7 +46,7 @@ class TransitionManager
     // Methods
     void transition(Game& game) noexcept;
     void changeStates(Game& game) noexcept;
-
+    void activateTransition(GameState target_state) noexcept;
 };
 
 

@@ -1,6 +1,15 @@
 #include "../../include_/transition_manager.hpp"
 #include "../../include_/game.hpp"
 
+TransitionManager::TransitionManager()
+{
+  /* Our transitions "progress" does not go from 0 -> 1 but 0 -> 255 alpha directly <!> */
+  this->fade_alpha_ = 0.0f;
+  this->transition_ = false;
+  this->fading_in_ = false;
+  this->fading_out_ = false;
+  this->fade_speed_ = 255.0f;
+}
 
 
 void TransitionManager::transition(Game& game) noexcept
@@ -11,12 +20,11 @@ void TransitionManager::transition(Game& game) noexcept
 
     if(this->fade_alpha_ >= 255.0f)
     {
-      this->fade_alpha_ = 255.0f;
-
       this->changeStates(game);
 
-      
-
+      this->fade_alpha_ = 255.0f;
+      this->fading_out_ = false;
+      this->fading_in_ = true;      
 
     }
 
@@ -36,6 +44,9 @@ void TransitionManager::transition(Game& game) noexcept
         regardless, since there could be some stale events that were not handled
       */
       ParserUtility::flushQueue(game.getDispatcher()->getInputQueue());
+
+      this->fading_in_ = false;
+      this->transition_ = false;
 
     }
 
@@ -78,6 +89,11 @@ void TransitionManager::changeStates(Game& game) noexcept
   return;
 }
 
-
+void TransitionManager::activateTransition(GameState target_state) noexcept
+{
+  this->transition_ = true;
+  this->fading_out_ = true;
+  this->target_state_ = target_state;
+}
 
 

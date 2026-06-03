@@ -71,6 +71,7 @@ class Game
     TextureManager* getTextureManager() noexcept { return this->texture_manager_; }
     Dispatcher* getDispatcher() noexcept { return this->dispatcher_; }
     FontManager* getFontManager() noexcept { return this->font_manager_; }
+    TransitionManager* getTransitionManager() noexcept { return this->transition_manager_; }
     GameState getGameState() const noexcept { return this->gamestate_; }
     CharacterOverviewState* getCharOverview() const noexcept { return this->overview_; }
     CharacterCreationState* getCharCreation() const noexcept { return this->char_creation_; }
@@ -90,6 +91,7 @@ class Game
     void setCurrentState(State* new_current_state) noexcept { this->current_state_ = new_current_state; }
     void setDeltaTime(float& new_delta_time) noexcept { this->delta_time_ = new_delta_time; }
     void setTextureManager(TextureManager* new_manager) noexcept { this->texture_manager_ = new_manager; }
+    void setTransitionManager(TransitionManager* new_manager) noexcept { this->transition_manager_ = new_manager; }
     void setDispatcher(Dispatcher* new_dispatcher) noexcept { this->dispatcher_ = new_dispatcher; }
     void setFontManager(FontManager* new_font_manager) noexcept { this->font_manager_ = new_font_manager; }
     void setCharOverview(CharacterOverviewState* new_char_overview_state) noexcept { this->overview_ = new_char_overview_state; }

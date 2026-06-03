@@ -15,6 +15,7 @@ Game::Game()
   this->gamestate_ = GameState::LOG_IN_SCREEN;
   this->texture_manager_ = new TextureManager(this->main_renderer_);
   this->font_manager_ = new FontManager(*this);
+  this->transition_manager_ = new TransitionManager();
 
   this->login_ = new LoginState(*this);
   this->current_state_ = (this->login_);
@@ -183,7 +184,7 @@ void Game::update()
   {
     this->transition_manager_->transition(*this); 
   }
-  
+
   this->current_state_->update(*this);
 }
 
@@ -192,6 +193,12 @@ void Game::mainEventHandler(SDL_Event* event)
   // SDL_PollEvent is basically a queue and we ask each frame if there is a new event if no he returns 0 if yes we handle it < !
   std::queue<KeyboardInput*>& queue = this->dispatcher_->getInputQueue();
   SDL_Keymod modifier; // Is a Bitmask 
+
+  if(this->transition_manager_->getTransitionStatus())
+  {
+    std::cout << "[CAUGHT] -> [Game::mainEventHandler] -> Can not take input while transitioning <!> " << std::endl;
+    return;
+  }
 
   while(SDL_PollEvent(event))
   {

@@ -186,7 +186,7 @@ void LoginState::handleEnter(Game& game)
     if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
     {
       std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-      Account* loaded_acc = DataBaseManager::instance()->tryLogin
+      Account* loaded_acc = db_manager->tryLogin
                             (this->panel_->getUsernameLogin()->getTextConst(), this->panel_->getPasswordLogin()->getTextConst());
 
       if(loaded_acc)
@@ -201,7 +201,7 @@ void LoginState::handleEnter(Game& game)
   panel_->getPasswordRegistration()->getTextConst(), panel_->getPasswordConfirmation()->getTextConst()))
   {
     std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
-    Account* registered_account = DataBaseManager::instance()->tryRegister
+    Account* registered_account = db_manager->tryRegister
                                   (panel_->getUsernameRegistration()->getTextConst(), panel_->getPasswordRegistration()->getTextConst());
 
     if(registered_account) 

@@ -1,6 +1,8 @@
 #include "../include_/database_manager.hpp"
 #include "../../namespaces_/namespaces.hpp"
 
+DataBaseManager* db_manager = new DataBaseManager();
+
 
 DataBaseManager::DataBaseManager()
 {
@@ -23,6 +25,7 @@ DataBaseManager::DataBaseManager()
     if its successful if not we'd have to consider a robust way to handle this.
 
   */
+  
   this->initializeConnectionParameters();
   this->connection_ = PQconnectdb(this->connection_parameters_.c_str());
   this->connection_parameters_.clear();
@@ -79,7 +82,7 @@ void DataBaseManager::initializeConnectionParameters() noexcept
     We have to parse the env folder <!> 
   */
 
-  std::ifstream file("../../env_/database_credentials.env");
+  std::ifstream file("../env_/database_credentials.env");
   if(!file.is_open())
   {
     std::cout << "[ERROR] -> [DataBaseManager::initializeConnectionParameters] -> File couldn't be opened <!> " << std::endl;
@@ -109,28 +112,8 @@ void DataBaseManager::initializeConnectionParameters() noexcept
 
   this->connection_parameters_ = result;
 
-  /* Debug Log */
-  std::cout << "[DEBUG] -> [DataBaseManager::initializeConnectionParameters] -> " << this->connection_parameters_ << std::endl;
-}
-
-DataBaseManager* DataBaseManager::instance()
-{
-  if(instance_ == nullptr)
-  {
-    instance_ = new DataBaseManager();
-  }
-
-  return instance_;
-}
-
-void DataBaseManager::destroy()
-{
-  if(instance_ != nullptr)
-  {
-    delete instance_;
-    instance_ = nullptr;
-  }
-  
+  /* Debug Log 
+  std::cout << "[DEBUG] -> [DataBaseManager::initializeConnectionParameters] -> " << this->connection_parameters_ << std::endl; */
 }
 
 bool DataBaseManager::validatePGresult(PGresult* result) noexcept
@@ -218,6 +201,8 @@ std::vector<Character*> DataBaseManager::loadCharacters(const std::string accoun
 
     /* Need to create a Character but no Classes are introduced yet <!> */
   }
+
+  return {};
 }
 
 Account* DataBaseManager::tryRegister(const std::string username, const std::string password) noexcept

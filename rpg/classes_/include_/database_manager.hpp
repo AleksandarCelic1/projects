@@ -10,12 +10,11 @@ class DataBaseManager
     PGconn* connection_;
     std::string connection_parameters_;
     std::unordered_map<QueryEnums, std::string> query_map_;
-    static DataBaseManager* instance_;
     
-    // Constructor
-    DataBaseManager();
+    
   public:
-    // Copy Constructor Desctructor 
+    // Contructor Copy Constructor Desctructor 
+    DataBaseManager();
     DataBaseManager(const DataBaseManager& copy) = delete;
     ~DataBaseManager();
 
@@ -39,9 +38,6 @@ class DataBaseManager
     std::string loadAccount(const std::string username, const std::string password) noexcept;
     std::vector<Character*> loadCharacters(const std::string account_id) noexcept;
 
-    // Static Functions
-    static DataBaseManager* instance();
-    static void destroy();
 
     // Queries <!> 
     std::string                     queryAccount(const std::string username, const std::string password)      noexcept;
@@ -61,6 +57,9 @@ class DataBaseManager
 
 
 };
+
+
+extern DataBaseManager* db_manager;
 
 
 #endif

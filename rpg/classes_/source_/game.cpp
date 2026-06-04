@@ -40,6 +40,7 @@ Game::~Game()
 
   MemoryFreeingUtils::clearPointer(this->dispatcher_);
   MemoryFreeingUtils::clearPointer(this->login_);
+  MemoryFreeingUtils::clearPointer(this->transition_manager_);
 
   TTF_Quit();
   IMG_Quit();

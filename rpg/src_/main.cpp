@@ -8,5 +8,7 @@ int main(void)
   game.run();
 
 
+  delete db_manager;
+  
   return 0;
 }

@@ -101,6 +101,8 @@ void TextureManager::loadUITextures() noexcept
 {
   this->ui_textures_[UI::LOGIN_BACKGROUND] = makeTextureAsset("../photos_/UI_/login_/background_for_login.png");
   this->ui_textures_[UI::LOGIN_PANEL] = makeTextureAsset("../photos_/UI_/login_/login_panel_not_finished.png");
+  this->ui_textures_[UI::CHARACTER_OVERVIEW_BACKGROUND] = makeTextureAsset("../photos_/UI_/character_overview_/character_overview_background.png");
+  this->ui_textures_[UI::CHARACTER_OVERVIEW_PANEL] = makeTextureAsset("../photos_/UI_/character_overview_/character_overview_panel_not_finished.png");
 }
 
 void TextureManager::loadVisualEffects() noexcept

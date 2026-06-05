@@ -60,7 +60,9 @@ enum class VisualEffects
 enum class UI
 {
   LOGIN_BACKGROUND = 0,
-  LOGIN_PANEL = 1
+  LOGIN_PANEL = 1,
+  CHARACTER_OVERVIEW_BACKGROUND = 2,
+  CHARACTER_OVERVIEW_PANEL = 3
 };
 
 enum class LoginUI
@@ -68,6 +70,12 @@ enum class LoginUI
   LOGIN_BACKGROUND = 0,
   LOGIN_PANEL = 1,
   LOGIN_SETTINGS = 2
+};
+
+enum class CharacterOverviewUI
+{
+  OVERVIEW_BACKGROUND = 0,
+  OVERVIEW_PANEL = 1
 };
 
 

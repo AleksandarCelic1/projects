@@ -18,3 +18,5 @@
 - Do memoryfreeutils functions for just a simple pointer like clearPointer etc. then we can do text rendering better and refactor the DTORS <!>
 <9>
 - Figure out how to include the postgreSQL library so we are able to connect to the server/database from CPP ** FINISHED**
+<10>
+- Determine the design of CharacterOverview -> and its panel since we are going to have mappings from ElementUI* to Characters* 

@@ -2,16 +2,29 @@
 #define CHARACTER_OVERVIEW_PANEL_HPP
 
 #include "elementUI.hpp"
+#include "character.hpp"
 
 class CharacterOverviewPanel : public ElementUI
 {
   private:
-    
+    std::unordered_map<ElementUI*, Character*> characters_;
 
   public:
     CharacterOverviewPanel() = default;
+    CharacterOverviewPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor);
     CharacterOverviewPanel(const CharacterOverviewPanel& copy) = delete;
-    ~CharacterOverviewPanel() = default;
+    ~CharacterOverviewPanel();
+
+
+    // Getters
+    std::unordered_map<ElementUI*, Character*>& getCharacterMappings() noexcept { return this->characters_; }
+    Character* getCharacter(ElementUI* key) noexcept;
+
+    // Setters
+    void setCharacterMappings(std::unordered_map<ElementUI*, Character*> new_mappings) noexcept { this->characters_ = new_mappings; }
+
+    // Methods
+    void addCharacter(ElementUI* key, Character* new_char) noexcept;
 
 
 };

@@ -20,3 +20,5 @@
 - Figure out how to include the postgreSQL library so we are able to connect to the server/database from CPP ** FINISHED**
 <10>
 - Determine the design of CharacterOverview -> and its panel since we are going to have mappings from ElementUI* to Characters* 
+<11>
+- implement a PANEL class <!>

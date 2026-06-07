@@ -41,6 +41,9 @@ class CharacterOverviewState : virtual public State
     void initializeUIOffsets(Game& game) override;
     void handleEnter(Game& game) override;
 
+    // Mini Render Functions
+    void renderBackground(Game& game) noexcept;
+
 
 };
 

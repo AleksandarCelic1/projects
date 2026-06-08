@@ -21,4 +21,4 @@
 <10>
 - Determine the design of CharacterOverview -> and its panel since we are going to have mappings from ElementUI* to Characters* 
 <11>
-- implement a PANEL class <!>
+- implement a PANEL class <!> **FINISHED**

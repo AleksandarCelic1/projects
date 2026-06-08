@@ -23,7 +23,7 @@ class CharacterOverviewState : virtual public State
     ~CharacterOverviewState();
 
     // Getters
-    CharacterOverviewPanel* getPanel() noexcept;
+    CharacterOverviewPanel* getPanel() noexcept { return this->panel_; };
     std::unordered_map<CharacterOverviewUI, ElementUI*>& getUIElements() noexcept { return this->ui_elements_; }
 
     // Setters

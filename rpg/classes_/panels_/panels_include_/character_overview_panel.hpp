@@ -1,10 +1,11 @@
 #ifndef CHARACTER_OVERVIEW_PANEL_HPP
 #define CHARACTER_OVERVIEW_PANEL_HPP
 
-#include "elementUI.hpp"
-#include "character.hpp"
+#include "../../include_/panel.hpp"
+#include "../../include_/character.hpp"
 
-class CharacterOverviewPanel : public ElementUI
+
+class CharacterOverviewPanel : public Panel
 {
   private:
     std::unordered_map<ElementUI*, Character*> characters_;

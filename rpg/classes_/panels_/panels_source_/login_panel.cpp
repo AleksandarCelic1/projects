@@ -1,12 +1,8 @@
-#include "../include_/login_panel.hpp"
-#include "../include_/game.hpp"
+#include "../panels_include_/login_panel.hpp"
+#include "../../include_/game.hpp"
 
-LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor) : ElementUI(asset, scaling_factor) 
+LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor) : Panel(asset, scaling_factor, 0.0f, 3.0f, 1.0f) 
 {
-  this->time_passed_ = 0.0f;
-  this->panel_delay_ = 3.0f;
-  this->smooth_duration_ = 1.0f;
-
   const SDL_Rect& dst_rect = this->getDstRect();
 
   this->username_login_ = new TextField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_USERNAME), scaling_factor);
@@ -135,20 +131,24 @@ void LoginPanel::render(Game& game) noexcept
 
 void LoginPanel::renderPanel(Game& game) noexcept
 {
-  if(this->time_passed_ < this->panel_delay_)
+  if(this->getTimePassed() < this->getPanelDelay())
   {
     // Print out a error message just so we know where we are currently << !  Consider Error Constant File with all messages
     return;
   }
 
-  float fade_time = this->time_passed_ - this->panel_delay_;
+  float time_passed = this->getTimePassed();
+  float panel_delay = this->getPanelDelay();
+  float smooth_duration = this->getSmoothDuration();
 
-  if(fade_time > this->smooth_duration_)
+  float fade_time = time_passed - panel_delay;
+
+  if(fade_time > smooth_duration)
   {
-    fade_time = this->smooth_duration_;
+    fade_time = smooth_duration;
   }
 
-  float progress = fade_time / this->smooth_duration_; 
+  float progress = fade_time / smooth_duration; 
   // This goes "slowly" from 0 to 1 
 
   Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
@@ -161,7 +161,7 @@ void LoginPanel::renderPanel(Game& game) noexcept
 void LoginPanel::update(Game& game) noexcept
 {
   /* Handle Panel update timers */
-  this->time_passed_ += game.getDeltaTime();
+  this->setTimePassed(this->getTimePassed() + game.getDeltaTime());
 
 
 

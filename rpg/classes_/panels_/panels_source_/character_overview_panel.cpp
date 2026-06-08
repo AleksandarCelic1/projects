@@ -1,7 +1,8 @@
-#include "../include_/character_overview_panel.hpp"
-#include "../include_/text_field.hpp"
+#include "../panels_include_/character_overview_panel.hpp"
+#include "../../include_/text_field.hpp"
 
-CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor)
+CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor) 
+  : Panel(asset, scaling_factor, 0.0f, 3.0f, 1.0f)
 {
   const SDL_Rect& dst_rect = this->getDstRect();
 

@@ -31,7 +31,6 @@ add_executable(
   classes_/source_/tile.cpp
   classes_/source_/world.cpp
   classes_/source_/login_validator.cpp
-  classes_/source_/login_panel.cpp
   classes_/source_/text_field.cpp
   classes_/source_/password_field.cpp
   classes_/source_/dispatcher.cpp
@@ -42,7 +41,8 @@ add_executable(
   classes_/source_/font_manager.cpp
   classes_/source_/database_manager.cpp
   classes_/source_/transition_manager.cpp
-  classes_/source_/character_overview_panel.cpp
+  classes_/panels_/panels_source_/login_panel.cpp
+  classes_/panels_/panels_source_/character_overview_panel.cpp
   namespaces_/source_/rect_utils.cpp
   namespaces_/source_/parser_utility.cpp
   constants_/constants.cpp

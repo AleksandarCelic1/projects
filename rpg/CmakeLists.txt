@@ -41,6 +41,7 @@ add_executable(
   classes_/source_/font_manager.cpp
   classes_/source_/database_manager.cpp
   classes_/source_/transition_manager.cpp
+  classes_/source_/panel.cpp
   classes_/panels_/panels_source_/login_panel.cpp
   classes_/panels_/panels_source_/character_overview_panel.cpp
   namespaces_/source_/rect_utils.cpp

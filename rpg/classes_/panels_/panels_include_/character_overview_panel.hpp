@@ -27,6 +27,11 @@ class CharacterOverviewPanel : public Panel
     // Methods
     void addCharacter(ElementUI* key, Character* new_char) noexcept;
 
+    // Virtual Methods
+    void render(Game& game) noexcept override;
+    void update(Game& game) noexcept override;
+    void renderPanel(Game& game) noexcept override; 
+
 
 };
 

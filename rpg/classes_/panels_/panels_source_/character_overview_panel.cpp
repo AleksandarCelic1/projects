@@ -32,5 +32,22 @@ Character* CharacterOverviewPanel::getCharacter(ElementUI* key) noexcept
   return retval;
 }
 
+void CharacterOverviewPanel::render(Game& game) noexcept
+{
+
+}
+
+void CharacterOverviewPanel::renderPanel(Game& game) noexcept
+{
+  
+}
+
+
+void CharacterOverviewPanel::update(Game& game) noexcept
+{
+
+}
+
+
 
 

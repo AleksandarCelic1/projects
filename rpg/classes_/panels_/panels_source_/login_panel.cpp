@@ -1,7 +1,8 @@
 #include "../panels_include_/login_panel.hpp"
 #include "../../include_/game.hpp"
 
-LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor) : Panel(asset, scaling_factor, 0.0f, 3.0f, 1.0f) 
+LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor)
+ : Panel(asset, scaling_factor, 0.0f, 3.0f, 1.0f) 
 {
   const SDL_Rect& dst_rect = this->getDstRect();
 
@@ -126,7 +127,6 @@ void LoginPanel::render(Game& game) noexcept
   if(this->password_confirmation_->getActive()) { this->password_confirmation_->render(game); }
   
 
-  // Render the five  
 }
 
 void LoginPanel::renderPanel(Game& game) noexcept
@@ -154,6 +154,8 @@ void LoginPanel::renderPanel(Game& game) noexcept
   Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
 
   SDL_SetTextureAlphaMod(this->getTexture(), alpha);
+
+  
   SDL_RenderCopy(game.getRenderer(), this->getTexture(), nullptr, &this->getDstRect());
 }
 
@@ -162,8 +164,6 @@ void LoginPanel::update(Game& game) noexcept
 {
   /* Handle Panel update timers */
   this->setTimePassed(this->getTimePassed() + game.getDeltaTime());
-
-
 
   /* Handle Kids update timers */
   this->username_login_->update(game);

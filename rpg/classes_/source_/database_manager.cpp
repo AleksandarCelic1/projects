@@ -44,7 +44,7 @@ DataBaseManager::~DataBaseManager()
     Disconnect yourself from the Database <!> 
   */
 
-  PQfinish(this->connection_);
+  // PQfinish(this->connection_); // This is causing Bus Error <!> 
 }
 
 void DataBaseManager::initializeQueryMap() noexcept

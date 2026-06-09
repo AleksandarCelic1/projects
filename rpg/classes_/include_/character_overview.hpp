@@ -4,7 +4,7 @@
 #include "state.hpp"
 #include "character.hpp"
 #include "elementUI.hpp"
-#include "character_overview_panel.hpp"
+#include "../panels_/panels_include_/character_overview_panel.hpp"
 
 #include "../../namespaces_/namespaces.hpp"
 

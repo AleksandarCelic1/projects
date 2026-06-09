@@ -26,7 +26,7 @@ Game::Game()
 
 Game::~Game()
 {
-  if(this->main_renderer_ != nullptr)
+  /*if(this->main_renderer_ != nullptr)
   {
     SDL_DestroyRenderer(this->main_renderer_);
     this->main_renderer_ = nullptr;
@@ -40,7 +40,7 @@ Game::~Game()
 
   MemoryFreeingUtils::clearPointer(this->dispatcher_);
   MemoryFreeingUtils::clearPointer(this->login_);
-  MemoryFreeingUtils::clearPointer(this->transition_manager_);
+  MemoryFreeingUtils::clearPointer(this->transition_manager_);*/
 
   TTF_Quit();
   IMG_Quit();

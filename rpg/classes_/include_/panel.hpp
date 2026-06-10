@@ -3,7 +3,12 @@
 
 #include "elementUI.hpp"
 
-class Panel : virtual public ElementUI
+/*
+  When virtually inheriting a class, any ctor calls in this case from Panel to ElementUI,
+  are completely ignored, and the Panel is entirely responsible for constructing the 
+  virtual base class
+*/
+class Panel : public ElementUI
 {
   private:
     // Panel Delay < ! > 

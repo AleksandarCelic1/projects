@@ -7,6 +7,11 @@ bool LoginValidator::validate(Game& game, const std::string& username, const std
 
   bool result = false;
 
+
+  /* How are they the same ?! */
+  std::cout << username << " " << password << std::endl;
+
+
   result = (this->validateUsername(username, constraints, sizes) && this->validatePassword(password, constraints, sizes));
 
   return result;

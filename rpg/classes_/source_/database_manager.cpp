@@ -34,8 +34,12 @@ DataBaseManager::DataBaseManager()
   {
     std::cout << "[ERROR] -> [DataBaseManager::DataBaseManager()] -> connection to the database failed <!> " << std::endl;
     PQfinish(this->connection_);
+    this->connection_ = nullptr;
     return;
   }
+  
+
+  std::cout << "[INFORMATION] -> [DataBaseManager::DataBaseManager()] -> Connection to the DataBase Status: Succesful <!> " << std::endl;
 }
 
 DataBaseManager::~DataBaseManager()
@@ -44,7 +48,7 @@ DataBaseManager::~DataBaseManager()
     Disconnect yourself from the Database <!> 
   */
 
-  // PQfinish(this->connection_); // This is causing Bus Error <!> 
+  PQfinish(this->connection_);
 }
 
 void DataBaseManager::initializeQueryMap() noexcept
@@ -106,10 +110,9 @@ void DataBaseManager::initializeConnectionParameters() noexcept
 
     result += line;
     result += " ";
-
   }
 
-
+  result.pop_back();
   this->connection_parameters_ = result;
 
   /* Debug Log 

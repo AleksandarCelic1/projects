@@ -183,7 +183,7 @@ void LoginState::handleEnter(Game& game)
   if(text == this->panel_->getUsernameLogin() 
   || text == this->panel_->getPasswordLogin())
   {
-    if(validator->validate(game, text->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
+    if(validator->validate(game, username->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
     {
       std::cout << "[Validator] -> returned valid input -> we can now try to query the database <!> " << std::endl;
       Account* loaded_acc = db_manager->tryLogin

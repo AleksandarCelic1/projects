@@ -1,15 +1,10 @@
 #include "../include_/elementUI.hpp"
 #include "../include_/game.hpp"
 
-ElementUI::ElementUI(const TextureAsset& asset, int scaling_factor)
-{
-  this->texture_ = asset.texture_; 
-  this->dst_rect_.x = 0;
-  this->dst_rect_.y = 0;
-  this->dst_rect_.w = asset.width_ * scaling_factor;
-  this->dst_rect_.h = asset.height_ * scaling_factor;
-
-}
+ElementUI::ElementUI(const TextureAsset& asset, int scaling_factor) 
+  : texture_(asset.texture_),
+    dst_rect_({0, 0, asset.width_ * scaling_factor, asset.height_ * scaling_factor})
+  {}
 
 bool ElementUI::detectMouseClick(int mouse_x, int mouse_y) noexcept
 {

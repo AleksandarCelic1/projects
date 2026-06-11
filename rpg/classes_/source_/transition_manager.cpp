@@ -8,7 +8,7 @@ TransitionManager::TransitionManager()
   this->transition_ = false;
   this->fading_in_ = false;
   this->fading_out_ = false;
-  this->fade_speed_ = 255.0f;
+  this->fade_speed_ = 255.0f / 1.0f;
 }
 
 
@@ -24,9 +24,11 @@ void TransitionManager::transition(Game& game) noexcept
 
       this->fade_alpha_ = 255.0f;
       this->fading_out_ = false;
-      this->fading_in_ = true;      
+      this->fading_in_ = true;   
+      
 
     }
+
 
     SDL_SetRenderDrawColor(game.getRenderer(), 0, 0, 0, static_cast<Uint8>(this->fade_alpha_));
     SDL_RenderFillRect(game.getRenderer(), nullptr);

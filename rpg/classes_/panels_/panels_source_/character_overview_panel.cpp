@@ -1,5 +1,6 @@
 #include "../panels_include_/character_overview_panel.hpp"
 #include "../../include_/text_field.hpp"
+#include "../../include_/game.hpp"
 
 CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, const TextureAsset& asset, int scaling_factor) 
   : Panel(asset, scaling_factor, 0.0f, 3.0f, 1.0f)
@@ -34,20 +35,44 @@ Character* CharacterOverviewPanel::getCharacter(ElementUI* key) noexcept
 
 void CharacterOverviewPanel::render(Game& game) noexcept
 {
+  this->renderPanel(game);
 
+  for(auto& iterator : this->characters_)
+  {
+    TextField* tmp = dynamic_cast<TextField*>(iterator.first);
+
+    if(tmp->getActive())
+    {
+      tmp->render(game);
+    }
+  }
 }
-
-void CharacterOverviewPanel::renderPanel(Game& game) noexcept
-{
-  
-}
-
 
 void CharacterOverviewPanel::update(Game& game) noexcept
 {
+  this->setTimePassed(this->getTimePassed() + game.getDeltaTime());
 
+  for(auto& iterator : this->characters_)
+  {
+    iterator.first->update(game);
+  }
 }
 
+void CharacterOverviewPanel::addCharacter(ElementUI* key, Character* new_char) noexcept
+{
+  if(new_char == nullptr)
+  {
+    std::cout << "[ERROR] -> [CharacterOverviewPanel::addCharacter] -> Character* sent is nullptr <!> " << std::endl;
+    return;
+  }
 
+  if(this->getCharacter(key) != nullptr)
+  {
+    std::cout << "[ERROR] -> [CharacterOverviewPanel::addCharacter] -> A character on this key already exists <!> " << std::endl;
+    return;
+  }
+
+  this->characters_[key] = new_char;
+}
 
 

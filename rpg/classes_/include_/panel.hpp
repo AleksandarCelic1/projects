@@ -16,10 +16,14 @@ class Panel : public ElementUI
     float panel_delay_;
     float smooth_duration_;
 
-  public:
-    // Constructor Copy Constructor Destructor
+  protected:
+
+    /* This is done to avoid having pure virtual class */
     Panel() = default;
     Panel(const TextureAsset& asset, int scaling_factor, float time_passed, float panel_delay, float smooth_duration);
+
+  public:
+    // Copy Constructor Destructor 
     Panel(const Panel& copy) = delete;
     virtual ~Panel();
 
@@ -35,7 +39,7 @@ class Panel : public ElementUI
     void setSmoothDuration(float new_smooth_duration) noexcept { this->smooth_duration_ = new_smooth_duration; }
 
     // Pure Virtual
-    virtual void renderPanel(Game& game) noexcept = 0;
+    virtual void renderPanel(Game& game) noexcept;
 };
 
 

@@ -17,6 +17,8 @@ TextureManager::TextureManager(SDL_Renderer* new_renderer)
   //loadFloorTextures();
   enableBlendModeUI();
 
+  SDL_SetRenderDrawBlendMode(new_renderer, SDL_BLENDMODE_BLEND);
+
 
 }
 TextureManager::~TextureManager() { this->clear(); }
@@ -124,4 +126,5 @@ void TextureManager::loadFloorTextures() noexcept
 void TextureManager::enableBlendModeUI() noexcept
 {
   enableBlendMode(this->ui_textures_[UI::LOGIN_PANEL]);
+  enableBlendMode(this->ui_textures_[UI::CHARACTER_OVERVIEW_PANEL]);
 }

@@ -18,13 +18,12 @@ CharacterOverviewState::CharacterOverviewState(Game& game)
   panel_->setY(this->centerY(0, screen_height, panel_->getH()));
 
 
-  QuadTree* quad_tree = this->getQuadTree();
+  /*QuadTree* quad_tree = this->getQuadTree();
   std::unordered_map<ElementUI*, Character*> chars = panel_->getCharacterMappings();
-
   for(auto& iterator : chars)
   {
     quad_tree->insert(iterator.first);
-  }
+  }*/
 };
 
 CharacterOverviewState::~CharacterOverviewState()

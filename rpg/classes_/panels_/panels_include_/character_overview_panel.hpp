@@ -30,7 +30,6 @@ class CharacterOverviewPanel : public Panel
     // Virtual Methods
     void render(Game& game) noexcept override;
     void update(Game& game) noexcept override;
-    void renderPanel(Game& game) noexcept override; 
 
 
 };

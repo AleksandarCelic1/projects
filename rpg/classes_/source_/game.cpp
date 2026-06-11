@@ -18,6 +18,7 @@ Game::Game()
   this->transition_manager_ = new TransitionManager();
 
   this->login_ = new LoginState(*this);
+  this->overview_ = new CharacterOverviewState(*this);
   this->current_state_ = (this->login_);
   this->dispatcher_ = new Dispatcher();
 
@@ -26,7 +27,7 @@ Game::Game()
 
 Game::~Game()
 {
-  /*if(this->main_renderer_ != nullptr)
+  if(this->main_renderer_ != nullptr)
   {
     SDL_DestroyRenderer(this->main_renderer_);
     this->main_renderer_ = nullptr;
@@ -40,7 +41,7 @@ Game::~Game()
 
   MemoryFreeingUtils::clearPointer(this->dispatcher_);
   MemoryFreeingUtils::clearPointer(this->login_);
-  MemoryFreeingUtils::clearPointer(this->transition_manager_);*/
+  MemoryFreeingUtils::clearPointer(this->transition_manager_);
 
   TTF_Quit();
   IMG_Quit();
@@ -171,22 +172,18 @@ void Game::run()
 void Game::render()
 {
   SDL_RenderClear(this->main_renderer_);
-
-  
-  
-
   this->current_state_->render(*this);
   SDL_RenderPresent(this->main_renderer_);
 }
 
 void Game::update()
 {
+  this->current_state_->update(*this);
+
   if(this->transition_manager_->getTransitionStatus())
   {
     this->transition_manager_->transition(*this); 
   }
-
-  this->current_state_->update(*this);
 }
 
 void Game::mainEventHandler(SDL_Event* event)

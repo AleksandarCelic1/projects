@@ -173,17 +173,23 @@ void Game::render()
 {
   SDL_RenderClear(this->main_renderer_);
   this->current_state_->render(*this);
+
+  /* 
+    The bug was the ordering of the code, in order for transition to work, it must be done
+    on existing after SDL_RenderCopy and before SDL_RenderPresent, otherwise we are coloring nothing 
+    since the render clears itself each frame <!> 
+  */
+  if(this->transition_manager_->getTransitionStatus())
+  {
+    this->transition_manager_->transition(*this); 
+  }
+
   SDL_RenderPresent(this->main_renderer_);
 }
 
 void Game::update()
 {
   this->current_state_->update(*this);
-
-  if(this->transition_manager_->getTransitionStatus())
-  {
-    this->transition_manager_->transition(*this); 
-  }
 }
 
 void Game::mainEventHandler(SDL_Event* event)

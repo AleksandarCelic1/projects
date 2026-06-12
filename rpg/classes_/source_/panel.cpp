@@ -37,7 +37,5 @@ void Panel::renderPanel(Game& game) noexcept
   Uint8 alpha = progress * 255.0f; // SDL_SetTextureAlphaMode specifically wants Uint8
 
   SDL_SetTextureAlphaMod(this->getTexture(), alpha);
-
-  
   SDL_RenderCopy(game.getRenderer(), this->getTexture(), nullptr, &this->getDstRect());
 }

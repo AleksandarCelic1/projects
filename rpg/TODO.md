@@ -22,3 +22,7 @@
 - Determine the design of CharacterOverview -> and its panel since we are going to have mappings from ElementUI* to Characters* 
 <11>
 - implement a PANEL class <!> **FINISHED**
+
+
+-- Known Problems
+<1> -> transitioning before login panel's fade in is finished leads to rendering bug <!>

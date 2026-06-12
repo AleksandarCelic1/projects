@@ -36,6 +36,7 @@ class TextureManager
     SDL_Texture* loadTexture(const std::string& path) noexcept; 
     TextureAsset makeTextureAsset(const std::string& path) noexcept; // This is returned copied << !
     void enableBlendMode(const TextureAsset& asset) noexcept;
+    
 
     // Loading PNGs
     void loadCharAnimations() noexcept;

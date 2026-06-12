@@ -52,3 +52,9 @@ void RectUtils::debugOutline(SDL_Renderer* main_renderer, const SDL_Rect& rect) 
 
   return;
 }
+
+void RectUtils::info(const SDL_Rect& rect) noexcept
+{
+  std::cout << "[INFORMATION] -> [RectUtils::info] -> " << rect.x << " " << rect.y << " " << rect.w << " " << rect.h << std::endl;
+  return;
+}

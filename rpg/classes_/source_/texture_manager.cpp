@@ -21,6 +21,7 @@ TextureManager::TextureManager(SDL_Renderer* new_renderer)
 
 
 }
+
 TextureManager::~TextureManager() { this->clear(); }
 
 void TextureManager::enableBlendMode(const TextureAsset& asset) noexcept

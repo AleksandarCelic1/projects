@@ -1,7 +1,7 @@
 #include "../include_/character_overview.hpp"
 #include "../include_/game.hpp"
 
-CharacterOverviewState::CharacterOverviewState(Game& game)
+CharacterOverviewState::CharacterOverviewState(Game& game) : State(game.getRenderer(), game.getWindowWidth(), game.getWindowHeight())
 {
   int screen_width = game.getWindowWidth();
   int screen_height = game.getWindowHeight();
@@ -18,12 +18,12 @@ CharacterOverviewState::CharacterOverviewState(Game& game)
   panel_->setY(this->centerY(0, screen_height, panel_->getH()));
 
 
-  /*QuadTree* quad_tree = this->getQuadTree();
-  std::unordered_map<ElementUI*, Character*> chars = panel_->getCharacterMappings();
+  QuadTree* quad_tree = this->getQuadTree();
+  std::unordered_map<ElementUI*, Character*>& chars = panel_->getCharacterMappings();
   for(auto& iterator : chars)
   {
     quad_tree->insert(iterator.first);
-  }*/
+  }
 };
 
 CharacterOverviewState::~CharacterOverviewState()
@@ -49,11 +49,14 @@ void CharacterOverviewState::render(Game& game)
 {
   this->renderBackground(game);
   this->panel_->render(game);
+
+  /* Debug Outlier */
+  this->getQuadTree()->debugOutline(game.getRenderer());
 }
 
 void CharacterOverviewState::update(Game& game) 
 {
-
+  this->panel_->update(game);
 }
 
 void CharacterOverviewState::initializeUIOffsets(Game& game)
@@ -62,6 +65,8 @@ void CharacterOverviewState::initializeUIOffsets(Game& game)
 
   std::unordered_map<Offsets, std::pair<int, int>>& map = this->getOffsetMap();
 
+
+  /* Offsets do not include the Whole background but rather only the panel <!> */
   int char_placeholder_x = 241 * scaling_factor;
   int char_placeholder_y = 69 * scaling_factor;
   int y_offset = 30 * scaling_factor;

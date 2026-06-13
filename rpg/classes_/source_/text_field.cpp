@@ -1,13 +1,16 @@
 #include "../include_/text_field.hpp"
 #include "../include_/game.hpp"
 
-TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor)
+TextField::TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor, TextPlaceholderType type)
 {
   SDL_Rect placeholder;
   placeholder.x = coords.first + offsets.first;
   placeholder.y = coords.second + offsets.second;
-  placeholder.w = LOGIN_TEXT_PLACEHOLDER_WIDTH * scaling_factor;
-  placeholder.h = LOGIN_TEXT_PLACEHOLDER_HEIGHT * scaling_factor;
+
+  std::pair<int, int> wh = PLACEHOLDER_WIDTH_HEIGHT.at(type); // Handle exception here <!> 
+
+  placeholder.w = wh.first * scaling_factor;
+  placeholder.h = wh.second * scaling_factor;
 
   this->active_ = false;
   this->text_changed_ = false;

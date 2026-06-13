@@ -67,8 +67,8 @@ void CharacterOverviewState::initializeUIOffsets(Game& game)
 
 
   /* Offsets do not include the Whole background but rather only the panel <!> */
-  int char_placeholder_x = 241 * scaling_factor;
-  int char_placeholder_y = 69 * scaling_factor;
+  int char_placeholder_x = 338 * scaling_factor;
+  int char_placeholder_y = 90 * scaling_factor;
   int y_offset = 30 * scaling_factor;
 
   /* If curious about 5 and 12 see Offsets enum class <!> */

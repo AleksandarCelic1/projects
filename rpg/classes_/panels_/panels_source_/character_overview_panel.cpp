@@ -10,7 +10,7 @@ CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::
   for(int index = 5; index < 12; index++)
   {
     Offsets key = static_cast<Offsets>(index);
-    ElementUI* placeholder = new TextField({dst_rect.x, dst_rect.y}, map.at(key), scaling_factor);
+    ElementUI* placeholder = new TextField({dst_rect.x, dst_rect.y}, map.at(key), scaling_factor, TextPlaceholderType::CHAR_OVERVIEW_PLACEHOLDER);
     characters_.insert({placeholder, nullptr});
   }
 }

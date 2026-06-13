@@ -62,3 +62,13 @@ std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS =
   // Enter
   {{SDLK_RETURN, false}, '\n'},      {{SDLK_RETURN, true}, '\n'}
 };
+
+std::map<TextPlaceholderType, std::pair<int, int>> PLACEHOLDER_WIDTH_HEIGHT = 
+{
+  {TextPlaceholderType::LOGIN_PLACEHOLDER,          {151, 28}},
+  {TextPlaceholderType::CHAR_OVERVIEW_PLACEHOLDER,  {167, 28}}
+};
+
+
+
+

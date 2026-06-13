@@ -21,7 +21,7 @@ class TextField : virtual public ElementUI
 
     // Constructor Desctructor Copy Constructor
     TextField() = default;
-    TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor);
+    TextField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor, TextPlaceholderType type);
     TextField(const TextField& copy) = delete;
     ~TextField() = default;
 

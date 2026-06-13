@@ -6,11 +6,11 @@ LoginPanel::LoginPanel(std::unordered_map<Offsets, std::pair<int,int>>& map, con
 {
   const SDL_Rect& dst_rect = this->getDstRect();
 
-  this->username_login_ = new TextField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_USERNAME), scaling_factor);
-  this->username_registration_ = new TextField( {dst_rect.x , dst_rect.y }, map.at(Offsets::REGISTRATION_USERNAME), scaling_factor);
-  this->password_login_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_PASSWORD), scaling_factor);
-  this->password_registration_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD), scaling_factor);
-  this->password_confirmation_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD_CONFIRMATION), scaling_factor);
+  this->username_login_ = new TextField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_USERNAME), scaling_factor, TextPlaceholderType::LOGIN_PLACEHOLDER);
+  this->username_registration_ = new TextField( {dst_rect.x , dst_rect.y }, map.at(Offsets::REGISTRATION_USERNAME), scaling_factor, TextPlaceholderType::LOGIN_PLACEHOLDER);
+  this->password_login_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::LOGIN_PASSWORD), scaling_factor, TextPlaceholderType::LOGIN_PLACEHOLDER);
+  this->password_registration_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD), scaling_factor, TextPlaceholderType::LOGIN_PLACEHOLDER);
+  this->password_confirmation_ = new PasswordField( { dst_rect.x, dst_rect.y }, map.at(Offsets::REGISTRATION_PASSWORD_CONFIRMATION), scaling_factor, TextPlaceholderType::LOGIN_PLACEHOLDER);
   this->currently_selected_ = nullptr;
 
 };

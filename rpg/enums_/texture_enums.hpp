@@ -78,6 +78,11 @@ enum class CharacterOverviewUI
   OVERVIEW_PANEL = 1
 };
 
+enum class TextPlaceholderType
+{
+  LOGIN_PLACEHOLDER = 0,
+  CHAR_OVERVIEW_PLACEHOLDER = 1
+};
 
 
 

@@ -12,7 +12,7 @@ class PasswordField : virtual public TextField
   public:
     // Constructor Destructor Copy Constructor
     PasswordField() = default;
-    PasswordField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor);
+    PasswordField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor, TextPlaceholderType type);
     PasswordField(const PasswordField& copy ) = delete;
     ~PasswordField() = default;
 

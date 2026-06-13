@@ -3,7 +3,7 @@
 
 
 
-PasswordField::PasswordField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor) : TextField(coords, offsets, scaling_factor) {}
+PasswordField::PasswordField(std::pair<int, int> coords, std::pair<int,int> offsets, int scaling_factor, TextPlaceholderType type) : TextField(coords, offsets, scaling_factor, type) {}
 
 void PasswordField::render(Game& game) noexcept
 {

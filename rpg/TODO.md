@@ -22,6 +22,9 @@
 - Determine the design of CharacterOverview -> and its panel since we are going to have mappings from ElementUI* to Characters* 
 <11>
 - implement a PANEL class <!> **FINISHED**
+<12>
+- Determine the design of How are we going to load textures on demand for each state <!> 
+(Textures required for LoginState must not be present in CharOverviewState)
 
 
 -- Known Problems

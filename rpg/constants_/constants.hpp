@@ -21,6 +21,8 @@
 #include <queue>
 #include <libpq-fe.h>
 
+#include "../enums_/enums.hpp"
+
 
 
 // Resolution - Scaling Factors
@@ -66,6 +68,9 @@ inline const int AMOUNT_OF_LETTERS = 77;
 
 // SDL_Keycode map -> char -> glyph
 extern std::map<std::pair<SDL_Keycode, bool>, char> SDL_KEYS;
+
+// Type of Placeholder -> its width-height
+extern std::map<TextPlaceholderType, std::pair<int, int>> PLACEHOLDER_WIDTH_HEIGHT;
 
 
 

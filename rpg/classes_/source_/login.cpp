@@ -84,34 +84,17 @@ void LoginState::renderBackground(Game& game) noexcept
 
 void LoginState::dispatchKeyboardInput(Game& game) 
 {
-  std::queue<KeyboardInput*>& queue = game.getDispatcher()->getInputQueue();
-  TextField* text = this->getPanel()->getActiveField();
-  if(text == nullptr)
-  {
-    ParserUtility::flushQueue(queue);
-    return;
-  }
+  TextField* text = this->panel_->getActiveField();
+  auto input = this->takeKeyboardInput(game, text);
 
-  KeyboardInput* new_input =  ParserUtility::getKeyboardInput(text, queue);
-  if(new_input == nullptr)
+  if(!input) 
   {
     return;
   }
 
-  SDL_Keycode keycode = new_input->key_pressed_;
-  bool shift_pressed = new_input->shift_held_;
-  bool control_pressed = new_input->control_held_;
-
-  std::pair<SDL_Keycode, bool> key = {keycode, shift_pressed};
-  auto iterator = SDL_KEYS.find(key);
-  if(iterator == SDL_KEYS.end())
-  {
-    std::cout << "[ERROR] -> [LoginState::dispatchKeyboardInput] -> key not found <!> " << std::endl;
-    delete new_input;
-    return;
-  }
-
-  char new_char = iterator->second;
+  SDL_Keycode keycode = input->first;
+  char new_char = input->second;
+  
   
   if(text != nullptr)
   {
@@ -126,10 +109,6 @@ void LoginState::dispatchKeyboardInput(Game& game)
   
     text->handleNewLetter(new_char);
   }
-
-
-
-  delete new_input;
 }
 
 void LoginState::dispatchMouseInput(Game& game)

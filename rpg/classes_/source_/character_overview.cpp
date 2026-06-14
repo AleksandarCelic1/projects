@@ -35,8 +35,8 @@ CharacterOverviewState::~CharacterOverviewState()
 
 
 void CharacterOverviewState::dispatchKeyboardInput(Game& game)
-{
-
+{ 
+  
 }
 
 

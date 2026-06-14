@@ -35,10 +35,9 @@ class State
     void setQuadTree(QuadTree* new_quad_tree) noexcept { this->quad_tree_ = new_quad_tree; }
 
     // Functions
+    std::optional<std::pair<SDL_Keycode, char>> takeKeyboardInput(Game& game, TextField* text); // should this be in parsing utility? 
     int centerX(int x, int screen_width, int object_width);
     int centerY(int y, int screen_height, int object_height);
-
-
 
     virtual void dispatchKeyboardInput(Game& game) = 0;
     virtual void dispatchMouseInput(Game& game) = 0;

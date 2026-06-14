@@ -20,6 +20,7 @@
 #include <cctype>
 #include <queue>
 #include <libpq-fe.h>
+#include <optional>
 
 #include "../enums_/enums.hpp"
 

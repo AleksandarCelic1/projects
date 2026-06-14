@@ -146,7 +146,7 @@ void LoginState::dispatchMouseInput(Game& game)
   }
   else
   {
-    std::cout << "[FAIL] -> [dispatchMouseInput] -> what did user press ?!" << std::endl;
+    std::cout << "[ERROR] -> [LoginState::dispatchMouseInput] -> what did user press ?!" << std::endl;
   }
 }
 

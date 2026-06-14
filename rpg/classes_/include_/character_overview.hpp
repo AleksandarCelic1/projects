@@ -44,7 +44,6 @@ class CharacterOverviewState : virtual public State
     // Mini Render Functions
     void renderBackground(Game& game) noexcept;
 
-
 };
 
 #endif

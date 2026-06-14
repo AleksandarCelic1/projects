@@ -8,6 +8,7 @@
 class CharacterOverviewPanel : public Panel
 {
   private:
+    ElementUI* currently_selected_;
     std::unordered_map<ElementUI*, Character*> characters_;
 
   public:
@@ -20,16 +21,21 @@ class CharacterOverviewPanel : public Panel
     // Getters
     std::unordered_map<ElementUI*, Character*>& getCharacterMappings() noexcept { return this->characters_; }
     Character* getCharacter(ElementUI* key) noexcept;
+    ElementUI* getCurrentlySelectedElement() noexcept { return this->currently_selected_; }
 
     // Setters
     void setCharacterMappings(std::unordered_map<ElementUI*, Character*> new_mappings) noexcept { this->characters_ = new_mappings; }
 
     // Methods
     void addCharacter(ElementUI* key, Character* new_char) noexcept;
+    void setCurrentlySelectedElement(ElementUI* new_curr_selec) noexcept;
 
     // Virtual Methods
     void render(Game& game) noexcept override;
     void update(Game& game) noexcept override;
+
+    // Mini render functions
+    void renderCharacter(Game& game) noexcept;
 
 
 };

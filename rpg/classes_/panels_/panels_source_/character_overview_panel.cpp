@@ -36,6 +36,7 @@ Character* CharacterOverviewPanel::getCharacter(ElementUI* key) noexcept
 void CharacterOverviewPanel::render(Game& game) noexcept
 {
   this->renderPanel(game);
+  this->renderCharacter(game);
 
   for(auto& iterator : this->characters_)
   {
@@ -75,4 +76,34 @@ void CharacterOverviewPanel::addCharacter(ElementUI* key, Character* new_char) n
   this->characters_[key] = new_char;
 }
 
+void CharacterOverviewPanel::setCurrentlySelectedElement(ElementUI* new_curr_selec) noexcept
+{
+  if(this->currently_selected_ == new_curr_selec)
+  {
+    std::cout << "[ERROR] -> [CharacterOverviewState::setCurrentlySelectedElement] -> ElementUI* sent is already currently selected <!> " << std::endl;
+    return;
+  }
 
+  this->currently_selected_ = new_curr_selec;
+}
+
+void CharacterOverviewPanel::renderCharacter(Game& game) noexcept
+{
+  Character* placeholder = static_cast<Character*>(ExceptionHandler::get(this->characters_, this->currently_selected_));
+  if(placeholder == nullptr)
+  {
+    /* User selected a valid element on our UI but it contains no Character */
+    return;
+  }
+
+
+  ClassType type = placeholder->getClassType();
+
+  /*
+    I will figure out the dimensions of the character that needs to printed, 
+    will most probably use pictures and animations to represent the Character
+    selected on right side of the CharOverviewPanel <!>
+  */
+
+  return;
+}

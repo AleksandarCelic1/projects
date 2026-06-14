@@ -36,13 +36,42 @@ CharacterOverviewState::~CharacterOverviewState()
 
 void CharacterOverviewState::dispatchKeyboardInput(Game& game)
 { 
-  
+  /*
+    Up until this point the design requires no keyboard input in CharacterOverviewState <!> 
+  */
 }
 
 
 void CharacterOverviewState::dispatchMouseInput(Game& game) 
 {
+  Dispatcher* dispatcher = game.getDispatcher();
+  Uint8 mouse_button = dispatcher->getMouseButton();
+  int mouse_x = dispatcher->getMouseX();
+  int mouse_y = dispatcher->getMouseY();
 
+
+  if(mouse_button == SDL_BUTTON_LEFT)
+  {
+    ElementUI* tmp = this->getQuadTree()->search(mouse_x, mouse_y);
+
+    if(tmp == nullptr)
+    {
+      /* User pressed outside of available elemets */
+      return;
+    }
+
+    if(this->getPanel()->getCharacterMappings().count(tmp))
+    {
+      this->getPanel()->setCurrentlySelectedElement(tmp);
+    }
+  }
+  else
+  {
+    std::cout << "[ERROR] -> [CharacterOverviewState::dispatchMouseInput] -> what did user press ?!" << std::endl;
+    return;
+  }
+
+  return;
 }
 
 void CharacterOverviewState::render(Game& game) 
@@ -82,7 +111,6 @@ void CharacterOverviewState::initializeUIOffsets(Game& game)
   } 
 }
 
-
 void CharacterOverviewState::handleEnter(Game& game)
 {
 
@@ -93,4 +121,5 @@ void CharacterOverviewState::renderBackground(Game& game) noexcept
   ElementUI* placeholder = this->ui_elements_[CharacterOverviewUI::OVERVIEW_BACKGROUND];
   placeholder->render(game); 
 }
+
 

@@ -6,6 +6,8 @@
 #include "inventory.hpp"
 #include "armory.hpp"
 
+class Game;
+
 class Character
 {
   private:
@@ -52,8 +54,8 @@ class Character
 
     // Functions
     
-
     virtual void render(SDL_Renderer* renderer, std::unordered_map<CharacterAnimationState, SDL_Surface*> map) = 0;
+    virtual void update(Game& game);
 
 };
 

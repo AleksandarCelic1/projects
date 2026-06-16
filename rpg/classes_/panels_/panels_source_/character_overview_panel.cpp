@@ -13,6 +13,20 @@ CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::
     ElementUI* placeholder = new TextField({dst_rect.x, dst_rect.y}, map.at(key), scaling_factor, TextPlaceholderType::CHAR_OVERVIEW_PLACEHOLDER);
     characters_.insert({placeholder, nullptr});
   }
+
+  /*
+    This separate rect will be used to render the 
+    Character* and animate it with delta time <!>
+
+  */
+
+  SDL_Rect rect;
+  rect.x = 0;
+  rect.y = 0;
+  rect.h = 0;
+  rect.w = 0;
+
+  this->char_overview_rect_ = rect;
 }
 
 CharacterOverviewPanel::~CharacterOverviewPanel()
@@ -56,7 +70,13 @@ void CharacterOverviewPanel::update(Game& game) noexcept
   for(auto& iterator : this->characters_)
   {
     iterator.first->update(game);
+    if(iterator.second != nullptr)
+    {
+      iterator.second
+    }
   }
+
+
 }
 
 void CharacterOverviewPanel::addCharacter(ElementUI* key, Character* new_char) noexcept
@@ -97,13 +117,19 @@ void CharacterOverviewPanel::renderCharacter(Game& game) noexcept
   }
 
 
-  ClassType type = placeholder->getClassType();
+  CharacterAnimationState state = placeholder->getAnimationState();
+  size_t index = placeholder->getAnimationIndex();
+
+  const TextureAsset& asset = game.getTextureManager()->getCharAnimation(state);
+
 
   /*
     I will figure out the dimensions of the character that needs to printed, 
     will most probably use pictures and animations to represent the Character
     selected on right side of the CharOverviewPanel <!>
   */
+
+  
 
   return;
 }

@@ -8,8 +8,9 @@
 class CharacterOverviewPanel : public Panel
 {
   private:
-    ElementUI* currently_selected_;
     std::unordered_map<ElementUI*, Character*> characters_;
+    ElementUI* currently_selected_;
+    SDL_Rect char_overview_rect_;
 
   public:
     CharacterOverviewPanel() = default;
@@ -22,9 +23,12 @@ class CharacterOverviewPanel : public Panel
     std::unordered_map<ElementUI*, Character*>& getCharacterMappings() noexcept { return this->characters_; }
     Character* getCharacter(ElementUI* key) noexcept;
     ElementUI* getCurrentlySelectedElement() noexcept { return this->currently_selected_; }
+    SDL_Rect& getCharOverviewRect() noexcept { return this->char_overview_rect_; }
 
     // Setters
     void setCharacterMappings(std::unordered_map<ElementUI*, Character*> new_mappings) noexcept { this->characters_ = new_mappings; }
+    void setCharOverviewRect(SDL_Rect new_rect) noexcept { this->char_overview_rect_ = new_rect; }
+
 
     // Methods
     void addCharacter(ElementUI* key, Character* new_char) noexcept;

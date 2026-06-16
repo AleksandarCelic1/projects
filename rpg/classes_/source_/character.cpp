@@ -1,4 +1,5 @@
 #include "../include_/character.hpp"
+#include "../include_/game.hpp"
 
 Character::Character(int world_x, int world_y, size_t level,
                      Stats* stats, Attributes* attr, ClassType type, 
@@ -15,3 +16,9 @@ Character::Character(int world_x, int world_y, size_t level,
   animation_state_(animation_state), 
   animation_index_(animation_index) 
   {};
+
+
+void Character::update(Game& game)
+{
+  
+}

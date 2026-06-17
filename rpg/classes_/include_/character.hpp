@@ -23,7 +23,9 @@ class Character
     Armory* armory_;
 
     CharacterAnimationState animation_state_;
+    AnimationInfo animation_info;
     size_t animation_index_;
+    
 
   public:
     // Constructor, Copy Constructor, Destructor
@@ -43,6 +45,7 @@ class Character
     Inventory* getInvetory() { return this->inventory_; }
 
     CharacterAnimationState getAnimationState() const { return this->animation_state_; }
+    AnimationInfo& getAnimationInfo() noexcept { return this->animation_info; }
     size_t getAnimationIndex() const { return this->animation_index_; }
 
     // Setters
@@ -51,6 +54,7 @@ class Character
     void setAnimationState(CharacterAnimationState& new_state) noexcept { this->animation_state_ = new_state; }
     void setAnimationIndex(size_t& new_index) noexcept { this->animation_index_ = new_index; }
     void setInventory(Inventory* new_inventory) noexcept { this->inventory_ = new_inventory; }
+    void setAnimationInfo(AnimationInfo new_anim_info) noexcept { this->animation_info = new_anim_info; }
 
     // Functions
     

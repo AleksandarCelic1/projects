@@ -72,11 +72,9 @@ void CharacterOverviewPanel::update(Game& game) noexcept
     iterator.first->update(game);
     if(iterator.second != nullptr)
     {
-      iterator.second
+      AnimationUtils::setTimePassed(&(iterator.second->getAnimationInfo()), game.getDeltaTime());
     }
   }
-
-
 }
 
 void CharacterOverviewPanel::addCharacter(ElementUI* key, Character* new_char) noexcept

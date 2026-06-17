@@ -5,5 +5,6 @@
 #include "include_/exception_handler.hpp"
 #include "include_/memory_freeing_utils.hpp"
 #include "include_/parser_utility.hpp"
+#include "include_/animation_utils.hpp"
 
 #endif 

@@ -14,8 +14,8 @@ LoginState::LoginState(Game& game) : State(game.getRenderer(), game.getWindowWid
 
   // Assign Correct (X,Y)
   this->panel_ = new LoginPanel(this->getOffsetMap(), game.getTextureManager()->getUITexture(UI::LOGIN_PANEL), game.getScalingFactor());
-  panel_->setX(this->centerX(0, screen_width, panel_->getW()));
-  panel_->setY(this->centerY(0, screen_height, panel_->getH()));
+  panel_->setX(RectUtils::centerX(0, screen_width, panel_->getW()));
+  panel_->setY(RectUtils::centerY(0, screen_height, panel_->getH()));
 
   // QuadTree - Insert Chain -> Think about making a seperate functions for this <!>
   QuadTree* quad_tree = this->getQuadTree();

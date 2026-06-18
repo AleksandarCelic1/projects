@@ -14,8 +14,8 @@ CharacterOverviewState::CharacterOverviewState(Game& game) : State(game.getRende
 
   // Panel
   this->panel_ = new CharacterOverviewPanel(this->getOffsetMap(), game.getTextureManager()->getUITexture(UI::CHARACTER_OVERVIEW_PANEL), game.getScalingFactor());
-  panel_->setX(this->centerX(0, screen_width, panel_->getW()));
-  panel_->setY(this->centerY(0, screen_height, panel_->getH()));
+  panel_->setX(RectUtils::centerX(0, screen_width, panel_->getW()));
+  panel_->setY(RectUtils::centerY(0, screen_height, panel_->getH()));
 
 
   QuadTree* quad_tree = this->getQuadTree();

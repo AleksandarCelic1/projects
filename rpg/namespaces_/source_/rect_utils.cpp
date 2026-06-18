@@ -58,3 +58,14 @@ void RectUtils::info(const SDL_Rect& rect) noexcept
   std::cout << "[INFORMATION] -> [RectUtils::info] -> " << rect.x << " " << rect.y << " " << rect.w << " " << rect.h << std::endl;
   return;
 }
+
+int RectUtils::centerX(int x, int screen_width, int object_width)
+{
+  return (x + ((screen_width / 2) - (object_width / 2)));
+}
+
+int RectUtils::centerY(int y, int screen_height, int object_height)
+{
+  return (y + ((screen_height / 2) - (object_height / 2)));
+}
+

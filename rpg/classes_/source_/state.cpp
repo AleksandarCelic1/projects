@@ -19,15 +19,7 @@ State::~State()
   MemoryFreeingUtils::clearPointer(this->quad_tree_);
 }
 
-int State::centerX(int x, int screen_width, int object_width)
-{
-  return (x + ((screen_width / 2) - (object_width / 2)));
-}
 
-int State::centerY(int y, int screen_height, int object_height)
-{
-  return (y + ((screen_height / 2) - (object_height / 2)));
-}
 
 std::optional<std::pair<SDL_Keycode, char>> State::takeKeyboardInput(Game& game, TextField* text)
 {

@@ -18,6 +18,11 @@ namespace RectUtils
   bool detectMouseClick(const SDL_Rect& source, int mouse_x, int mouse_y) noexcept;
 
 
+  /* centerX/Y -> centering the X,Y of new element using the provided parameters */
+  int centerX(int x, int screen_width, int object_width);
+  int centerY(int y, int screen_height, int object_height);
+
+
 }
 
 

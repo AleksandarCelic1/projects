@@ -20,11 +20,16 @@ CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::
 
   */
 
+
+  /*
+    Self measured since i cant possibly get the specific (x,y) of a random rect within the panel :(
+    (x,y) = (133,87), (w,h) = (171,213),  objects (w,h) = (135,100) -> This is templar idle 
+  */
   SDL_Rect rect;
-  rect.x = 0;
-  rect.y = 0;
-  rect.h = 0;
-  rect.w = 0;
+  rect.x = RectUtils::centerX(133 * scaling_factor, 171 * scaling_factor, 135 * scaling_factor);
+  rect.y = RectUtils::centerY(87 * scaling_factor, 213 * scaling_factor, 100 * scaling_factor);
+  rect.h = 135 * scaling_factor;
+  rect.w = 100 * scaling_factor;
 
   this->char_overview_rect_ = rect;
 }
@@ -127,7 +132,13 @@ void CharacterOverviewPanel::renderCharacter(Game& game) noexcept
     selected on right side of the CharOverviewPanel <!>
   */
 
-  
+  SDL_Rect src;
+  src.x = 0;
+  src.y = 0;
+  src.h = 64;
+  src.w = 64;
 
+  SDL_RenderCopy(game.getRenderer(), asset.texture_, &src, &this->getCharOverviewRect());
+  
   return;
 }

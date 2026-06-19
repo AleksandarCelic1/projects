@@ -26,6 +26,7 @@ DataBaseManager::DataBaseManager()
 
   */
   
+  this->initializeQueryMap();
   this->initializeConnectionParameters();
   this->connection_ = PQconnectdb(this->connection_parameters_.c_str());
   this->connection_parameters_.clear();
@@ -130,6 +131,28 @@ bool DataBaseManager::validatePGresult(PGresult* result) noexcept
   if(PQresultStatus(result) != PGRES_TUPLES_OK)
   {
     std::cout << "[ERROR] -> [DataBaseManager::validatePGresult] -> Query failed <!> " << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool DataBaseManager::validatePGcommand(PGresult* result) noexcept
+{
+  if(result == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::validatePGcommand] -> Query result is nullptr <!> " << std::endl;
+    return false;
+  }
+
+  /*
+    PostgreSQL checks the commands like UPDATE, DELETE, INSERT, CREATE TABLE and etc. as commands which 
+    do not (and they dont) return rows, and because of that we cant compare the result with
+    PGRES_TUPLES_OK but with PGRES_COMMAND_OK
+  */
+  if(PQresultStatus(result) != PGRES_COMMAND_OK)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::validatePGcommand] -> Query command was unsuccessful <!> " << std::endl;
     return false;
   }
 
@@ -509,7 +532,7 @@ bool DataBaseManager::queryRegistration(const std::string username, const std::s
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 2, nullptr, values, nullptr, nullptr, 0);
 
-  if(!validatePGresult(result))
+  if(!validatePGcommand(result))
   {
     std::cout << "[ERROR] -> [DataBaseManager::queryRegistration] -> Registration failed <!> " << std::endl;
     return false;

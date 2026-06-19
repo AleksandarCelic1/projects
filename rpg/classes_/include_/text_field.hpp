@@ -49,6 +49,7 @@ class TextField : virtual public ElementUI
     
     // Tiny helpers 
     void getCorrectIndexPosition(int& size, int& index) noexcept;
+    void clearText() noexcept;
 
     // Virtual TextField specific functions
     virtual void rebuildText(Game& game) noexcept;

@@ -53,6 +53,7 @@ class DataBaseManager
 
     // Helpers
     bool validatePGresult(PGresult* result) noexcept;
+    bool validatePGcommand(PGresult* result) noexcept;
     
 
 

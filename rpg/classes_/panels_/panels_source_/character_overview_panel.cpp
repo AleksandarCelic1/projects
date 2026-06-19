@@ -17,7 +17,6 @@ CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::
   /*
     This separate rect will be used to render the 
     Character* and animate it with delta time <!>
-
   */
 
 
@@ -25,6 +24,8 @@ CharacterOverviewPanel::CharacterOverviewPanel(std::unordered_map<Offsets, std::
     Self measured since i cant possibly get the specific (x,y) of a random rect within the panel :(
     (x,y) = (133,87), (w,h) = (171,213),  objects (w,h) = (135,100) -> This is templar idle 
   */
+
+  
   SDL_Rect rect;
   rect.x = RectUtils::centerX(133 * scaling_factor, 171 * scaling_factor, 135 * scaling_factor);
   rect.y = RectUtils::centerY(87 * scaling_factor, 213 * scaling_factor, 100 * scaling_factor);

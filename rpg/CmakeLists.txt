@@ -46,6 +46,7 @@ add_executable(
   classes_/panels_/panels_source_/character_overview_panel.cpp
   namespaces_/source_/rect_utils.cpp
   namespaces_/source_/parser_utility.cpp
+  namespaces_/source_/animation_utils.cpp
   constants_/constants.cpp
 )
 

@@ -153,7 +153,7 @@ void LoginState::dispatchMouseInput(Game& game)
 void LoginState::handleEnter(Game& game) 
 {
 
-  /*LoginValidator* validator = this->getValidator();
+  LoginValidator* validator = this->getValidator();
   TextField* text = this->panel_->getActiveField();
 
   TextField* username = this->panel_->getUsernameLogin();
@@ -173,6 +173,11 @@ void LoginState::handleEnter(Game& game)
         game.setCurrentAccountLoggedIn(loaded_acc);
         game.getTransitionManager()->activateTransition(GameState::CHARACTER_OVERVIEW);
       }
+      else
+      {
+        this->panel_->getUsernameLogin()->clearText();
+        this->panel_->getPasswordLogin()->clearText();
+      }
     }
   }
   
@@ -188,9 +193,14 @@ void LoginState::handleEnter(Game& game)
       game.setCurrentAccountLoggedIn(registered_account);
       game.getTransitionManager()->activateTransition(GameState::CHARACTER_OVERVIEW);
     }
-  }*/
+    else
+    {
+      this->panel_->getUsernameRegistration()->clearText();
+      this->panel_->getPasswordRegistration()->clearText();
+      this->panel_->getPasswordConfirmation()->clearText();
+    }
+  }
 
-  game.getTransitionManager()->activateTransition(GameState::CHARACTER_OVERVIEW);
 
   return;
 }

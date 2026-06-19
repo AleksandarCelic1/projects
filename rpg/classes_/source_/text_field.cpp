@@ -36,7 +36,6 @@ void TextField::handleNewLetter(char character) noexcept
   this->text_changed_ = true;
 }
 
-
 void TextField::handleBackspace() noexcept
 {
  if(this->text_.size() == 0)
@@ -50,7 +49,6 @@ void TextField::handleBackspace() noexcept
   /* Debug Logs */
   //std::cout << this->text_ << std::endl;
 }
-
 
 void TextField::render(Game& game) noexcept
 {
@@ -142,10 +140,20 @@ void TextField::rebuildText(Game& game) noexcept
   this->text_changed_ = false;
 }
 
+/*
+  This function determines from which letter should we start 
+  rendering the string in the text placeholder <!> 
+*/
 void TextField::getCorrectIndexPosition(int& size, int& index) noexcept
 {
   if(size > LIMIT_LETTER_TEXT_PLACEHOLDER)
   {
     index = size - LIMIT_LETTER_TEXT_PLACEHOLDER;
   }
+}
+
+void TextField::clearText() noexcept
+{
+  this->text_.clear();
+  this->glyphs_.clear();
 }

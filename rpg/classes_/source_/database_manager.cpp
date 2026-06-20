@@ -538,7 +538,6 @@ bool DataBaseManager::queryRegistration(const std::string username, const std::s
     return false;
   }
 
-
   return true;
 }
 

@@ -1,6 +1,16 @@
 #include "../include_/character.hpp"
 #include "../include_/game.hpp"
 
+Character::Character(ClassType type)
+{
+  this->class_ = type;
+
+  this->stats_ = new Stats(type);
+  this->attributes_ = new Attributes(type);
+
+  
+}
+
 Character::Character(int world_x, int world_y, size_t level,
                      Stats* stats, Attributes* attr, ClassType type, 
                      Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, 
@@ -22,3 +32,4 @@ void Character::update(Game& game)
 {
   
 }
+

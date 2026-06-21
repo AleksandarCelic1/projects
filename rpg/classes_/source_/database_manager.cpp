@@ -61,18 +61,41 @@ void DataBaseManager::initializeQueryMap() noexcept
     So when a query happens we just do the appopriate query to the DB
   */
 
-  this->query_map_.insert({QueryEnums::QUERY_LOGIN, "SELECT account_id_, username_, password_ FROM Accounts WHERE username_ = $1 AND password_ = $2 "});
-  this->query_map_.insert({QueryEnums::QUERY_CHARACTERS, "SELECT * FROM Characters WHERE account_id_ = $1 "});
-  this->query_map_.insert({QueryEnums::QUERY_STATS, "SELECT * FROM CharactersStats WHERE character_id_ = $1 "});
-  this->query_map_.insert({QueryEnums::QUERY_ATTRIBUTES, "SELECT * FROM CharactersAttributes WHERE character_id_ = $1 "});
-
-  /* Those 4 queries will be modified later as they are yet to be designed <!>  */
-  this->query_map_.insert({QueryEnums::QUERY_INVENTORY, "SELECT * FROM Inventory WHERE character_id_ = $1 "});
-  this->query_map_.insert({QueryEnums::QUERY_ARMORY, "SELECT * FROM Armory WHERE character_id_ = $1 "});
-  this->query_map_.insert({QueryEnums::QUERY_CONTAINERS, "SELECT * FROM Containers WHERE invetory_id_ = $1 "});
-  this->query_map_.insert({QueryEnums::QUERY_ITEMS, "SELECT * FROM Item WHERE container_id_ = $1 "});
-
+  this->query_map_.insert({QueryEnums::QUERY_LOGIN,        "SELECT account_id_, username_, password_ FROM Accounts WHERE username_ = $1 AND password_ = $2 "});
   this->query_map_.insert({QueryEnums::QUERY_REGISTARTION, "INSERT INTO Accounts (username_, password_) VALUES ( $1, $2);"});
+
+  // Getter Queries
+  this->query_map_.insert({QueryEnums::QUERY_GET_CHARACTERS, "SELECT * FROM Characters WHERE account_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_GET_STATS,      "SELECT * FROM CharactersStats WHERE character_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_GET_ATTRIBUTES, "SELECT * FROM CharactersAttributes WHERE character_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_GET_INVENTORY,  "SELECT * FROM Inventory WHERE character_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_GET_ARMORY,     "SELECT * FROM Armory WHERE character_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_GET_CONTAINERS, "SELECT * FROM Containers WHERE invetory_id_ = $1 "});
+  this->query_map_.insert({QueryEnums::QUERY_GET_ITEMS,      "SELECT * FROM Item WHERE container_id_ = $1 "});
+
+  // Setter Queries 
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_CHARACTER,  " NOT FINISHED <!> "});
+
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_STATS,      "INSERT INTO CharactersStats "
+                                                                "("
+                                                                  "character_id_, base_health_, current_health_, base_mana_, current_mana_, physical_power_,"
+                                                                  "spell_power_, magic_resistance_, armor_, melee_range_, spell_range_, global_cooldown_, armor_penetration_,"
+                                                                  "spell_penetration_, attack_speed_, spell_haste_, hit_rating_, physical_crit_chance_, magic_crit_chance_," 
+                                                                  "movement_speed_, lifesteal_, tenacity_"
+                                                                ") "
+                                                                "VALUES "
+                                                                "( "
+                                                                  "$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22"
+                                                                ");"
+                                                              });
+                                                              
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_ATTRIBUTES, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_INVENTORY,  " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_ARMORY,     " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_CONTAINER,  " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_ITEM,       " NOT FINISHED <!> "});
+
+
 
 
   
@@ -259,6 +282,7 @@ Account* DataBaseManager::tryRegister(const std::string username, const std::str
 
   return nullptr;
 }
+
 // <---- ! -----> [Queries] <---- ! ----->
 std::string DataBaseManager::queryAccount(const std::string username, const std::string password) noexcept
 {
@@ -318,7 +342,7 @@ std::string DataBaseManager::queryAccount(const std::string username, const std:
 std::vector<loadedCharValues> DataBaseManager::queryCharacters(const std::string account_id) noexcept
 {
   const char* values[1] = { account_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_CHARACTERS); 
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_CHARACTERS); 
   
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -351,7 +375,7 @@ std::vector<loadedCharValues> DataBaseManager::queryCharacters(const std::string
 Stats* DataBaseManager::queryStats(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_STATS);
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_STATS);
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -403,7 +427,7 @@ Stats* DataBaseManager::queryStats(const std::string character_id) noexcept
 Attributes* DataBaseManager::queryAttributes(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_ATTRIBUTES);
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_ATTRIBUTES);
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -446,7 +470,7 @@ Attributes* DataBaseManager::queryAttributes(const std::string character_id) noe
 Armory* DataBaseManager::queryArmory(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_ARMORY);
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_ARMORY);
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -463,7 +487,7 @@ Armory* DataBaseManager::queryArmory(const std::string character_id) noexcept
 Inventory* DataBaseManager::queryInventory(const std::string character_id) noexcept
 {
   const char* values[1] = { character_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_INVENTORY);
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_INVENTORY);
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -495,7 +519,7 @@ Inventory* DataBaseManager::queryInventory(const std::string character_id) noexc
 std::vector<Container*> DataBaseManager::queryContainers(const std::string inventory_id) noexcept
 {
   const char* values[1] = { inventory_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_CONTAINERS);
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_CONTAINERS);
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -511,7 +535,7 @@ std::vector<Container*> DataBaseManager::queryContainers(const std::string inven
 std::vector<std::vector<Item*>> DataBaseManager::queryItems(const std::string container_id) noexcept
 {
   const char* values[1] = { container_id.c_str() };
-  std::string& query = this->query_map_.at(QueryEnums::QUERY_ITEMS);
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_ITEMS);
 
   PGresult* result = PQexecParams(this->connection_, query.c_str(), 1, nullptr, values, nullptr, nullptr, 0);
 
@@ -541,3 +565,7 @@ bool DataBaseManager::queryRegistration(const std::string username, const std::s
   return true;
 }
 
+void DataBaseManager::queryInsertCharacter(Character* character) noexcept
+{
+
+}

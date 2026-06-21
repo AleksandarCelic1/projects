@@ -32,7 +32,7 @@ class DataBaseManager
     void initializeConnectionParameters() noexcept;
     void initializeQueryMap() noexcept;
 
-    // Database related functions
+    // Database related functions (API)
     Account* tryLogin(const std::string username, const std::string password) noexcept;
     Account* tryRegister(const std::string username, const std::string password) noexcept;
     std::string loadAccount(const std::string username, const std::string password) noexcept;
@@ -40,6 +40,8 @@ class DataBaseManager
 
 
     // Queries <!> 
+
+    // Getter Queries
     std::string                     queryAccount(const std::string username, const std::string password)      noexcept;
     std::vector<loadedCharValues>   queryCharacters(const std::string account_id)                             noexcept;
     Stats*                          queryStats(const std::string character_id)                                noexcept;
@@ -49,6 +51,17 @@ class DataBaseManager
     std::vector<Container*>         queryContainers(const std::string inventory_id)                           noexcept;
     std::vector<std::vector<Item*>> queryItems(const std::string container_id)                                noexcept;
     bool                            queryRegistration(const std::string username, const std::string password) noexcept;
+
+
+    // Setter Queries
+    void queryInsertCharacter(Character* character) noexcept;
+    void queryInsertStats(Stats* stats) noexcept;
+    void queryInsertAttributes(Attributes* attrs) noexcept;
+    void queryInsertArmory(Armory* armory) noexcept;
+    void queryInsertInvetory(Inventory* invetory) noexcept;
+    void queryInsertContainer(Container* container) noexcept;
+    void queryInsertItem(Item* item) noexcept;
+
 
 
     // Helpers

@@ -38,6 +38,9 @@ class DataBaseManager
     std::string loadAccount(const std::string username, const std::string password) noexcept;
     std::vector<Character*> loadCharacters(const std::string account_id) noexcept;
 
+    /* Should this function return bool ? <!> */
+    void save(Account* account_logged_in) noexcept;
+
 
     // Queries <!> 
 

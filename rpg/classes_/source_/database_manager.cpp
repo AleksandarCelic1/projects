@@ -88,12 +88,31 @@ void DataBaseManager::initializeQueryMap() noexcept
                                                                   "$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22"
                                                                 ");"
                                                               });
+
                                                               
-  this->query_map_.insert({QueryEnums::QUERY_INSERT_ATTRIBUTES, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_ATTRIBUTES, "INSERT INTO CharactersAttributes "
+                                                                "("
+                                                                  "character_id_, strength_, dexterity_, intellect_, wisdom_, havoc_, chaos_,"
+                                                                  "insight_, perception_, vamp_, faith_, tenacity_"
+                                                                ") "
+                                                                "VALUES "
+                                                                "( "
+                                                                  "$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11"
+                                                                ");"
+                                                              });
+
   this->query_map_.insert({QueryEnums::QUERY_INSERT_INVENTORY,  " NOT FINISHED <!> "});
   this->query_map_.insert({QueryEnums::QUERY_INSERT_ARMORY,     " NOT FINISHED <!> "});
   this->query_map_.insert({QueryEnums::QUERY_INSERT_CONTAINER,  " NOT FINISHED <!> "});
   this->query_map_.insert({QueryEnums::QUERY_INSERT_ITEM,       " NOT FINISHED <!> "});
+
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_CHARACTER, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_STATS, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_ATTRIBUTES, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_INVENTORY, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_ARMORY, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_CONTAINER, " NOT FINISHED <!> "});
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_ITEM, " NOT FINISHED <!> "});
 
 
 
@@ -199,7 +218,7 @@ Account* DataBaseManager::tryLogin(const std::string username, const std::string
   }
 
   size_t acc_id = static_cast<size_t>(std::stoi(account_id));
-  Account* acc = new Account(username, acc_id, characters);
+  Account* acc = new Account(username, password, acc_id, characters);
 
   return acc;
 }
@@ -276,11 +295,43 @@ Account* DataBaseManager::tryRegister(const std::string username, const std::str
     size_t casted_id = static_cast<size_t>(std::stoi(account_id));
 
 
-    Account* new_acc = new Account(username, casted_id, {});
+    Account* new_acc = new Account(username, password, casted_id, {});
     return new_acc;
   }
 
   return nullptr;
+}
+
+void DataBaseManager::save(Account* account_logged_in) noexcept
+{
+  /*
+    1. Query to get the account to verify its existance in the DataBase
+    2. Save each character 
+
+  */
+
+  std::string account_id = this->queryAccount(account_logged_in->getUsername(), account_logged_in->getPassword());
+  if(account_id.empty())
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::save] -> Current logged in Account does not exist in the DataBase <!> " << std::endl;
+    return;
+  }
+
+  std::vector<Character*> characters = this->loadCharacters(account_id);
+  if(characters.empty())
+  {
+    /*
+      1. Insert the new chars if there are any <!> 
+    */
+
+    return;
+  }
+
+  /*
+    1. Modify the existing chars <!> 
+  */
+  
+  return;
 }
 
 // <---- ! -----> [Queries] <---- ! ----->

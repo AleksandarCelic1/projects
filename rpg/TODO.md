@@ -26,6 +26,5 @@
 - Determine the design of How are we going to load textures on demand for each state <!> 
 (Textures required for LoginState must not be present in CharOverviewState)
 
-
 -- Known Problems
 <1> -> transitioning before login panel's fade in is finished leads to rendering bug <!>

@@ -73,8 +73,15 @@ void DataBaseManager::initializeQueryMap() noexcept
   this->query_map_.insert({QueryEnums::QUERY_GET_CONTAINERS, "SELECT * FROM Containers WHERE invetory_id_ = $1 "});
   this->query_map_.insert({QueryEnums::QUERY_GET_ITEMS,      "SELECT * FROM Item WHERE container_id_ = $1 "});
 
-  // Setter Queries 
-  this->query_map_.insert({QueryEnums::QUERY_INSERT_CHARACTER,  " NOT FINISHED <!> "});
+  // Setter (Insert) Queries 
+  this->query_map_.insert({QueryEnums::QUERY_INSERT_CHARACTER,  "INSERT INTO Characters "
+                                                                "("
+                                                                  "account_id_, world_x, world_y, level_, class_, animation_state_, animation_index_"
+                                                                ")"
+                                                                "VALUES "
+                                                                "("
+                                                                  "$1, $2, $3, $4, $5, $6, $7"
+                                                                ");"});
 
   this->query_map_.insert({QueryEnums::QUERY_INSERT_STATS,      "INSERT INTO CharactersStats "
                                                                 "("
@@ -97,7 +104,7 @@ void DataBaseManager::initializeQueryMap() noexcept
                                                                 ") "
                                                                 "VALUES "
                                                                 "( "
-                                                                  "$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11"
+                                                                  "$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12"
                                                                 ");"
                                                               });
 
@@ -106,9 +113,60 @@ void DataBaseManager::initializeQueryMap() noexcept
   this->query_map_.insert({QueryEnums::QUERY_INSERT_CONTAINER,  " NOT FINISHED <!> "});
   this->query_map_.insert({QueryEnums::QUERY_INSERT_ITEM,       " NOT FINISHED <!> "});
 
-  this->query_map_.insert({QueryEnums::QUERY_MODIFY_CHARACTER, " NOT FINISHED <!> "});
-  this->query_map_.insert({QueryEnums::QUERY_MODIFY_STATS, " NOT FINISHED <!> "});
-  this->query_map_.insert({QueryEnums::QUERY_MODIFY_ATTRIBUTES, " NOT FINISHED <!> "});
+  // Modify Queries <!> 
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_CHARACTER,  "UPDATE Characters "
+                                                                "SET "
+                                                                  "world_x_           = $2, "
+                                                                  "world_y_           = $3, "
+                                                                  "level_             = $4, "
+                                                                  "class_             = $5, "
+                                                                  "animation_state_   = $6, "
+                                                                  "animation_index_   = $7  "
+                                                                "WHERE character_id_ = $1; "
+                                                              });
+
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_STATS,  "UPDATE CharactersStats "
+                                                            "SET "
+                                                              "base_health_           = $2, "
+                                                              "current_health_        = $3, "
+                                                              "base_mana_             = $4, "
+                                                              "current_mana_          = $5, "
+                                                              "physical_power_        = $6, "
+                                                              "spell_power_           = $7, "
+                                                              "magic_resistance_      = $8, "
+                                                              "armor_                 = $9, "
+                                                              "melee_range_           = $10, "
+                                                              "spell_range_           = $11, "
+                                                              "global_cooldown_       = $12, "
+                                                              "armor_penetration_     = $13, "
+                                                              "spell_penetration_     = $14, "
+                                                              "attack_speed_          = $15, "
+                                                              "spell_haste_           = $16, "
+                                                              "hit_rating_            = $17, "
+                                                              "physical_crit_chance_  = $18, "
+                                                              "magic_crit_chance_     = $19, "
+                                                              "movement_speed_        = $20, "
+                                                              "lifesteal_             = $21, "
+                                                              "tenacity_              = $22 "
+                                                            "WHERE character_id_     = $1; "
+                                                          });
+
+  this->query_map_.insert({QueryEnums::QUERY_MODIFY_ATTRIBUTES, "UPDATE CharactersAttributes "
+                                                                "SET "
+                                                                  "strength_ = $2, "
+                                                                  "dexterity_ = $3, "
+                                                                  "intellect_ = $4, "
+                                                                  "wisdom_ = $5, "
+                                                                  "havoc_ = $6, "
+                                                                  "chaos_ = $7, "
+                                                                  "insight_ = $8, "
+                                                                  "perception_ = $9, "
+                                                                  "vamp_ = $10, "
+                                                                  "faith_ = $11, "
+                                                                  "tenacity_ = $12 "
+                                                                "WHERE character_id_ = $1; "
+                                                              });
+
   this->query_map_.insert({QueryEnums::QUERY_MODIFY_INVENTORY, " NOT FINISHED <!> "});
   this->query_map_.insert({QueryEnums::QUERY_MODIFY_ARMORY, " NOT FINISHED <!> "});
   this->query_map_.insert({QueryEnums::QUERY_MODIFY_CONTAINER, " NOT FINISHED <!> "});

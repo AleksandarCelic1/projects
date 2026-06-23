@@ -57,13 +57,22 @@ class DataBaseManager
 
 
     // Setter Queries
-    void queryInsertCharacter(Character* character) noexcept;
-    void queryInsertStats(Stats* stats) noexcept;
-    void queryInsertAttributes(Attributes* attrs) noexcept;
-    void queryInsertArmory(Armory* armory) noexcept;
-    void queryInsertInvetory(Inventory* invetory) noexcept;
-    void queryInsertContainer(Container* container) noexcept;
-    void queryInsertItem(Item* item) noexcept;
+    void                            queryInsertCharacter(Character* character)                                noexcept;
+    void                            queryInsertStats(Stats* stats)                                            noexcept;
+    void                            queryInsertAttributes(Attributes* attrs)                                  noexcept;
+    void                            queryInsertArmory(Armory* armory)                                         noexcept;
+    void                            queryInsertInvetory(Inventory* invetory)                                  noexcept;
+    void                            queryInsertContainer(Container* container)                                noexcept;
+    void                            queryInsertItem(Item* item)                                               noexcept;
+
+    // Modify Queries
+    void                            queryModifyCharacter(Character* character)                                noexcept;
+    void                            queryModifyStats(Stats* stats)                                            noexcept;
+    void                            queryModifyAttributes(Attributes* attrs)                                  noexcept;
+    void                            queryModifyArmory(Armory* armory)                                         noexcept;
+    void                            queryModifyInvetory(Inventory* invetory)                                  noexcept;
+    void                            queryModifyContainer(Container* container)                                noexcept;
+    void                            queryModifyItem(Item* item)                                               noexcept; 
 
 
 

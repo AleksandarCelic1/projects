@@ -11,9 +11,17 @@ class Game;
 class Character
 {
   private:
+    /*
+      Regarding the "character_id_" there are two scenarios:
+        1. when creating the character throught the Character-Creation-Menu the ID becomes an INVALID_MAGIC_NUMBER until we save
+           the character by doing INSERT query, and the ID will be assigned to that specific row
+        2. When an account gets logged in we can retrieve the CharID so we can later by save modify it <!> 
+    */
+    size_t character_id_; 
+    size_t level_;
     int world_x_;
     int world_y_; 
-    size_t level_;
+    
 
     ClassType class_;
 

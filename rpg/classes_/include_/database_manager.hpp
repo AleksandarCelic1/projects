@@ -46,7 +46,7 @@ class DataBaseManager
 
     // Getter Queries
     std::string                     queryAccount(const std::string username, const std::string password)      noexcept;
-    std::vector<loadedCharValues>   queryCharacters(const std::string account_id)                             noexcept;
+    std::vector<LoadedCharValues>   queryCharacters(const std::string account_id)                             noexcept;
     Stats*                          queryStats(const std::string character_id)                                noexcept;
     Attributes*                     queryAttributes(const std::string character_id)                           noexcept;
     Armory*                         queryArmory(const std::string character_id)                               noexcept;
@@ -57,13 +57,13 @@ class DataBaseManager
 
 
     // Setter Queries
-    void                            queryInsertCharacter(Character* character)                                noexcept;
-    void                            queryInsertStats(Stats* stats)                                            noexcept;
-    void                            queryInsertAttributes(Attributes* attrs)                                  noexcept;
-    void                            queryInsertArmory(Armory* armory)                                         noexcept;
-    void                            queryInsertInvetory(Inventory* invetory)                                  noexcept;
-    void                            queryInsertContainer(Container* container)                                noexcept;
-    void                            queryInsertItem(Item* item)                                               noexcept;
+    bool                            queryInsertCharacter(Character* character, size_t account_id)             noexcept;
+    void                            queryInsertStats(Stats* stats, size_t character_id)                       noexcept;
+    void                            queryInsertAttributes(Attributes* attrs, size_t character_id)             noexcept;
+    void                            queryInsertArmory(Armory* armory, size_t character_id)                    noexcept;
+    void                            queryInsertInvetory(Inventory* invetory, size_t character_id)             noexcept;
+    void                            queryInsertContainer(Container* container, size_t character_id)           noexcept;
+    void                            queryInsertItem(Item* item, size_t character_id)                          noexcept;
 
     // Modify Queries
     void                            queryModifyCharacter(Character* character)                                noexcept;

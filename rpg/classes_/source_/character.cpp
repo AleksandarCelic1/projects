@@ -4,20 +4,21 @@
 Character::Character(ClassType type)
 {
   this->class_ = type;
-
+  this->character_id_ = SIZE_T_MAX;
   this->stats_ = new Stats(type);
   this->attributes_ = new Attributes(type);
 
   
 }
 
-Character::Character(int world_x, int world_y, size_t level,
+Character::Character(int world_x, int world_y, size_t level, size_t char_id,
                      Stats* stats, Attributes* attr, ClassType type, 
                      Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, 
                      size_t animation_index)
 : world_x_(world_x), 
   world_y_ (world_y), 
   level_(level), 
+  character_id_(char_id),
   stats_(stats), 
   attributes_(attr), 
   class_(type), 

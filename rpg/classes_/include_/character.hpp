@@ -17,6 +17,7 @@ class Character
            the character by doing INSERT query, and the ID will be assigned to that specific row
         2. When an account gets logged in we can retrieve the CharID so we can later by save modify it <!> 
     */
+
     size_t character_id_; 
     size_t level_;
     int world_x_;
@@ -31,14 +32,14 @@ class Character
     Armory* armory_;
 
     CharacterAnimationState animation_state_;
-    AnimationInfo animation_info;
+    AnimationInfo animation_info; // Do we need this <?>
     size_t animation_index_;
     
 
   public:
     // Constructor, Copy Constructor, Destructor
     Character(ClassType type);
-    Character(int world_x, int world_y, size_t level, Stats* stats, Attributes* attr, ClassType type, Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, size_t animation_index);
+    Character(int world_x, int world_y, size_t level, size_t char_id, Stats* stats, Attributes* attr, ClassType type, Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, size_t animation_index);
     Character(const Character& copy) = delete;
     virtual ~Character() = default; // see later if there is something to be deleted << !
 
@@ -55,10 +56,12 @@ class Character
     CharacterAnimationState getAnimationState() const { return this->animation_state_; }
     AnimationInfo& getAnimationInfo() noexcept { return this->animation_info; }
     size_t getAnimationIndex() const { return this->animation_index_; }
+    size_t getLevel() const { return this->level_; }
 
     // Setters
     void setWorldX(int& new_x) noexcept { this->world_x_ = new_x; }
     void setWorldY(int& new_y) noexcept { this->world_y_ = new_y; }
+    void setLevel(size_t new_level) noexcept { this->level_ = new_level; }
     void setAnimationState(CharacterAnimationState& new_state) noexcept { this->animation_state_ = new_state; }
     void setAnimationIndex(size_t& new_index) noexcept { this->animation_index_ = new_index; }
     void setInventory(Inventory* new_inventory) noexcept { this->inventory_ = new_inventory; }

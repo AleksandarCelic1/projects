@@ -3,7 +3,7 @@
 
 #include "../constants_/constants.hpp"
 
-struct loadedCharValues 
+struct LoadedCharValues 
 {
   std::string character_id_;
   int world_x_;

@@ -81,7 +81,7 @@ void DataBaseManager::initializeQueryMap() noexcept
                                                                 "VALUES "
                                                                 "("
                                                                   "$1, $2, $3, $4, $5, $6, $7"
-                                                                ");"});
+                                                                ");"}); /* You need to return the char id from here <!> */
 
   this->query_map_.insert({QueryEnums::QUERY_INSERT_STATS,      "INSERT INTO CharactersStats "
                                                                 "("
@@ -295,7 +295,7 @@ std::string DataBaseManager::loadAccount(const std::string username, const std::
 
 std::vector<Character*> DataBaseManager::loadCharacters(const std::string account_id) noexcept
 {
-  std::vector<loadedCharValues> char_values = this->queryCharacters(account_id);
+  std::vector<LoadedCharValues> char_values = this->queryCharacters(account_id);
   if(char_values.empty())
   {
     return {};
@@ -306,7 +306,7 @@ std::vector<Character*> DataBaseManager::loadCharacters(const std::string accoun
   int size = char_values.size();
   for(int index = 0; index < size; index++)
   {
-    loadedCharValues placeholder = char_values.at(index);
+    LoadedCharValues placeholder = char_values.at(index);
     std::string char_id = placeholder.character_id_;
 
 
@@ -365,7 +365,6 @@ void DataBaseManager::save(Account* account_logged_in) noexcept
   /*
     1. Query to get the account to verify its existance in the DataBase
     2. Save each character 
-
   */
 
   std::string account_id = this->queryAccount(account_logged_in->getUsername(), account_logged_in->getPassword());
@@ -375,8 +374,9 @@ void DataBaseManager::save(Account* account_logged_in) noexcept
     return;
   }
 
-  std::vector<Character*> characters = this->loadCharacters(account_id);
-  if(characters.empty())
+  std::vector<Character*> accounts_characters = account_logged_in->getCharacters();
+  std::vector<Character*> loaded_characters = this->loadCharacters(account_id);
+  if(loaded_characters.empty())
   {
     /*
       1. Insert the new chars if there are any <!> 
@@ -448,7 +448,7 @@ std::string DataBaseManager::queryAccount(const std::string username, const std:
   return account_id;
 }
 
-std::vector<loadedCharValues> DataBaseManager::queryCharacters(const std::string account_id) noexcept
+std::vector<LoadedCharValues> DataBaseManager::queryCharacters(const std::string account_id) noexcept
 {
   const char* values[1] = { account_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_CHARACTERS); 
@@ -461,11 +461,11 @@ std::vector<loadedCharValues> DataBaseManager::queryCharacters(const std::string
   }
 
   int rows = PQntuples(result);
-  std::vector<loadedCharValues> loaded_char_values;
+  std::vector<LoadedCharValues> loaded_char_values;
 
   for(int index = 0; index < rows; index++)
   {
-    loadedCharValues placeholder;
+    LoadedCharValues placeholder;
     placeholder.character_id_ = PQgetvalue(result, index, 0);
     placeholder.world_x_ = std::stoi(PQgetvalue(result, index, 2));
     placeholder.world_y_ = std::stoi(PQgetvalue(result, index, 3));
@@ -674,7 +674,70 @@ bool DataBaseManager::queryRegistration(const std::string username, const std::s
   return true;
 }
 
-void DataBaseManager::queryInsertCharacter(Character* character) noexcept
+bool DataBaseManager::queryInsertCharacter(Character* character, size_t account_id) noexcept
+{
+  std::string acc_id          = std::to_string(account_id);
+  std::string world_x         = std::to_string(character->getWorldX());
+  std::string world_y         = std::to_string(character->getWorldY());
+  std::string level           = std::to_string(character->getLevel());
+  std::string class_type      = std::to_string(static_cast<int>(character->getClassType()));
+  std::string animation_state = std::to_string(static_cast<int>(character->getAnimationState()));
+  std::string animation_index = std::to_string(static_cast<int>(character->getAnimationIndex()));
+
+  const char* values[7] = { acc_id.c_str(), world_x.c_str(), world_y.c_str(), 
+                            level.c_str(), class_type.c_str(), animation_state.c_str(), 
+                            animation_index.c_str() };
+
+                  
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_INSERT_CHARACTER);
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 7, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGresult(result))
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryInsertCharacter] -> Query failed <!> " << std::endl;
+    return false;
+  }
+
+
+  /*
+    Not finished this query should also return the char id since we have serial PK, will use that to store other character components
+  */
+}
+
+void DataBaseManager::queryInsertStats(Stats* stats, size_t account_id) noexcept
+{
+  if(stats == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryInsertStats] -> Stats* provided is nullptr <!> " << std::endl;
+    return;
+  }
+
+
+
+
+}
+
+
+void DataBaseManager::queryInsertAttributes(Attributes* attrs, size_t account_id) noexcept
+{
+
+}
+
+void DataBaseManager::queryInsertArmory(Armory* armory, size_t account_id) noexcept
+{
+
+}
+
+void DataBaseManager::queryInsertInvetory(Inventory* invetory, size_t account_id) noexcept
+{
+
+}
+void DataBaseManager::queryInsertContainer(Container* container, size_t account_id) noexcept
+{
+
+}
+
+void DataBaseManager::queryInsertItem(Item* item, size_t account_id) noexcept
 {
 
 }

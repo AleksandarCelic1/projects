@@ -704,7 +704,7 @@ bool DataBaseManager::queryInsertCharacter(Character* character, size_t account_
   */
 }
 
-void DataBaseManager::queryInsertStats(Stats* stats, size_t account_id) noexcept
+void DataBaseManager::queryInsertStats(Stats* stats, size_t character_id) noexcept
 {
   if(stats == nullptr)
   {
@@ -712,9 +712,46 @@ void DataBaseManager::queryInsertStats(Stats* stats, size_t account_id) noexcept
     return;
   }
 
+  std::string char_id           = std::to_string(character_id);
+  std::string base_health       = std::to_string(stats->getBaseHealth());
+  std::string current_health    = std::to_string(stats->getCurrentHealth());
+  std::string base_mana         = std::to_string(stats->getBaseMana());
+  std::string current_mana      = std::to_string(stats->getCurrentMana());
+  std::string physical_power    = std::to_string(stats->getPhysicalPower());
+  std::string spell_power       = std::to_string(stats->getSpellPower());
+  std::string magic_resistance  = std::to_string(stats->getMagicResistance());
+  std::string armor             = std::to_string(stats->getArmor());
+  std::string melee_range       = std::to_string(stats->getMeleeRange());
+  std::string spell_range       = std::to_string(stats->getSpellRange());
+  std::string global_cdr        = std::to_string(stats->getGlobalCooldown());
+  std::string armor_pen         = std::to_string(stats->getArmorPenetration());
+  std::string spell_pen         = std::to_string(stats->getSpellPenetration());
+  std::string attack_speed      = std::to_string(stats->getAttackSpeed());
+  std::string spell_haste       = std::to_string(stats->getSpellHaste());
+  std::string hit_rating        = std::to_string(stats->getHitRating());
+  std::string phy_crit_chance   = std::to_string(stats->getPhysicalCritChance());
+  std::string magic_crit_chance = std::to_string(stats->getMagicCritChance());
+  std::string movement_speed    = std::to_string(stats->getMovementSpeed());
+  std::string lifesteal         = std::to_string(stats->getLifeSteal());
+  std::string tenacity          = std::to_string(stats->getTenacity());
 
+  const char* values[22] = 
+  {
+    char_id.c_str(), base_health.c_str(), current_health.c_str(), base_mana.c_str(), current_mana.c_str(), 
+    physical_power.c_str(), spell_power.c_str(), magic_resistance.c_str(), armor.c_str(), melee_range.c_str(),
+    spell_range.c_str(), global_cdr.c_str(), armor_pen.c_str(), spell_pen.c_str(), attack_speed.c_str(),
+    spell_haste.c_str(), hit_rating.c_str(), phy_crit_chance.c_str(), magic_crit_chance.c_str(), 
+    movement_speed.c_str(), lifesteal.c_str(), tenacity.c_str()
+  };
 
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_INSERT_STATS);
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 22, nullptr, values, nullptr, nullptr, 0);
 
+  if(!validatePGcommand(result))
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryInsertStats] -> Query failed <!> " << std::endl;
+    return;
+  }
 }
 
 

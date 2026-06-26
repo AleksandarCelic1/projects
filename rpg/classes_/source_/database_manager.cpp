@@ -755,9 +755,51 @@ void DataBaseManager::queryInsertStats(Stats* stats, size_t character_id) noexce
 }
 
 
-void DataBaseManager::queryInsertAttributes(Attributes* attrs, size_t account_id) noexcept
+void DataBaseManager::queryInsertAttributes(Attributes* attributes, size_t character_id) noexcept
 {
+  if(attributes == nullptr)
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryInsertAttributes] -> Attributes* provided is nullptr <!> " << std::endl;
+    return;
+  }
 
+  std::string char_id    = std::to_string(character_id);
+  std::string strength   = std::to_string(attributes->getStrength());
+  std::string dexterity  = std::to_string(attributes->getDexterity());
+  std::string intellect  = std::to_string(attributes->getIntellect());
+  std::string wisdom     = std::to_string(attributes->getWisdom());
+  std::string havoc      = std::to_string(attributes->getHavoc());
+  std::string chaos      = std::to_string(attributes->getChaos());
+  std::string insight    = std::to_string(attributes->getInsight());
+  std::string perception = std::to_string(attributes->getPerception());
+  std::string vamp       = std::to_string(attributes->getVamp());
+  std::string faith      = std::to_string(attributes->getFaith());
+  std::string tenacity   = std::to_string(attributes->getTenacity());
+
+  const char* values[12] =
+  {
+    char_id.c_str(),
+    strength.c_str(),
+    dexterity.c_str(),
+    intellect.c_str(),
+    wisdom.c_str(),
+    havoc.c_str(),
+    chaos.c_str(),
+    insight.c_str(),
+    perception.c_str(),
+    vamp.c_str(),
+    faith.c_str(),
+    tenacity.c_str()
+  };
+
+  std::string& query = this->query_map_.at(QueryEnums::QUERY_INSERT_ATTRIBUTES);
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 12, nullptr, values, nullptr, nullptr, 0);
+
+  if(!validatePGcommand(result))
+  {
+    std::cout << "[ERROR] -> [DataBaseManager::queryInsertAttributes] -> Query failed <!> " << std::endl;
+    return;
+  }
 }
 
 void DataBaseManager::queryInsertArmory(Armory* armory, size_t account_id) noexcept

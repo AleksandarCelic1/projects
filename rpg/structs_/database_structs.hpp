@@ -5,7 +5,9 @@
 
 struct LoadedCharValues 
 {
+  std::string name_;
   std::string character_id_;
+  int location_;
   int world_x_;
   int world_y_;
   int level_;

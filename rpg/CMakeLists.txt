@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
+find_package(PostgreSQL REQUIRED)
 
 add_executable(
   main
@@ -39,7 +40,6 @@ add_executable(
   classes_/source_/character_overview.cpp
   classes_/source_/glyph.cpp
   classes_/source_/font_manager.cpp
-  classes_/source_/database_manager.cpp
   classes_/source_/transition_manager.cpp
   classes_/source_/panel.cpp
   classes_/panels_/panels_source_/login_panel.cpp
@@ -50,15 +50,10 @@ add_executable(
   constants_/constants.cpp
 )
 
-target_link_libraries(main PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf)
+target_link_libraries(main PRIVATE SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf PostgreSQL::PostgreSQL)
 
-target_include_directories(main PRIVATE
-    /opt/homebrew/opt/libpq/include
-)
 
-target_link_directories(main PRIVATE
-    /opt/homebrew/opt/libpq/lib
-)
+
 
 target_link_libraries(main PRIVATE pq)
 

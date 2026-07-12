@@ -56,15 +56,20 @@ Character* CharacterOverviewPanel::getCharacter(ElementUI* key) noexcept
 void CharacterOverviewPanel::render(Game& game) noexcept
 {
   this->renderPanel(game);
-  this->renderCharacter(game);
+  this->renderCharacterOverview(game);
 
   for(auto& iterator : this->characters_)
   {
     TextField* tmp = dynamic_cast<TextField*>(iterator.first);
+    Character* character = iterator.second;
 
-    if(tmp->getActive())
+    if(character != nullptr)
     {
-      tmp->render(game);
+      // Render the Character's Name, Class, Level, Location
+    }
+    else
+    {
+      this->renderPlus(game, tmp);
     }
   }
 }
@@ -111,7 +116,7 @@ void CharacterOverviewPanel::setCurrentlySelectedElement(ElementUI* new_curr_sel
   this->currently_selected_ = new_curr_selec;
 }
 
-void CharacterOverviewPanel::renderCharacter(Game& game) noexcept
+void CharacterOverviewPanel::renderCharacterOverview(Game& game) noexcept
 {
   Character* placeholder = static_cast<Character*>(ExceptionHandler::get(this->characters_, this->currently_selected_));
   if(placeholder == nullptr)
@@ -142,4 +147,21 @@ void CharacterOverviewPanel::renderCharacter(Game& game) noexcept
   SDL_RenderCopy(game.getRenderer(), asset.texture_, &src, &this->getCharOverviewRect());
   
   return;
+}
+
+void CharacterOverviewPanel::renderPlus(Game& game, ElementUI* element) noexcept
+{
+  const TextureAsset& asset = game.getTextureManager()->getUITexture(UI::CHARACTER_OVERVIEW_PLUS);
+
+  const SDL_Rect& element_rect = element->getDstRect();
+
+  SDL_Rect plus_rect;
+  plus_rect.w = asset.width_  * game.getScalingFactor();
+  plus_rect.h = asset.height_ * game.getScalingFactor();
+  plus_rect.x = RectUtils::centerX(element_rect.x, element_rect.w, plus_rect.w);
+  plus_rect.y = RectUtils::centerY(element_rect.y, element_rect.h, plus_rect.h);
+
+
+  SDL_RenderCopy(game.getRenderer(), asset.texture_, nullptr, &plus_rect);
+
 }

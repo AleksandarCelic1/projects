@@ -39,7 +39,8 @@ class CharacterOverviewPanel : public Panel
     void update(Game& game) noexcept override;
 
     // Mini render functions
-    void renderCharacter(Game& game) noexcept;
+    void renderCharacterOverview(Game& game) noexcept;
+    void renderPlus(Game& game, ElementUI* element) noexcept;
 
 
 };

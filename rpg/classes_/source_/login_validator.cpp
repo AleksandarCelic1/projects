@@ -174,7 +174,7 @@ bool LoginValidator::validatePasswordNumber(const std::string& password, Usernam
   int count = 0; 
   for(int index = 0; index < password.size(); index++)
   {
-    if(isnumber(password.at(index)))
+    if(isdigit(password.at(index)))
     {
       count++;
     }

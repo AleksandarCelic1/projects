@@ -1,6 +1,8 @@
 #ifndef CONSTANTS__HPP
 #define CONSTANTS__HPP
 
+// To collapse all functions in a file in VsCode -> CTRL K, CTRL 0
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>

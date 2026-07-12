@@ -17,12 +17,12 @@ class Character
            the character by doing INSERT query, and the ID will be assigned to that specific row
         2. When an account gets logged in we can retrieve the CharID so we can later by save modify it <!> 
     */
-
+    std::string name_;
     size_t character_id_; 
     size_t level_;
     int world_x_;
     int world_y_; 
-    
+    GameLocation location_;   
 
     ClassType class_;
 
@@ -38,20 +38,23 @@ class Character
 
   public:
     // Constructor, Copy Constructor, Destructor
-    Character(ClassType type);
-    Character(int world_x, int world_y, size_t level, size_t char_id, Stats* stats, Attributes* attr, ClassType type, Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, size_t animation_index);
+    Character(std::string name, ClassType type);
+    Character(std::string name, GameLocation location, int world_x, int world_y, size_t level, size_t char_id, Stats* stats, Attributes* attr, ClassType type, Inventory* inventory, Armory* armory, CharacterAnimationState animation_state, size_t animation_index);
     Character(const Character& copy) = delete;
     virtual ~Character() = default; // see later if there is something to be deleted << !
 
     // Getters
+    const std::string& getName() noexcept { return this->name_;}
+    GameLocation& getLocation() noexcept { return this->location_;} 
     int getWorldX() const { return this->world_x_; }
     int getWorldY() const { return this->world_y_; }
 
     
-    Stats* getStats() { return this->stats_; }
+    Stats* getStats()           { return this->stats_; }
     Attributes* getAttributes() { return this->attributes_; }
-    ClassType getClassType() { return this->class_; }
-    Inventory* getInvetory() { return this->inventory_; }
+    ClassType getClassType()    { return this->class_; }
+    Inventory* getInvetory()    { return this->inventory_; }
+    Armory* getArmory()         { return this->armory_; }
 
     CharacterAnimationState getAnimationState() const { return this->animation_state_; }
     AnimationInfo& getAnimationInfo() noexcept { return this->animation_info; }
@@ -61,11 +64,14 @@ class Character
     // Setters
     void setWorldX(int& new_x) noexcept { this->world_x_ = new_x; }
     void setWorldY(int& new_y) noexcept { this->world_y_ = new_y; }
+    void setName(std::string new_name) noexcept { this->name_ = new_name; }
+    void setLocation(GameLocation new_location) noexcept { this->location_ = new_location; }
     void setLevel(size_t new_level) noexcept { this->level_ = new_level; }
     void setAnimationState(CharacterAnimationState& new_state) noexcept { this->animation_state_ = new_state; }
     void setAnimationIndex(size_t& new_index) noexcept { this->animation_index_ = new_index; }
     void setInventory(Inventory* new_inventory) noexcept { this->inventory_ = new_inventory; }
     void setAnimationInfo(AnimationInfo new_anim_info) noexcept { this->animation_info = new_anim_info; }
+    void setArmory(Armory* new_armory) noexcept { this->armory_ = new_armory; }
 
     // Functions
     

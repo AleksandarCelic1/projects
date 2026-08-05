@@ -76,12 +76,13 @@ void DataBaseManager::initializeQueryMap() noexcept
   // Setter (Insert) Queries 
   this->query_map_.insert({QueryEnums::QUERY_INSERT_CHARACTER,  "INSERT INTO Characters "
                                                                 "("
-                                                                  "account_id_, world_x, world_y, level_, class_, animation_state_, animation_index_"
+                                                                  "account_id_, world_x, world_y, level_, class_, animation_state_, animation_index_, location_, name_"
                                                                 ")"
                                                                 "VALUES "
                                                                 "("
-                                                                  "$1, $2, $3, $4, $5, $6, $7"
-                                                                ");"}); /* You need to return the char id from here <!> */
+                                                                  "$1, $2, $3, $4, $5, $6, $7, $8, $9"
+                                                                ") "
+                                                                "RETURNING character_id_;"}); 
 
   this->query_map_.insert({QueryEnums::QUERY_INSERT_STATS,      "INSERT INTO CharactersStats "
                                                                 "("
@@ -121,7 +122,8 @@ void DataBaseManager::initializeQueryMap() noexcept
                                                                   "level_             = $4, "
                                                                   "class_             = $5, "
                                                                   "animation_state_   = $6, "
-                                                                  "animation_index_   = $7  "
+                                                                  "animation_index_   = $7, "
+                                                                  "location_          = $8  "
                                                                 "WHERE character_id_ = $1; "
                                                               });
 
@@ -376,24 +378,25 @@ void DataBaseManager::save(Account* account_logged_in) noexcept
 
   std::vector<Character*> accounts_characters = account_logged_in->getCharacters();
   std::vector<Character*> loaded_characters = this->loadCharacters(account_id);
-  if(loaded_characters.empty())
+  if(!loaded_characters.empty())
   {
     /*
-      1. Insert the new chars if there are any <!> 
+      1. Modify the existing chars <!> 
     */
 
     return;
   }
 
   /*
-    1. Modify the existing chars <!> 
+    1. Insert the new chars if there are any <!> 
   */
+  
   
   return;
 }
 
 // <---- ! -----> [Queries] <---- ! ----->
-std::string DataBaseManager::queryAccount(const std::string username, const std::string password) noexcept
+std::string                     DataBaseManager::queryAccount(const std::string username, const std::string password)       noexcept
 {
   const char* values[2] = { username.c_str(), password.c_str() };
 
@@ -448,7 +451,7 @@ std::string DataBaseManager::queryAccount(const std::string username, const std:
   return account_id;
 }
 
-std::vector<LoadedCharValues> DataBaseManager::queryCharacters(const std::string account_id) noexcept
+std::vector<LoadedCharValues>   DataBaseManager::queryCharacters(const std::string account_id)                              noexcept
 {
   const char* values[1] = { account_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_CHARACTERS); 
@@ -473,15 +476,16 @@ std::vector<LoadedCharValues> DataBaseManager::queryCharacters(const std::string
     placeholder.class_ = std::stoi(PQgetvalue(result, index, 5));
     placeholder.anim_state_ = std::stoi(PQgetvalue(result, index, 6));
     placeholder.anim_index_ = std::stoi(PQgetvalue(result, index, 7));
+    placeholder.location_ = std::stoi(PQgetvalue(result, index, 8));
+    placeholder.name_ = PQgetvalue(result, index, 9);
 
     loaded_char_values.push_back(placeholder);
-
   }
 
   return loaded_char_values;
 }
 
-Stats* DataBaseManager::queryStats(const std::string character_id) noexcept
+Stats*                          DataBaseManager::queryStats(const std::string character_id)                                 noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_STATS);
@@ -533,7 +537,7 @@ Stats* DataBaseManager::queryStats(const std::string character_id) noexcept
 
 }
 
-Attributes* DataBaseManager::queryAttributes(const std::string character_id) noexcept
+Attributes*                     DataBaseManager::queryAttributes(const std::string character_id)                            noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_ATTRIBUTES);
@@ -576,7 +580,7 @@ Attributes* DataBaseManager::queryAttributes(const std::string character_id) noe
   return loaded_attr;
 }
 
-Armory* DataBaseManager::queryArmory(const std::string character_id) noexcept
+Armory*                         DataBaseManager::queryArmory(const std::string character_id)                                noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_ARMORY);
@@ -593,7 +597,7 @@ Armory* DataBaseManager::queryArmory(const std::string character_id) noexcept
   return nullptr;
 }
 
-Inventory* DataBaseManager::queryInventory(const std::string character_id) noexcept
+Inventory*                      DataBaseManager::queryInventory(const std::string character_id)                             noexcept
 {
   const char* values[1] = { character_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_INVENTORY);
@@ -625,7 +629,7 @@ Inventory* DataBaseManager::queryInventory(const std::string character_id) noexc
 
 }
 
-std::vector<Container*> DataBaseManager::queryContainers(const std::string inventory_id) noexcept
+std::vector<Container*>         DataBaseManager::queryContainers(const std::string inventory_id)                            noexcept
 {
   const char* values[1] = { inventory_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_CONTAINERS);
@@ -641,7 +645,7 @@ std::vector<Container*> DataBaseManager::queryContainers(const std::string inven
   return {};
 }
 
-std::vector<std::vector<Item*>> DataBaseManager::queryItems(const std::string container_id) noexcept
+std::vector<std::vector<Item*>> DataBaseManager::queryItems(const std::string container_id)                                 noexcept
 {
   const char* values[1] = { container_id.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_GET_ITEMS);
@@ -658,7 +662,7 @@ std::vector<std::vector<Item*>> DataBaseManager::queryItems(const std::string co
   return {{}};
 }
 
-bool DataBaseManager::queryRegistration(const std::string username, const std::string password) noexcept
+bool                            DataBaseManager::queryRegistration(const std::string username, const std::string password)  noexcept
 {
   const char* values[2] = { username.c_str(), password.c_str() };
   std::string& query = this->query_map_.at(QueryEnums::QUERY_REGISTARTION);
@@ -674,23 +678,26 @@ bool DataBaseManager::queryRegistration(const std::string username, const std::s
   return true;
 }
 
-bool DataBaseManager::queryInsertCharacter(Character* character, size_t account_id) noexcept
+bool                            DataBaseManager::queryInsertCharacter(Character* character, size_t account_id)              noexcept
 {
   std::string acc_id          = std::to_string(account_id);
   std::string world_x         = std::to_string(character->getWorldX());
   std::string world_y         = std::to_string(character->getWorldY());
   std::string level           = std::to_string(character->getLevel());
+  std::string animation_index = std::to_string(character->getAnimationIndex());
   std::string class_type      = std::to_string(static_cast<int>(character->getClassType()));
   std::string animation_state = std::to_string(static_cast<int>(character->getAnimationState()));
-  std::string animation_index = std::to_string(static_cast<int>(character->getAnimationIndex()));
+  std::string location        = std::to_string(static_cast<int>(character->getLocation()));
+  std::string name            = character->getName();
+  
 
-  const char* values[7] = { acc_id.c_str(), world_x.c_str(), world_y.c_str(), 
+  const char* values[9] = { acc_id.c_str(), world_x.c_str(), world_y.c_str(), 
                             level.c_str(), class_type.c_str(), animation_state.c_str(), 
-                            animation_index.c_str() };
+                            animation_index.c_str(), location.c_str(), name.c_str() };
 
                   
   std::string& query = this->query_map_.at(QueryEnums::QUERY_INSERT_CHARACTER);
-  PGresult* result = PQexecParams(this->connection_, query.c_str(), 7, nullptr, values, nullptr, nullptr, 0);
+  PGresult* result = PQexecParams(this->connection_, query.c_str(), 9, nullptr, values, nullptr, nullptr, 0);
 
   if(!validatePGresult(result))
   {
@@ -698,13 +705,16 @@ bool DataBaseManager::queryInsertCharacter(Character* character, size_t account_
     return false;
   }
 
+  size_t character_id = static_cast<size_t>(std::stoi(PQgetvalue(result, 0, 0)));
 
-  /*
-    Not finished this query should also return the char id since we have serial PK, will use that to store other character components
-  */
+  queryInsertStats(character->getStats(), character_id);
+  queryInsertAttributes(character->getAttributes(), character_id);
+  queryInsertArmory(character->getArmory(), character_id);
+  queryInsertInvetory(character->getInvetory(), character_id);
+
 }
 
-void DataBaseManager::queryInsertStats(Stats* stats, size_t character_id) noexcept
+void                            DataBaseManager::queryInsertStats(Stats* stats, size_t character_id)                        noexcept
 {
   if(stats == nullptr)
   {
@@ -754,8 +764,7 @@ void DataBaseManager::queryInsertStats(Stats* stats, size_t character_id) noexce
   }
 }
 
-
-void DataBaseManager::queryInsertAttributes(Attributes* attributes, size_t character_id) noexcept
+void                            DataBaseManager::queryInsertAttributes(Attributes* attributes, size_t character_id)         noexcept
 {
   if(attributes == nullptr)
   {
@@ -802,21 +811,22 @@ void DataBaseManager::queryInsertAttributes(Attributes* attributes, size_t chara
   }
 }
 
-void DataBaseManager::queryInsertArmory(Armory* armory, size_t account_id) noexcept
+void                            DataBaseManager::queryInsertArmory(Armory* armory, size_t account_id)                       noexcept
 {
 
 }
 
-void DataBaseManager::queryInsertInvetory(Inventory* invetory, size_t account_id) noexcept
-{
-
-}
-void DataBaseManager::queryInsertContainer(Container* container, size_t account_id) noexcept
+void                            DataBaseManager::queryInsertInvetory(Inventory* invetory, size_t account_id)                noexcept
 {
 
 }
 
-void DataBaseManager::queryInsertItem(Item* item, size_t account_id) noexcept
+void                            DataBaseManager::queryInsertContainer(Container* container, size_t account_id)              noexcept
+{
+
+}
+
+void                            DataBaseManager::queryInsertItem(Item* item, size_t account_id)                             noexcept
 {
 
 }

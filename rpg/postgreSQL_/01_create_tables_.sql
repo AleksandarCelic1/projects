@@ -24,7 +24,9 @@ CREATE TABLE Characters
   level_            INTEGER     NOT NULL,
   class_            INTEGER     NOT NULL,
   animation_state_  INTEGER     NOT NULL,
-  animation_index_  INTEGER     NOT NULL
+  animation_index_  INTEGER     NOT NULL,
+  location_         INTEGER     NOT NULL,
+  name_             VARCHAR(64) NOT NULL
 
 );
 

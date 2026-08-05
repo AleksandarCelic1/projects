@@ -8,6 +8,7 @@
 #include "floor_types.hpp"
 #include "offsets_ui.hpp"
 #include "query_enums.hpp"
+#include "location_game.hpp"
 
 typedef enum 
 {

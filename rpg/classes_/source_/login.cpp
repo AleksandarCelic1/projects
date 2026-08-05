@@ -159,7 +159,7 @@ void LoginState::handleEnter(Game& game)
   TextField* username = this->panel_->getUsernameLogin();
 
 
-  if(text == this->panel_->getUsernameLogin() 
+  /*if(text == this->panel_->getUsernameLogin() 
   || text == this->panel_->getPasswordLogin())
   {
     if(validator->validate(game, username->getTextConst(), this->panel_->getPasswordLogin()->getTextConst()))
@@ -199,7 +199,9 @@ void LoginState::handleEnter(Game& game)
       this->panel_->getPasswordRegistration()->clearText();
       this->panel_->getPasswordConfirmation()->clearText();
     }
-  }
+  }*/
+
+  game.getTransitionManager()->activateTransition(GameState::CHARACTER_OVERVIEW);
 
 
   return;

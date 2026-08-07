@@ -52,6 +52,9 @@ public class P2PChat
 
   public static Socket host() throws IOException
   {
+    /*
+    * If we put 0, instead of PORT here, our OS would choose an available ephemeral port
+    */
     try(ServerSocket serverSocket = new ServerSocket(PORT))
     {
       // accept() -> waits here until someone joins this port <!>
@@ -126,5 +129,10 @@ public class P2PChat
     {
       System.err.println(exception.getMessage());
     }
+  }
+
+  public static void announcePort(int port)
+  {
+
   }
 }

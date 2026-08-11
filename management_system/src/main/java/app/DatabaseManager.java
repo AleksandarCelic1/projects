@@ -7,7 +7,12 @@ public class DatabaseManager
     type private/public for each var <!>
   */
 
-
+    public DatabaseManager()
+    {
+        /*
+            Open the env file and parse the DB credentials in order to log in <!>
+         */
+    }
 
 
   /*

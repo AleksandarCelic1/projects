@@ -2,3 +2,5 @@
 build_/
 env_/
 .vscode/
+.idea/
+target/

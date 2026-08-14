@@ -18,17 +18,23 @@ CREATE TABLE Employee
     employer_id_                INTEGER             NOT NULL REFERENCES Employer(employer_id_),
     first_name_                 VARCHAR(32)         NOT NULL,
     last_name_                  VARCHAR(32)         NOT NULL,
+    username_                   VARCHAR(32)         NOT NULL,
+    password_                   VARCHAR(32)         NOT NULL
 
 );
 
-CREATE TABLE CalendarYear
+CREATE TABLE Calendar
 (
-    calendar_id_ SERIAL PRIMARY KEY,
+    calendar_id_                SERIAL              PRIMARY KEY,
+    employee_id_                INTEGER             NOT NULL REFERENCES  Employee(employee_id_),
+    year_                       INTEGER             NOT NULL,
+    total_hours_worked_         INTEGER             NOT NULL,
 );
 
-CREATE TABLE OneMonth
+CREATE TABLE Month
 (
-    month_id_       SERIAL            PRIMARY KEY,
-    calendar_id_    SERIAL            NOT NULL REFERENCES  CalendarYear(calendar_id_),
-    name_           VARCHAR(16)       NOT NULL,
+    month_id_                   SERIAL              PRIMARY KEY,
+    calendar_id_                INTEGER             NOT NULL REFERENCES  Calendar(calendar_id_),
+    hours_worked_               INTEGER             NOT NULL,
+    month_type_                 VARCHAR(32)         NOT NULL,
 );

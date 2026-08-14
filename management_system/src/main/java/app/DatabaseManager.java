@@ -2,9 +2,7 @@ package app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 
@@ -24,21 +22,30 @@ public class DatabaseManager
 
     /* In Java Enums can directly hold strings so there is no need for enum to string dictionary <!> */
     /* In Java's PostgreSQL API, we use ? for values in query strings and not $1 like in libpq C++ */
-    private enum SQLQueries
+    public enum SQLQueries
     {
-        LOGIN_QUERY("SELECT * FROM Employee WHERE Employee.employee_id_ = ?; "),
-        REGISTRATION_QUERY(" NOT FINISHED ");
+        LOGIN_QUERY("SELECT * FROM Employee WHERE Employee.username_ = ? AND Employee.password_ = ?; ", 2),
+        REGISTRATION_QUERY(" NOT FINISHED ", 0),
 
-        private final String value_;
+        GETTER_CALENDAR_QUERY("SELECT * From Calendar WHERE Calendar.employee_id = ?; ", 1);
 
-        SQLQueries(String value)
+        private final String sql_string_;
+        private final Integer argc_;
+
+        SQLQueries(String sql_string, Integer amount_of_args)
         {
-            this.value_ = value;
+            this.sql_string_ = sql_string;
+            this.argc_ = amount_of_args;
         }
 
-        public String getValue()
+        public String getSQLString()
         {
-            return this.value_;
+            return this.sql_string_;
+        }
+
+        public Integer getArgc()
+        {
+            return this.argc_;
         }
     };
 
@@ -84,6 +91,73 @@ public class DatabaseManager
 
         System.out.println("[DatabaseManager::DatabaseManager()] -> [SUCCESS] -> Connected to PostgreSQL Database <!> ");
     };
+
+    public ResultSet execute(SQLQueries query, List<String> args)
+    {
+        String sql_string = query.getSQLString();
+        Integer argc = query.getArgc();
+
+        if(argc != args.size())
+        {
+            System.out.println("[DatabaseManager::execute] -> [ERROR] -> SQLQuery argc and args size dont match <!> ");
+            return null;
+        }
+
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement(sql_string);
+
+            for(int index = 1; index <= argc; index++)
+            {
+                statement.setString(index, args.get(index));
+            }
+
+            ResultSet result = statement.executeQuery();
+            return result;
+
+
+        }
+        catch(SQLException exception)
+        {
+            System.out.println("[DatabaseManager::execute] -> [ERROR] -> conn.prepareStatement failed <!> ");
+            return null;
+        }
+    }
+
+    public Employee executeLogin(SQLQueries query, List<String> args)
+    {
+        ResultSet placeholder = execute(query, args);
+
+        if(placeholder == null)
+        {
+            /* The error occurred is already explained in "execute" function <!> */
+            return null;
+        }
+
+        try
+        {
+            if(placeholder.next())
+            {
+                // Query success <!> you are logged in <!>
+                // We should create the Employee object here <!>
+
+                String loaded_first_name = placeholder.getString("first_name_");
+                String loaded_last_name = placeholder.getString("last_name_");
+                int loaded_employee_id = placeholder.getInt("employee_id_");
+
+                return new Employee(loaded_first_name, loaded_last_name, loaded_employee_id);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch(SQLException exception)
+        {
+            System.out.println("[DatabaseManager::executeLogin] -> [CAUGHT] -> Exception caught <!> ");
+            return null;
+        }
+    }
 }
 
 

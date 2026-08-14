@@ -4,7 +4,6 @@ package app;
 // Import javafx.* -> imports all subclasses, but it doesn't do it recursively
 // meaning in the example below Application wouldn't been added
 
-// An issue regarding the imports was updating the classpaths <!>
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,7 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import utility.Utility;
@@ -55,9 +56,11 @@ public class MainEventHandler extends Application
     }
 
     private DatabaseManager db;
+    private Employee account_;
     private Map<Screens, Scene> scenes_;
     private Map<Buttons, Button> buttons_;
     private Map<TextFields, TextField> text_placeholders_;
+
 
     /* There is no need for another map that maps Pane's because we can retrieve it from Scenes <!> */
 
@@ -92,6 +95,10 @@ public class MainEventHandler extends Application
         handleClickAuthScreen(stage);
         handleClickLoginScreen(stage);
         handleClickRegistrationScreen(stage);
+
+        // Handle also click for closure
+        // So we can execute a save
+        // and then let the user exit <!>
 
         stage.show();
 
@@ -282,7 +289,23 @@ public class MainEventHandler extends Application
             String username = username_placeholder.getText();
             String password = password_placeholder.getText();
 
+            List<String> args = new ArrayList<>();
+            args.add(username);
+            args.add(password);
+
+
             System.out.println("[INFORMATION] -> Username: " + username + ", Password: " + password);
+
+            Employee employee = db.executeLogin(DatabaseManager.SQLQueries.LOGIN_QUERY, args);
+            if(employee != null)
+            {
+                stage.setScene(this.scenes_.get(Screens.HOME_SCREEN));
+
+            }
+
+
+
+
 
         });
 

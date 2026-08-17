@@ -25,17 +25,18 @@ public class DatabaseManager
     public enum SQLQueries
     {
         LOGIN_QUERY("SELECT * FROM Employee WHERE Employee.username_ = ? AND Employee.password_ = ?; ", 2),
-        REGISTRATION_QUERY(" NOT FINISHED ", 0),
+        REGISTRATION_QUERY("INSERT INTO Employee (first_name_, last_name_, username_, password_) " +
+                                    "VALUES (?, ?, ?, ?) RETURNING Employee.employee_id_; ", 4),
 
         GETTER_CALENDAR_QUERY("SELECT * From Calendar WHERE Calendar.employee_id = ?; ", 1);
 
         private final String sql_string_;
         private final Integer argc_;
 
-        SQLQueries(String sql_string, Integer amount_of_args)
+        SQLQueries(String sql_string, Integer argc)
         {
             this.sql_string_ = sql_string;
-            this.argc_ = amount_of_args;
+            this.argc_ = argc;
         }
 
         public String getSQLString()
@@ -141,6 +142,7 @@ public class DatabaseManager
                 // Query success <!> you are logged in <!>
                 // We should create the Employee object here <!>
 
+
                 String loaded_first_name = placeholder.getString("first_name_");
                 String loaded_last_name = placeholder.getString("last_name_");
                 int loaded_employee_id = placeholder.getInt("employee_id_");
@@ -156,6 +158,57 @@ public class DatabaseManager
         {
             System.out.println("[DatabaseManager::executeLogin] -> [CAUGHT] -> Exception caught <!> ");
             return null;
+        }
+    }
+
+    public Employee executeRegistration(SQLQueries query, List<String> args)
+    {
+      // Args come in this order -> FirstName -> LastName -> Username -> Password <!>
+      // Args are essentially always in the SQL variable order
+
+        String first_name = args.get(0);
+        String last_name = args.get(1);
+        String username = args.get(2);
+        String password = args.get(3);
+
+        List<String> login_args = new ArrayList<>();
+        login_args.add(username);
+        login_args.add(password);
+
+        Employee employee = executeLogin(SQLQueries.LOGIN_QUERY, login_args);
+        if(employee != null)
+        {
+          System.out.println("[DatabaseManager::executeRegistration] -> [ERROR] -> Can not make an account that already exists <!> ");
+          return null;
+        }
+
+
+        ResultSet result = execute(query, args);
+        if(result == null)
+        {
+          /* Failed in execute already <!> */
+          return null;
+        }
+
+        try
+        {
+          if(result.next())
+          {
+            // Query success <!> you are logged in <!>
+            // We should create the Employee object here <!>
+
+            int loaded_employee_id = result.getInt("employee_id_");
+            return new Employee(first_name, last_name, loaded_employee_id);
+          }
+          else
+          {
+            return null;
+          }
+        }
+        catch(SQLException exception)
+        {
+          System.out.println("[DatabaseManager::executeLogin] -> [CAUGHT] -> Exception caught <!> ");
+          return null;
         }
     }
 }

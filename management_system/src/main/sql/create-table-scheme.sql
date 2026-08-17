@@ -15,7 +15,6 @@ CREATE TABLE Employer
 CREATE TABLE Employee
 (
     employee_id_                SERIAL              PRIMARY KEY,
-    employer_id_                INTEGER             NOT NULL REFERENCES Employer(employer_id_),
     first_name_                 VARCHAR(32)         NOT NULL,
     last_name_                  VARCHAR(32)         NOT NULL,
     username_                   VARCHAR(32)         NOT NULL,

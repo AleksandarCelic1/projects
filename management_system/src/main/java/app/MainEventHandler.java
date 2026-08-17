@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.w3c.dom.Text;
 import utility.Utility;
 import utility.Dimensions;
 
@@ -50,6 +51,8 @@ public class MainEventHandler extends Application
     {
         LOGIN_USERNAME_TXT_PLACEHOLDER,
         LOGIN_PASSWORD_TXT_PLACEHOLDER,
+        REGISTER_FIRST_NAME_TXT_PLACEHOLDER,
+        REGISTER_LAST_NAME_TXT_PLACEHOLDER,
         REGISTRATION_USERNAME_TXT_PLACEHOLDER,
         REGISTRATION_PASSWORD_TXT_PLACEHOLDER,
         REGISTRATION_PASSWORD_CONFIRMATION_TXT_PLACEHOLDER
@@ -103,7 +106,6 @@ public class MainEventHandler extends Application
         stage.show();
 
     }
-
 
     private void initAuthScene()
     {
@@ -210,6 +212,9 @@ public class MainEventHandler extends Application
         Button return_button = new Button("<");
         Button register_button = new Button("Register");
 
+        TextField first_name = new TextField("First Name: ");
+        TextField last_name = new TextField("Last Name: ");
+
         TextField username = new TextField("New Username: ");
         TextField password = new TextField("New Password: ");
         TextField password_confirmation = new TextField("Confirm Password: ");
@@ -225,6 +230,12 @@ public class MainEventHandler extends Application
         register_button.setPrefWidth(Dimensions.ButtonDimensions.REGISTRATION_REGISTER_BUTTON_WIDTH.getValue());
         register_button.setPrefHeight(Dimensions.ButtonDimensions.REGISTRATION_REGISTER_BUTTON_HEIGHT.getValue());
 
+        first_name.setPrefWidth(Dimensions.TextFieldDimensions.REGISTER_FIRST_NAME_TXT_WIDTH.getValue());
+        first_name.setPrefHeight(Dimensions.TextFieldDimensions.REGISTER_FIRST_NAME_TXT_HEIGHT.getValue());
+
+        last_name.setPrefWidth(Dimensions.TextFieldDimensions.REGISTER_LAST_NAME_TXT_WIDTH.getValue());
+        last_name.setPrefHeight(Dimensions.TextFieldDimensions.REGISTER_LAST_NAME_TXT_HEIGHT.getValue());
+
         username.setPrefWidth(Dimensions.TextFieldDimensions.REGISTER_USERNAME_TXT_WIDTH.getValue());
         username.setPrefHeight(Dimensions.TextFieldDimensions.REGISTER_USERNAME_TXT_HEIGHT.getValue());
 
@@ -234,33 +245,48 @@ public class MainEventHandler extends Application
         password_confirmation.setPrefWidth(Dimensions.TextFieldDimensions.REGISTER_PASSWORD_CONFIRMATION_TXT_WIDTH.getValue());
         password_confirmation.setPrefHeight(Dimensions.TextFieldDimensions.REGISTER_PASSWORD_CONFIRMATION_TXT_HEIGHT.getValue());
 
-        // Coords
+        // Coords -> Make an enum for this <!>
         return_button.setLayoutX(20);
         return_button.setLayoutY(20);
 
         register_button.setLayoutX(Utility.centerX(0, reg_screen_w, (int)register_button.getPrefWidth()));
-        register_button.setLayoutY(500);
+        register_button.setLayoutY(475);
 
         password_confirmation.setLayoutX(Utility.centerX(0, reg_screen_w, (int)password_confirmation.getPrefWidth()));
         password_confirmation.setLayoutY(400);
 
         password.setLayoutX(Utility.centerX(0, reg_screen_w, (int)password.getPrefWidth()));
-        password.setLayoutY(300);
+        password.setLayoutY(325);
 
         username.setLayoutX(Utility.centerX(0, reg_screen_w, (int)username.getPrefWidth()));
-        username.setLayoutY(200);
+        username.setLayoutY(250);
+
+        last_name.setLayoutX(Utility.centerX(0, reg_screen_w, (int)last_name.getPrefWidth()));
+        last_name.setLayoutY(175);
+
+        first_name.setLayoutX(Utility.centerX(0, reg_screen_w, (int)first_name.getPrefWidth()));
+        first_name.setLayoutY(100);
 
         // Adding Elements <!>
 
-        registration_root.getChildren().addAll(return_button, register_button, username, password, password_confirmation);
+        registration_root.getChildren().addAll(return_button, register_button, username, password, password_confirmation, first_name, last_name);
 
         this.scenes_.put(Screens.REGISTRATION_SCREEN, registration_screen);
         this.buttons_.put(Buttons.REGISTRATION_RETURN_BUTTON, return_button);
         this.buttons_.put(Buttons.REGISTRATION_REGISTER_BUTTON, register_button);
+        this.text_placeholders_.put(TextFields.REGISTER_FIRST_NAME_TXT_PLACEHOLDER, first_name);
+        this.text_placeholders_.put(TextFields.REGISTER_LAST_NAME_TXT_PLACEHOLDER, last_name);
         this.text_placeholders_.put(TextFields.REGISTRATION_USERNAME_TXT_PLACEHOLDER, username);
         this.text_placeholders_.put(TextFields.REGISTRATION_PASSWORD_TXT_PLACEHOLDER, password);
         this.text_placeholders_.put(TextFields.REGISTRATION_PASSWORD_CONFIRMATION_TXT_PLACEHOLDER, password_confirmation);
 
+    }
+
+    private void initHomeScene()
+    {
+      /*
+        Currently in design <!>
+      */
     }
 
     private void handleClickAuthScreen(Stage stage)
@@ -320,6 +346,8 @@ public class MainEventHandler extends Application
         Button return_button = this.buttons_.get(Buttons.REGISTRATION_RETURN_BUTTON);
         Button register_button = this.buttons_.get(Buttons.REGISTRATION_REGISTER_BUTTON);
 
+        TextField first_name_placeholder = this.text_placeholders_.get(TextFields.REGISTER_FIRST_NAME_TXT_PLACEHOLDER);
+        TextField last_name_placeholder = this.text_placeholders_.get(TextFields.REGISTER_LAST_NAME_TXT_PLACEHOLDER);
         TextField username_placeholder = this.text_placeholders_.get(TextFields.REGISTRATION_USERNAME_TXT_PLACEHOLDER);
         TextField password_placeholder = this.text_placeholders_.get(TextFields.REGISTRATION_PASSWORD_TXT_PLACEHOLDER);
         TextField password_confirmation_placeholder = this.text_placeholders_.get(TextFields.REGISTRATION_PASSWORD_CONFIRMATION_TXT_PLACEHOLDER);
@@ -331,14 +359,33 @@ public class MainEventHandler extends Application
 
         register_button.setOnAction(event ->
         {
+
+            /* Think about if it's needed to introduce some constraints regarding input <!>  */
+            String first_name = first_name_placeholder.getText();
+            String last_name = last_name_placeholder.getText();
             String username = username_placeholder.getText();
             String password = password_placeholder.getText();
             String password_confirmation = password_confirmation_placeholder.getText();
 
             if(password.equals(password_confirmation))
             {
-                System.out.println("[INFORMATION] -> Registration attempt successful <!> ");
-                /* Make a Request to make a new account */
+                List<String> args = new ArrayList<>();
+                args.add(first_name);
+                args.add(last_name);
+                args.add(username);
+                args.add(password);
+
+                Employee new_employee = db.executeRegistration(DatabaseManager.SQLQueries.REGISTRATION_QUERY, args);
+                if(new_employee != null)
+                {
+                  System.out.println("[INFORMATION] -> Registration attempt successful <!> ");
+                  this.account_ = new_employee;
+                  // change to HOME SCREEN here <!>
+                  return;
+                }
+
+                System.out.println("[MainEventHandler::handleClickRegistrationScreen] -> [INFORMATION] -> Registration failed <!> ");
+                return;
             }
         });
     }

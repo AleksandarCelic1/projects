@@ -68,7 +68,9 @@ public class Dimensions
         LOGIN_SCREEN_WIDTH(600),
         LOGIN_SCREEN_HEIGHT(800),
         REGISTRATION_SCREEN_WIDTH(600),
-        REGISTRATION_SCREEN_HEIGHT(800);
+        REGISTRATION_SCREEN_HEIGHT(800),
+        HOME_SCREEN_WIDTH(600),
+        HOME_SCREEN_HEIGHT(800);
 
         private final int value_;
 

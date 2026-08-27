@@ -9,6 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -16,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Text;
 import utility.Utility;
 import utility.Dimensions;
 
@@ -84,6 +87,7 @@ public class MainEventHandler extends Application
         initAuthScene();
         initLoginScene();
         initRegistrationScene();
+        initHomeScene();
 
     }
 
@@ -98,7 +102,7 @@ public class MainEventHandler extends Application
         handleClickAuthScreen(stage);
         handleClickLoginScreen(stage);
         handleClickRegistrationScreen(stage);
-
+        handleClickHomeScreen(stage);
         // Handle also click for closure
         // So we can execute a save
         // and then let the user exit <!>
@@ -284,9 +288,51 @@ public class MainEventHandler extends Application
 
     private void initHomeScene()
     {
-      /*
-        Currently in design <!>
-      */
+
+        // Found some inspiration for home design <>
+
+        Pane root = new Pane();
+        int home_screen_w = Dimensions.ScreenDimensions.HOME_SCREEN_WIDTH.getValue();
+        int home_screen_h = Dimensions.ScreenDimensions.HOME_SCREEN_HEIGHT.getValue();
+        Scene registration_screen = new Scene(root, home_screen_w, home_screen_h);
+
+
+        // Creation
+        Text hello_text = new Text("Hello, ");
+        hello_text.setFont(Font.font("Arial", FontWeight.BOLD, 42));
+        hello_text.setFill(Color.BLACK);
+
+        Text user_first_name = new Text(account_.getFirst_name_());
+        user_first_name.setFont(Font.font("Arial", FontWeight.BOLD, 42));
+        user_first_name.setFill(Color.web("#2563EB"));
+
+        Text work_summary = new Text("Here's your work summary.");
+        work_summary.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+        work_summary.setFill(Color.GRAY);
+
+        Text your_stats = new Text("Your Stats");
+        your_stats.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        your_stats.setFill(Color.BLACK);
+
+
+        // Dimensions
+
+
+        // Coordinates
+
+
+        // Adding Elements
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private void handleClickAuthScreen(Stage stage)
@@ -389,6 +435,12 @@ public class MainEventHandler extends Application
             }
         });
     }
+
+    private void handleClickHomeScreen(Stage stage)
+    {
+
+    }
+
 
 
 }

@@ -1,7 +1,9 @@
 package app;
 
 import java.util.List;
+import lombok.*;
 
+@Data
 public class Employee
 {
     private final String first_name_;

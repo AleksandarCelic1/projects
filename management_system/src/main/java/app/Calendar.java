@@ -2,12 +2,15 @@ package app;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
+@Data
 public class Calendar
 {
-    private final int year_;
-    private int total_hours_worked_;
+    private final Integer year_;
+    private Integer total_hours_worked_;
     private List<Month> months_;
+    private Month current_month_;
 
     Calendar(int year)
     {
@@ -25,6 +28,8 @@ public class Calendar
 
             months_.add(new Month(iterator));
         }
+
+        this.current_month_ = months_.get(0);
     }
 
     Calendar(int loaded_year, int loaded_total_hours_worked , List<Month> loaded_months)

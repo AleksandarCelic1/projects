@@ -1,20 +1,11 @@
-DROP TABLE IF EXISTS Employer;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS CalendarYear;
 DROP TABLE IF EXISTS OneMonth;
 
-
-CREATE TABLE Employer
-(
-    employer_id_                SERIAL              PRIMARY KEY,
-    first_name_                 VARCHAR(32)         NOT NULL,
-    last_name_                  VARCHAR(32)         NOT NULL
-);
-
-
 CREATE TABLE Employee
 (
     employee_id_                SERIAL              PRIMARY KEY,
+    total_hours_worked_         INTEGER             NOT NULL,
     first_name_                 VARCHAR(32)         NOT NULL,
     last_name_                  VARCHAR(32)         NOT NULL,
     username_                   VARCHAR(32)         NOT NULL,

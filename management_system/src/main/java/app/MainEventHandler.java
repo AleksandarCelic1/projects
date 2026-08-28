@@ -5,14 +5,24 @@ package app;
 // meaning in the example below Application wouldn't been added
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -46,8 +56,9 @@ public class MainEventHandler extends Application
         LOGIN_LOGIN_BUTTON,
         LOGIN_RETURN_BUTTON,
         REGISTRATION_REGISTER_BUTTON,
-        REGISTRATION_RETURN_BUTTON
-
+        REGISTRATION_RETURN_BUTTON,
+        HOME_RETURN_BUTTON,
+        HOME_PLUS_BUTTON
     }
 
     public enum TextFields
@@ -61,11 +72,18 @@ public class MainEventHandler extends Application
         REGISTRATION_PASSWORD_CONFIRMATION_TXT_PLACEHOLDER
     }
 
+    public enum Texts
+    {
+        HOME_SCREEN_INTRODUCTION_TEXT,
+        HOME_SCREEN_STATS
+    }
+
     private DatabaseManager db;
     private Employee account_;
     private Map<Screens, Scene> scenes_;
     private Map<Buttons, Button> buttons_;
     private Map<TextFields, TextField> text_placeholders_;
+    private Map<Texts, Text> texts_;
 
 
     /* There is no need for another map that maps Pane's because we can retrieve it from Scenes <!> */
@@ -82,6 +100,8 @@ public class MainEventHandler extends Application
         scenes_ = new HashMap<>();
         buttons_ = new HashMap<>();
         text_placeholders_ = new HashMap<>();
+        texts_ = new HashMap<>();
+        account_ = new Employee("John", "Doe", -1);
 
         // Initial Authentication Screen <!>
         initAuthScene();
@@ -161,7 +181,7 @@ public class MainEventHandler extends Application
         TextField password = new TextField("Enter Password: ");
 
         Button login_button = new Button("Log In");
-        Button return_button = new Button("<");
+        Button return_button = new Button("←");
 
         // Dimensions
         username.setPrefWidth(Dimensions.TextFieldDimensions.LOGIN_USERNAME_TXT_WIDTH.getValue());
@@ -213,7 +233,7 @@ public class MainEventHandler extends Application
 
         // Creation
 
-        Button return_button = new Button("<");
+        Button return_button = new Button("←");
         Button register_button = new Button("Register");
 
         TextField first_name = new TextField("First Name: ");
@@ -292,46 +312,67 @@ public class MainEventHandler extends Application
         // Found some inspiration for home design <>
 
         Pane root = new Pane();
+
         int home_screen_w = Dimensions.ScreenDimensions.HOME_SCREEN_WIDTH.getValue();
         int home_screen_h = Dimensions.ScreenDimensions.HOME_SCREEN_HEIGHT.getValue();
-        Scene registration_screen = new Scene(root, home_screen_w, home_screen_h);
+        Scene home_screen = new Scene(root, home_screen_w, home_screen_h);
 
 
         // Creation
-        Text hello_text = new Text("Hello, ");
-        hello_text.setFont(Font.font("Arial", FontWeight.BOLD, 42));
-        hello_text.setFill(Color.BLACK);
 
-        Text user_first_name = new Text(account_.getFirst_name_());
-        user_first_name.setFont(Font.font("Arial", FontWeight.BOLD, 42));
-        user_first_name.setFill(Color.web("#2563EB"));
-
-        Text work_summary = new Text("Here's your work summary.");
-        work_summary.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
-        work_summary.setFill(Color.GRAY);
-
-        Text your_stats = new Text("Your Stats");
-        your_stats.setFont(Font.font("Arial", FontWeight.BOLD, 22));
-        your_stats.setFill(Color.BLACK);
+        Button return_button = new Button("←");
+        Button plus_button = new Button("+");
+        Text introduction_text = new Text("Hello, " + account_.getFirst_name_() + "!");
+        Text stats_text = new Text("Stats:");
+        Text actual_stats = new Text(
+                "• Total Hours Worked: " + account_.getTotal_hours_ever_().toString() + "\n" +
+                "• Total Hours worked this year: " + account_.getCalendar_in_use_().getTotal_hours_worked_().toString() + "\n" +
+                "• Total Hours worked this month: " + account_.getCalendar_in_use_().getCurrent_month_().getTotal_hours_this_month_().toString() + "\n"
+        );
 
 
         // Dimensions
 
+        return_button.setPrefWidth(Dimensions.ButtonDimensions.HOME_RETURN_BUTTON_WIDTH.getValue());
+        return_button.setPrefHeight(Dimensions.ButtonDimensions.HOME_RETURN_BUTTON_HEIGHT.getValue());
 
-        // Coordinates
+        plus_button.setPrefWidth(Dimensions.ButtonDimensions.HOME_PLUS_BUTTON_WIDTH.getValue());
+        plus_button.setPrefHeight(Dimensions.ButtonDimensions.HOME_PLUS_BUTTON_HEIGHT.getValue());
+
+        introduction_text.setFont(Font.font("Arial", FontWeight.BOLD, 42));
+        stats_text.setFont(Font.font("Arial", FontWeight.NORMAL, 22));
+        actual_stats.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+
+        // Coords
+
+        return_button.setLayoutX(20);
+        return_button.setLayoutY(20);
+
+        plus_button.setLayoutX(Utility.centerX(0, home_screen_w, (int)plus_button.getPrefWidth()));
+        plus_button.setLayoutY(350);
+
+        introduction_text.setLayoutX(Utility.centerX(0, home_screen_w, (int)introduction_text.getLayoutBounds().getWidth()));
+        introduction_text.setLayoutY(150);
+        introduction_text.setTextAlignment(TextAlignment.CENTER);
+
+        stats_text.setLayoutX(20);
+        stats_text.setLayoutY(200);
+        stats_text.setTextAlignment(TextAlignment.LEFT);
+
+        actual_stats.setLayoutX(20);
+        actual_stats.setLayoutY(250);
+        actual_stats.setTextAlignment(TextAlignment.LEFT);
 
 
-        // Adding Elements
+        // Adding elements
 
+        root.getChildren().addAll(return_button, plus_button, introduction_text, stats_text, actual_stats);
 
-
-
-
-
-
-
-
-
+        this.scenes_.put(Screens.HOME_SCREEN, home_screen);
+        this.buttons_.put(Buttons.HOME_RETURN_BUTTON, return_button);
+        this.buttons_.put(Buttons.HOME_PLUS_BUTTON, plus_button);
+        this.texts_.put(Texts.HOME_SCREEN_INTRODUCTION_TEXT, introduction_text);
+        this.texts_.put(Texts.HOME_SCREEN_STATS, actual_stats);
 
     }
 
@@ -361,7 +402,7 @@ public class MainEventHandler extends Application
             String username = username_placeholder.getText();
             String password = password_placeholder.getText();
 
-            List<String> args = new ArrayList<>();
+            List<Object> args = new ArrayList<>();
             args.add(username);
             args.add(password);
 
@@ -407,6 +448,7 @@ public class MainEventHandler extends Application
         {
 
             /* Think about if it's needed to introduce some constraints regarding input <!>  */
+            Integer hours = 0;
             String first_name = first_name_placeholder.getText();
             String last_name = last_name_placeholder.getText();
             String username = username_placeholder.getText();
@@ -415,7 +457,8 @@ public class MainEventHandler extends Application
 
             if(password.equals(password_confirmation))
             {
-                List<String> args = new ArrayList<>();
+                List<Object> args = new ArrayList<>();
+                args.add(hours);
                 args.add(first_name);
                 args.add(last_name);
                 args.add(username);
@@ -424,9 +467,11 @@ public class MainEventHandler extends Application
                 Employee new_employee = db.executeRegistration(DatabaseManager.SQLQueries.REGISTRATION_QUERY, args);
                 if(new_employee != null)
                 {
-                  System.out.println("[INFORMATION] -> Registration attempt successful <!> ");
                   this.account_ = new_employee;
-                  // change to HOME SCREEN here <!>
+                  this.updateHomeScreen();
+                  stage.setScene(this.scenes_.get(Screens.HOME_SCREEN));
+
+                  System.out.println("[INFORMATION] -> Registration attempt successful <!> ");
                   return;
                 }
 
@@ -438,7 +483,35 @@ public class MainEventHandler extends Application
 
     private void handleClickHomeScreen(Stage stage)
     {
+        Button return_button = this.buttons_.get(Buttons.HOME_RETURN_BUTTON);
+        Button plus_button = this.buttons_.get(Buttons.HOME_PLUS_BUTTON);
 
+        return_button.setOnAction(event ->
+        {
+            stage.setScene(this.scenes_.get(Screens.AUTHENTICATION_SCREEN));
+        });
+
+        plus_button.setOnAction(event ->
+        {
+            // Not yet implemented <!>
+        });
+    }
+
+
+    private void updateHomeScreen()
+    {
+        Text introduction = this.texts_.get(Texts.HOME_SCREEN_INTRODUCTION_TEXT);
+        Text stats = this.texts_.get(Texts.HOME_SCREEN_STATS);
+
+        introduction.setText(
+                "Hello, " + account_.getFirst_name_() + "!"
+        );
+
+        stats.setText(
+                "• Total Hours Worked: " + account_.getTotal_hours_ever_().toString() + "\n" +
+                "• Total Hours worked this year: " + account_.getCalendar_in_use_().getTotal_hours_worked_().toString() + "\n" +
+                "• Total Hours worked this month: " + account_.getCalendar_in_use_().getCurrent_month_().getTotal_hours_this_month_().toString() + "\n"
+        );
     }
 
 

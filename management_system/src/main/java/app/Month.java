@@ -1,8 +1,11 @@
 package app;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class Month
 {
     public enum MonthType
@@ -36,10 +39,12 @@ public class Month
 
     private final MonthType type_;
     private final List<Day> days_;
+    private final Integer total_hours_this_month_;
 
     Month(MonthType type)
     {
         this.type_ = type;
+        this.total_hours_this_month_ = 0;
 
         this.days_ = new ArrayList<>();
         for(int index = 0; index < this.type_.getAmountOfDays(); index++)

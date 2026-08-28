@@ -2,6 +2,7 @@ package app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.*;
 
@@ -24,11 +25,11 @@ public class DatabaseManager
     /* In Java's PostgreSQL API, we use ? for values in query strings and not $1 like in libpq C++ */
     public enum SQLQueries
     {
-        LOGIN_QUERY("SELECT * FROM Employee WHERE Employee.username_ = ? AND Employee.password_ = ?; ", 2),
-        REGISTRATION_QUERY("INSERT INTO Employee (first_name_, last_name_, username_, password_) " +
-                                    "VALUES (?, ?, ?, ?) RETURNING Employee.employee_id_; ", 4),
+        LOGIN_QUERY("SELECT * FROM Employee WHERE username_ = ? AND password_ = ?;", 2),
+        REGISTRATION_QUERY("INSERT INTO Employee (total_hours_worked_, first_name_, last_name_, username_, password_) " +
+                                    "VALUES (?, ?, ?, ?, ?) RETURNING employee_id_;", 5),
 
-        GETTER_CALENDAR_QUERY("SELECT * From Calendar WHERE Calendar.employee_id = ?; ", 1);
+        GETTER_CALENDAR_QUERY("SELECT * From Calendar WHERE Calendar.employee_id = ?;", 1);
 
         private final String sql_string_;
         private final Integer argc_;
@@ -52,7 +53,7 @@ public class DatabaseManager
 
     public DatabaseManager()
     {
-        File env = new File("../../env_/db-credentials.env");
+        File env = new File("src/main/env_/db-credentials.env");
 
         Dictionary<Credentials, String> credentials = new Hashtable<>();
 
@@ -60,7 +61,27 @@ public class DatabaseManager
         {
             for(Credentials iterator : Credentials.values())
             {
-                credentials.put(iterator, scanner.nextLine());
+                String tmp = scanner.nextLine();
+                StringBuilder cred = new StringBuilder();
+
+                boolean start_taking = false;
+
+                for(int index = 0; index < tmp.length(); index++)
+                {
+                    char placeholder = tmp.charAt(index);
+
+                    if(start_taking)
+                    {
+                        cred.append(placeholder);
+                    }
+
+                    if(placeholder == '=')
+                    {
+                        start_taking = true;
+                    }
+                }
+                credentials.put(iterator, cred.toString());
+
             }
         }
         catch (FileNotFoundException e)
@@ -71,29 +92,31 @@ public class DatabaseManager
 
         System.out.println("[DatabaseManager::DatabaseManager()] -> [SUCCESS] -> File opened and parsed <!> ");
 
-        String url = "jdbc:postgresql://";
-        url += credentials.get(Credentials.HOST) + ":";
-        url += credentials.get(Credentials.PORT) + "/";
-        url += credentials.get(Credentials.DBNAME);
+        StringBuilder url = new StringBuilder();
+        url.append("jdbc:postgresql://");
+        url.append(credentials.get(Credentials.HOST) + ":");
+        url.append(credentials.get(Credentials.PORT) + "/");
+        url.append(credentials.get(Credentials.DBNAME));
+
+        System.out.println(url);
 
         String user = credentials.get(Credentials.USER);
         String password = credentials.get(Credentials.PASSWORD);
 
-
         try
         {
-            this.conn = DriverManager.getConnection(url, user, password);
+            this.conn = DriverManager.getConnection(url.toString(), user, password);
         }
         catch (SQLException e)
         {
             System.out.println("[DatabaseManager::DatabaseManager()] -> [ERROR] -> Connection error");
-            // Should I terminate the process?
+            e.printStackTrace();
         }
 
         System.out.println("[DatabaseManager::DatabaseManager()] -> [SUCCESS] -> Connected to PostgreSQL Database <!> ");
     };
 
-    public ResultSet execute(SQLQueries query, List<String> args)
+    public ResultSet execute(SQLQueries query, List<Object> args)
     {
         String sql_string = query.getSQLString();
         Integer argc = query.getArgc();
@@ -108,9 +131,9 @@ public class DatabaseManager
         {
             PreparedStatement statement = conn.prepareStatement(sql_string);
 
-            for(int index = 1; index <= argc; index++)
+            for(int index = 0; index < argc; index++)
             {
-                statement.setString(index, args.get(index));
+                statement.setObject(index + 1, args.get(index));
             }
 
             ResultSet result = statement.executeQuery();
@@ -121,11 +144,12 @@ public class DatabaseManager
         catch(SQLException exception)
         {
             System.out.println("[DatabaseManager::execute] -> [ERROR] -> conn.prepareStatement failed <!> ");
+            exception.printStackTrace();
             return null;
         }
     }
 
-    public Employee executeLogin(SQLQueries query, List<String> args)
+    public Employee executeLogin(SQLQueries query, List<Object> args)
     {
         ResultSet placeholder = execute(query, args);
 
@@ -147,6 +171,9 @@ public class DatabaseManager
                 String loaded_last_name = placeholder.getString("last_name_");
                 int loaded_employee_id = placeholder.getInt("employee_id_");
 
+                // Here we need Calendar/Months associated with this exact Employee ?
+
+                // A path for login has been made <!>
                 return new Employee(loaded_first_name, loaded_last_name, loaded_employee_id);
             }
             else
@@ -161,17 +188,18 @@ public class DatabaseManager
         }
     }
 
-    public Employee executeRegistration(SQLQueries query, List<String> args)
+    public Employee executeRegistration(SQLQueries query, List<Object> args)
     {
       // Args come in this order -> FirstName -> LastName -> Username -> Password <!>
       // Args are essentially always in the SQL variable order
 
-        String first_name = args.get(0);
-        String last_name = args.get(1);
-        String username = args.get(2);
-        String password = args.get(3);
+        Integer total_hours = (Integer) args.get(0);
+        String first_name = (String) args.get(1);
+        String last_name = (String) args.get(2);
+        String username = (String) args.get(3);
+        String password = (String) args.get(4);
 
-        List<String> login_args = new ArrayList<>();
+        List<Object> login_args = new ArrayList<>();
         login_args.add(username);
         login_args.add(password);
 

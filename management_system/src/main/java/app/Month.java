@@ -45,13 +45,14 @@ public class Month
     {
         this.type_ = type;
         this.total_hours_this_month_ = 0;
-
         this.days_ = new ArrayList<>();
-        for(int index = 0; index < this.type_.getAmountOfDays(); index++)
-        {
-            // This Day CTOR is tmp
-            this.days_.add(index, new Day());
-        }
+    }
+
+    Month(String loaded_type, List<Day> loaded_days, Integer total_hours_this_month)
+    {
+        this.type_ = MonthType.valueOf(loaded_type);
+        this.days_ = loaded_days;
+        this.total_hours_this_month_ = total_hours_this_month;
     }
 
     // Need one CTOR for loading from DB

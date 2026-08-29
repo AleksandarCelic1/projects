@@ -28,3 +28,12 @@ CREATE TABLE Month
     hours_worked_               INTEGER             NOT NULL,
     month_type_                 VARCHAR(32)         NOT NULL,
 );
+
+CREATE TABLE Day
+(
+    day_id_                     SERIAL              PRIMARY KEY,
+    month_id_                   INTEGER             NOT NULL REFERENCES  Month(month_id_),
+    time_worked_                INTEGER             NOT NULL,
+    date_                       DATE                NOT NULL,
+    type_                       VARCHAR(32)         NOT NULL
+);

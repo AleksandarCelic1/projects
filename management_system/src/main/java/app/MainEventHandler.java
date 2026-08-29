@@ -412,14 +412,11 @@ public class MainEventHandler extends Application
             Employee employee = db.executeLogin(DatabaseManager.SQLQueries.LOGIN_QUERY, args);
             if(employee != null)
             {
+                this.account_ = employee;
+                updateHomeScreen();
                 stage.setScene(this.scenes_.get(Screens.HOME_SCREEN));
 
             }
-
-
-
-
-
         });
 
         return_button.setOnAction( event ->

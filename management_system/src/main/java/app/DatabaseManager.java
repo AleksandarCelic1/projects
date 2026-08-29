@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -25,11 +27,13 @@ public class DatabaseManager
     /* In Java's PostgreSQL API, we use ? for values in query strings and not $1 like in libpq C++ */
     public enum SQLQueries
     {
-        LOGIN_QUERY("SELECT * FROM Employee WHERE username_ = ? AND password_ = ?;", 2),
-        REGISTRATION_QUERY("INSERT INTO Employee (total_hours_worked_, first_name_, last_name_, username_, password_) " +
-                                    "VALUES (?, ?, ?, ?, ?) RETURNING employee_id_;", 5),
+        LOGIN_QUERY(            "SELECT * FROM Employee WHERE username_ = ? AND password_ = ?;", 2),
+        REGISTRATION_QUERY(     "INSERT INTO Employee (total_hours_worked_, first_name_, last_name_, username_, password_) " +
+                                         "VALUES (?, ?, ?, ?, ?) RETURNING employee_id_;", 5),
 
-        GETTER_CALENDAR_QUERY("SELECT * From Calendar WHERE Calendar.employee_id = ?;", 1);
+        GETTER_CALENDAR_QUERY(  "SELECT * FROM Calendar WHERE employee_id_ = ?;", 1),
+        GETTER_MONTHS_QUERY(    "SELECT * FROM Months WHERE calendar_id_ = ?;", 1),
+        GETTER_DAYS_QUERY(      "SELECT * FROM Day WHERE month_id_ = ?;", 1);
 
         private final String sql_string_;
         private final Integer argc_;
@@ -171,10 +175,15 @@ public class DatabaseManager
                 String loaded_last_name = placeholder.getString("last_name_");
                 int loaded_employee_id = placeholder.getInt("employee_id_");
 
-                // Here we need Calendar/Months associated with this exact Employee ?
 
-                // A path for login has been made <!>
-                return new Employee(loaded_first_name, loaded_last_name, loaded_employee_id);
+                List<Calendar> loaded_calendars = executeCalendarGetter(SQLQueries.GETTER_CALENDAR_QUERY, List.of(loaded_employee_id));
+                if(loaded_calendars == null)
+                {
+                    System.out.println("[DatabaseManager::executeLogin] -> [ERROR] -> Getter Calendar failed, stoping Login Request");
+                    return null;
+                }
+
+                return new Employee(loaded_first_name, loaded_last_name, loaded_employee_id, loaded_calendars);
             }
             else
             {
@@ -238,6 +247,143 @@ public class DatabaseManager
           System.out.println("[DatabaseManager::executeLogin] -> [CAUGHT] -> Exception caught <!> ");
           return null;
         }
+    }
+
+    private List<Calendar> executeCalendarGetter(SQLQueries query, List<Object> args)
+    {
+        ResultSet placeholder = execute(query, args);
+
+        if(placeholder == null)
+        {
+            /* Execute already explains why did the query fail <!> */
+            return null;
+        }
+
+
+        List<Calendar> loaded_calendars = new ArrayList<>();
+
+        try
+        {
+            while(placeholder.next())
+            {
+                Integer loaded_calendar_id        =     placeholder.getInt("calendar_id_");
+                Integer loaded_year               =     placeholder.getInt("year_");
+                Integer loaded_total_hours_worked =     placeholder.getInt("total_hours_worked_");
+
+                // Need to Call executeMonthGetter <!>
+
+                List<Month> loaded_months = executeMonthGetter(SQLQueries.GETTER_MONTHS_QUERY, List.of(loaded_calendar_id));
+                if(loaded_months == null)
+                {
+                    System.out.println("[DatabaseManager::executeCalendarGetter] -> [ERROR] -> Month Getter failed, Calendar Getter is stopped <!> ");
+                    return null;
+                }
+
+                Calendar tmp = new Calendar(loaded_year, loaded_total_hours_worked, loaded_months);
+                loaded_calendars.add(tmp);
+
+            }
+
+        }
+        catch (SQLException e)
+        {
+            System.out.println("[DatabaseManager::executeCalendarGetter] -> [ERROR] -> Exception Caught <!> ");
+            e.printStackTrace();
+            return null;
+        }
+
+
+        return loaded_calendars;
+    }
+
+    private List<Month> executeMonthGetter(SQLQueries query, List<Object> args)
+    {
+        ResultSet placeholder = execute(query, args);
+
+        if(placeholder == null)
+        {
+            /* Execute already explains why did the query fail <!> */
+            return null;
+        }
+
+        // here you need to get a list of months for each calendar call <!>
+        // then for each month you take you need to take the DAY, becasue each month is constructed of list of days <!>
+
+        List<Month> loaded_months = new ArrayList<>();
+
+        try
+        {
+            while(placeholder.next())
+            {
+                Integer loaded_month_id         =       placeholder.getInt("month_id_");
+                Integer loaded_hours_worked     =       placeholder.getInt("hours_worked_");
+                String  loaded_month_type       =       placeholder.getString("month_type_");
+
+
+                // This can get converted later in Month CTOR <!>
+
+                List<Day> loaded_days = executeDaysGetter(SQLQueries.GETTER_DAYS_QUERY, List.of(loaded_month_id));
+                if(loaded_days == null)
+                {
+                    System.out.println("[DatabaseManager::executeCalendarGetter] -> [ERROR] -> Day Getter failed, Month Getter is stopped <!> ");
+                    return null;
+                }
+
+                Month tmp = new Month(loaded_month_type, loaded_days, loaded_hours_worked);
+                loaded_months.add(tmp);
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("[DatabaseManager::executeMonthGetter] -> [ERROR] -> Exception Caught <!> ");
+            e.printStackTrace();
+            return null;
+        }
+
+
+        return loaded_months;
+    }
+
+
+    private List<Day> executeDaysGetter(SQLQueries query, List<Object> args)
+    {
+        ResultSet placeholder = execute(query, args);
+
+        if(placeholder == null)
+        {
+            /* Execute already explains why did the query fail <!> */
+            return null;
+        }
+
+
+        List<Day> loaded_days = new ArrayList<>();
+
+        try
+        {
+            while(placeholder.next())
+            {
+                Integer   loaded_time_worked = placeholder.getInt("time_worked_");
+                LocalDate loaded_date = placeholder.getObject("date_", LocalDate.class);
+                DayOfWeek loaded_day_type = DayOfWeek.valueOf(placeholder.getString("type_"));
+
+                Day tmp = new Day(loaded_day_type, loaded_date, loaded_time_worked);
+                if(tmp == null)
+                {
+                    System.out.println("[DatabaseManager::executeDaysGetter] -> [ERROR] -> Day Creation failed, Day Getter is stopped <!> ");
+                    return null;
+                }
+
+                loaded_days.add(tmp);
+
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println("[DatabaseManager::executeDaysGetter] -> [ERROR] -> Exception Caught <!> ");
+            e.printStackTrace();
+        }
+
+        return loaded_days;
     }
 }
 

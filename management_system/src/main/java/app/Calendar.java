@@ -36,7 +36,11 @@ public class Calendar
     {
         this.year_ = loaded_year;
         this.total_hours_worked_ = loaded_total_hours_worked;
+
+        this.months_ = new ArrayList<>(); // is this needed ?
         this.months_ = loaded_months;
+
+        this.current_month_ = this.months_.get(0);
     }
 }
 

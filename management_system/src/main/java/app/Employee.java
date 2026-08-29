@@ -26,9 +26,8 @@ public class Employee
         this.last_name_ = loaded_last_name;
         this.id_ = loaded_employee_id;
 
-        this.calendars_ = new ArrayList<>();
         this.calendars_ = calendars;
-        this.calendar_in_use_ = this.calendars_.get(0);
+        // this.calendar_in_use_ = this.calendars_.get(0);
 
     }
 

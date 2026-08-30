@@ -20,7 +20,12 @@ public class Dimensions
         HOME_RETURN_BUTTON_WIDTH(50),
         HOME_RETURN_BUTTON_HEIGHT(20),
         HOME_PLUS_BUTTON_WIDTH(200),
-        HOME_PLUS_BUTTON_HEIGHT(50);
+        HOME_PLUS_BUTTON_HEIGHT(50),
+
+        WORK_SESSION_RETURN_BUTTON_WIDTH(50),
+        WORK_SESSION_RETURN_BUTTON_HEIGHT(200),
+        WORK_SESSION_SAVE_BUTTON_WIDTH(200),
+        WORK_SESSION_SAVE_BUTTON_HEIGHT(200);
 
         private final int value_;
 
@@ -66,6 +71,24 @@ public class Dimensions
         }
     }
 
+    public enum SpinnerDimensions
+    {
+        WORK_SESSION_SPINNER_WIDTH(200),
+        WORK_SESSION_SPINNER_HEIGHT(50);
+
+        private final int value_;
+
+        SpinnerDimensions(int value)
+        {
+            this.value_ = value;
+        }
+
+        public int getValue()
+        {
+            return this.value_;
+        }
+    }
+
     public enum ScreenDimensions
     {
         AUTH_SCREEN_WIDTH(600),
@@ -75,7 +98,9 @@ public class Dimensions
         REGISTRATION_SCREEN_WIDTH(600),
         REGISTRATION_SCREEN_HEIGHT(800),
         HOME_SCREEN_WIDTH(600),
-        HOME_SCREEN_HEIGHT(800);
+        HOME_SCREEN_HEIGHT(800),
+        WORK_SESSION_WIDTH(600),
+        WORK_SESSION_HEIGHT(800);
 
         private final int value_;
 

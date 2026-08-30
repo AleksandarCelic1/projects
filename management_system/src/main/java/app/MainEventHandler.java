@@ -8,10 +8,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -25,6 +22,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,8 @@ public class MainEventHandler extends Application
         AUTHENTICATION_SCREEN,
         LOGIN_SCREEN,
         REGISTRATION_SCREEN,
-        HOME_SCREEN
+        HOME_SCREEN,
+        WORK_SESSION_SCREEN
     }
 
     /*
@@ -53,23 +53,33 @@ public class MainEventHandler extends Application
     {
         AUTH_LOGIN_BUTTON,
         AUTH_REGISTRATION_BUTTON,
+
         LOGIN_LOGIN_BUTTON,
         LOGIN_RETURN_BUTTON,
+
         REGISTRATION_REGISTER_BUTTON,
         REGISTRATION_RETURN_BUTTON,
+
         HOME_RETURN_BUTTON,
-        HOME_PLUS_BUTTON
+        HOME_PLUS_BUTTON,
+
+        WORK_SESSION_RETURN_BUTTON,
+        WORK_SESSION_SAVE_BUTTON
     }
 
     public enum TextFields
     {
         LOGIN_USERNAME_TXT_PLACEHOLDER,
         LOGIN_PASSWORD_TXT_PLACEHOLDER,
+
         REGISTER_FIRST_NAME_TXT_PLACEHOLDER,
         REGISTER_LAST_NAME_TXT_PLACEHOLDER,
+
         REGISTRATION_USERNAME_TXT_PLACEHOLDER,
         REGISTRATION_PASSWORD_TXT_PLACEHOLDER,
-        REGISTRATION_PASSWORD_CONFIRMATION_TXT_PLACEHOLDER
+        REGISTRATION_PASSWORD_CONFIRMATION_TXT_PLACEHOLDER,
+
+
     }
 
     public enum Texts
@@ -78,13 +88,22 @@ public class MainEventHandler extends Application
         HOME_SCREEN_STATS
     }
 
+    public enum Spinners
+    {
+        WORK_SESSION_START_TIME_HOURS_SPINNER,
+        WORK_SESSION_START_TIME_MINUTE_SPINNER,
+        WORK_SESSION_END_TIME_HOURS_SPINNER,
+        WORK_SESSION_END_TIME_MINUTE_SPINNER
+    }
+
     private DatabaseManager db;
     private Employee account_;
     private Map<Screens, Scene> scenes_;
     private Map<Buttons, Button> buttons_;
     private Map<TextFields, TextField> text_placeholders_;
     private Map<Texts, Text> texts_;
-
+    private Map<Spinners, Spinner<Integer>> spinners_;
+    private DatePicker picker_;
 
     /* There is no need for another map that maps Pane's because we can retrieve it from Scenes <!> */
 
@@ -101,6 +120,7 @@ public class MainEventHandler extends Application
         buttons_ = new HashMap<>();
         text_placeholders_ = new HashMap<>();
         texts_ = new HashMap<>();
+        spinners_ = new HashMap<>();
         account_ = new Employee("John", "Doe", -1);
 
         // Initial Authentication Screen <!>
@@ -108,6 +128,7 @@ public class MainEventHandler extends Application
         initLoginScene();
         initRegistrationScene();
         initHomeScene();
+        initWorkSessionScene();
 
     }
 
@@ -376,6 +397,127 @@ public class MainEventHandler extends Application
 
     }
 
+    private void initWorkSessionScene()
+    {
+        Pane root = new Pane();
+        int work_session_screen_w = Dimensions.ScreenDimensions.WORK_SESSION_WIDTH.getValue();
+        int work_session_screen_h = Dimensions.ScreenDimensions.WORK_SESSION_HEIGHT.getValue();
+
+        Scene work_session_scene = new Scene(root, work_session_screen_w, work_session_screen_h);
+
+        // Creation <!>
+        Text add_work_session       = new Text("Add Work Session");
+        Text date                   = new Text("Date:");
+        Text start_time             = new Text("Start Time:");
+        Text end_time               = new Text("End Time:");
+        Text start_time_semicolon   = new Text(":");
+        Text end_time_semicolon     = new Text(":");
+        DatePicker date_picker      = new DatePicker();
+
+        Spinner<Integer> start_time_hours       = new Spinner<>(0, 23, 12);
+        Spinner<Integer> start_time_minutes     = new Spinner<>(0, 59, 30);
+
+        Spinner<Integer> end_time_hours         = new Spinner<>(0, 23, 12);
+        Spinner<Integer> end_time_minutes       = new Spinner<>(0, 59, 30);
+
+        Button return_button        = new Button("←");
+        Button save_session_button  = new Button("Save Session");
+
+
+        // Dimensions <!>
+        add_work_session.setFont(Font.font(     "Arial", FontWeight.BOLD, 32));
+        date.setFont(Font.font(                 "Arial", FontWeight.BOLD, 20));
+        start_time.setFont(Font.font(           "Arial", FontWeight.BOLD, 20));
+        start_time_semicolon.setFont(Font.font( "Arial", FontWeight.BOLD, 20));
+        end_time.setFont(Font.font(             "Arial", FontWeight.BOLD, 20));
+        end_time_semicolon.setFont(Font.font(   "Arial", FontWeight.BOLD, 20));
+
+        start_time_hours.setPrefWidth(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_WIDTH.getValue());
+        start_time_hours.setPrefHeight(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_HEIGHT.getValue());
+
+        start_time_minutes.setPrefWidth(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_WIDTH.getValue());
+        start_time_minutes.setPrefHeight(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_HEIGHT.getValue());
+
+        end_time_hours.setPrefWidth(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_WIDTH.getValue());
+        end_time_hours.setPrefHeight(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_HEIGHT.getValue());
+
+        end_time_minutes.setPrefWidth(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_WIDTH.getValue());
+        end_time_minutes.setPrefHeight(Dimensions.SpinnerDimensions.WORK_SESSION_SPINNER_HEIGHT.getValue());
+
+        return_button.setPrefWidth(Dimensions.ButtonDimensions.WORK_SESSION_RETURN_BUTTON_WIDTH.getValue());
+        return_button.setPrefHeight(Dimensions.ButtonDimensions.WORK_SESSION_RETURN_BUTTON_HEIGHT.getValue());
+
+        save_session_button.setPrefWidth(Dimensions.ButtonDimensions.WORK_SESSION_SAVE_BUTTON_WIDTH.getValue());
+        save_session_button.setPrefHeight(Dimensions.ButtonDimensions.WORK_SESSION_SAVE_BUTTON_HEIGHT.getValue());
+
+
+        // Coords <!>
+
+        return_button.setLayoutX(20);
+        return_button.setLayoutY(20);
+
+        add_work_session.setLayoutX(20);
+        add_work_session.setLayoutY(50);
+
+        date.setLayoutX(20);
+        date.setLayoutY(100);
+
+        date_picker.setLayoutX(date.getLayoutX() + date.getLayoutBounds().getWidth()); // MAYBE ADD + 5
+        date_picker.setLayoutY(date.getLayoutY());
+
+        start_time.setLayoutX(20);
+        start_time.setLayoutY(150);
+
+        start_time_hours.setLayoutX(start_time.getLayoutX() + start_time.getLayoutBounds().getWidth());
+        start_time_hours.setLayoutY(start_time.getLayoutY());
+
+        start_time_semicolon.setLayoutX(start_time_hours.getLayoutX() + start_time_hours.getLayoutBounds().getWidth());
+        start_time_semicolon.setLayoutY(start_time.getLayoutY());
+
+        start_time_minutes.setLayoutX(start_time_semicolon.getLayoutX() + start_time_semicolon.getLayoutBounds().getWidth());
+        start_time_minutes.setLayoutY(start_time.getLayoutY());
+
+
+        end_time.setLayoutX(20);
+        end_time.setLayoutY(200);
+
+        end_time_hours.setLayoutX(end_time.getLayoutX() + end_time.getLayoutBounds().getWidth());
+        end_time_hours.setLayoutY(end_time.getLayoutY());
+
+        end_time_semicolon.setLayoutX(end_time_hours.getLayoutX() + end_time_hours.getLayoutBounds().getWidth());
+        end_time_semicolon.setLayoutY(end_time.getLayoutY());
+
+        end_time_minutes.setLayoutX(end_time_semicolon.getLayoutX() + end_time_semicolon.getLayoutBounds().getWidth());
+        end_time_minutes.setLayoutY(end_time.getLayoutY());
+
+        save_session_button.setLayoutX(Utility.centerX(0, work_session_screen_w, (int)save_session_button.getPrefWidth()));
+        save_session_button.setLayoutY(250);
+
+        // Adding
+
+        root.getChildren().addAll(
+                return_button, add_work_session, date,
+                date_picker, start_time, start_time_hours,
+                start_time_semicolon, start_time_minutes,
+                end_time, end_time_hours, end_time_semicolon,
+                end_time_minutes, save_session_button
+        );
+
+        this.scenes_.put(Screens.WORK_SESSION_SCREEN, work_session_scene);
+        this.buttons_.put(Buttons.WORK_SESSION_RETURN_BUTTON, return_button);
+        this.buttons_.put(Buttons.WORK_SESSION_SAVE_BUTTON, save_session_button);
+        this.spinners_.put(Spinners.WORK_SESSION_START_TIME_HOURS_SPINNER, start_time_hours);
+        this.spinners_.put(Spinners.WORK_SESSION_START_TIME_MINUTE_SPINNER, start_time_minutes);
+        this.spinners_.put(Spinners.WORK_SESSION_END_TIME_HOURS_SPINNER, end_time_hours);
+        this.spinners_.put(Spinners.WORK_SESSION_END_TIME_MINUTE_SPINNER, end_time_minutes);
+        this.picker_ = date_picker;
+
+
+
+
+
+    }
+
     private void handleClickAuthScreen(Stage stage)
     {
         Button login_button = this.buttons_.get(Buttons.AUTH_LOGIN_BUTTON);
@@ -491,6 +633,44 @@ public class MainEventHandler extends Application
         plus_button.setOnAction(event ->
         {
             // Not yet implemented <!>
+        });
+    }
+
+    private void handleClickWorkSessionScreen(Stage stage)
+    {
+        Spinner<Integer> start_time_hours        = this.spinners_.get(Spinners.WORK_SESSION_START_TIME_HOURS_SPINNER);
+        Spinner<Integer>  start_time_minutes      = this.spinners_.get(Spinners.WORK_SESSION_START_TIME_MINUTE_SPINNER);
+        Spinner<Integer>  end_time_hours          = this.spinners_.get(Spinners.WORK_SESSION_END_TIME_HOURS_SPINNER);
+        Spinner<Integer>  end_time_minutes        = this.spinners_.get(Spinners.WORK_SESSION_END_TIME_MINUTE_SPINNER);
+
+        Button return_button            = this.buttons_.get(Buttons.WORK_SESSION_RETURN_BUTTON);
+        Button save_session_button      = this.buttons_.get(Buttons.WORK_SESSION_SAVE_BUTTON);
+
+
+        return_button.setOnAction(event -> {
+            stage.setScene(this.scenes_.get(Screens.HOME_SCREEN));
+        });
+
+        save_session_button.setOnAction(event -> {
+
+            LocalDate date = this.picker_.getValue();
+
+            LocalTime start_time = LocalTime.of(
+                    start_time_hours.getValue(),
+                    start_time_minutes.getValue()
+            );
+
+            LocalTime end_time = LocalTime.of(
+                    end_time_hours.getValue(),
+                    end_time_minutes.getValue()
+            );
+
+
+            // Query to modify the Customer repository
+            // OR
+            // Just modify it locally and on the exit run a script that saves the customer repository
+            // to make the application faster ?
+
         });
     }
 

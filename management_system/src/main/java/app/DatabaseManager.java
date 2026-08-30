@@ -2,7 +2,6 @@ package app;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -27,13 +26,21 @@ public class DatabaseManager
     /* In Java's PostgreSQL API, we use ? for values in query strings and not $1 like in libpq C++ */
     public enum SQLQueries
     {
-        LOGIN_QUERY(            "SELECT * FROM Employee WHERE username_ = ? AND password_ = ?;", 2),
-        REGISTRATION_QUERY(     "INSERT INTO Employee (total_hours_worked_, first_name_, last_name_, username_, password_) " +
-                                         "VALUES (?, ?, ?, ?, ?) RETURNING employee_id_;", 5),
+        LOGIN_QUERY(                "SELECT * FROM Employee WHERE username_ = ? AND password_ = ?;", 2),
+        REGISTRATION_QUERY(         "INSERT INTO Employee (total_hours_worked_, first_name_, last_name_, username_, password_) " +
+                                             "VALUES (?, ?, ?, ?, ?) RETURNING employee_id_;", 5),
 
-        GETTER_CALENDAR_QUERY(  "SELECT * FROM Calendar WHERE employee_id_ = ?;", 1),
-        GETTER_MONTHS_QUERY(    "SELECT * FROM Months WHERE calendar_id_ = ?;", 1),
-        GETTER_DAYS_QUERY(      "SELECT * FROM Day WHERE month_id_ = ?;", 1);
+        GETTER_CALENDARS_QUERY(     "SELECT * FROM Calendar WHERE employee_id_ = ?;", 1),
+        GETTER_MONTHS_QUERY(        "SELECT * FROM Months   WHERE calendar_id_ = ?;", 1),
+        GETTER_DAYS_QUERY(          "SELECT * FROM Day      WHERE month_id_ = ?;", 1),
+
+        INSERT_CALENDAR_QUERY(      "INSERT INTO Calendar   (employee_id_, year_, total_hours_worked_)  VALUES (?, ?, ?)    RETURNING calendar_id_;", 3),
+        INSERT_MONTH_QUERY(         "INSERT INTO Month      (calendar_id_, hours_worked_, month_type_)  VALUES (?, ?, ?)    RETURNING month_id_;", 3),
+        INSERT_DAY_QUERY(           "INSERT INTO Day        (month_id_, time_worked_, date_, type_)     VALUES (?, ?, ?, ?) RETURNING day_id_;", 4),
+
+        MODIFIER_CALENDAR_QUERY(    "UPDATE Calendar SET total_hours_worked_ = ? WHERE calendar_id_ = ?;", 2),
+        MODIFIER_MONTH_QUERY(       "UPDATE Month    SET hours_worked_ = ?       WHERE month_id_ = ?;", 2),
+        MODIFIER_DAY_QUERY(         "UPDATE Day      SET time_worked_ = ?        WHERE day_id_ = ?;", 2);
 
         private final String sql_string_;
         private final Integer argc_;
@@ -176,7 +183,7 @@ public class DatabaseManager
                 int loaded_employee_id = placeholder.getInt("employee_id_");
 
 
-                List<Calendar> loaded_calendars = executeCalendarGetter(SQLQueries.GETTER_CALENDAR_QUERY, List.of(loaded_employee_id));
+                List<Calendar> loaded_calendars = executeCalendarGetter(SQLQueries.GETTER_CALENDARS_QUERY, List.of(loaded_employee_id));
                 if(loaded_calendars == null)
                 {
                     System.out.println("[DatabaseManager::executeLogin] -> [ERROR] -> Getter Calendar failed, stoping Login Request");
@@ -279,7 +286,7 @@ public class DatabaseManager
                     return null;
                 }
 
-                Calendar tmp = new Calendar(loaded_year, loaded_total_hours_worked, loaded_months);
+                Calendar tmp = new Calendar(loaded_calendar_id, loaded_year, loaded_total_hours_worked, loaded_months);
                 loaded_calendars.add(tmp);
 
             }
@@ -344,7 +351,6 @@ public class DatabaseManager
         return loaded_months;
     }
 
-
     private List<Day> executeDaysGetter(SQLQueries query, List<Object> args)
     {
         ResultSet placeholder = execute(query, args);
@@ -362,9 +368,9 @@ public class DatabaseManager
         {
             while(placeholder.next())
             {
-                Integer   loaded_time_worked = placeholder.getInt("time_worked_");
-                LocalDate loaded_date = placeholder.getObject("date_", LocalDate.class);
-                DayOfWeek loaded_day_type = DayOfWeek.valueOf(placeholder.getString("type_"));
+                Double  loaded_time_worked      = placeholder.getDouble("time_worked_");
+                LocalDate loaded_date           = placeholder.getObject("date_", LocalDate.class);
+                DayOfWeek loaded_day_type       = DayOfWeek.valueOf(placeholder.getString("type_"));
 
                 Day tmp = new Day(loaded_day_type, loaded_date, loaded_time_worked);
                 if(tmp == null)
@@ -385,6 +391,9 @@ public class DatabaseManager
 
         return loaded_days;
     }
+
+
 }
+
 
 

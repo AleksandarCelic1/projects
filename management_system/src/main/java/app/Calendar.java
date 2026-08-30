@@ -8,6 +8,7 @@ import lombok.Data;
 public class Calendar
 {
     private final Integer year_;
+    private final Integer id_;
     private Integer total_hours_worked_;
     private List<Month> months_;
     private Month current_month_;
@@ -32,14 +33,12 @@ public class Calendar
         this.current_month_ = months_.get(0);
     }
 
-    Calendar(int loaded_year, int loaded_total_hours_worked , List<Month> loaded_months)
+    Calendar(int loaded_calendar_id, int loaded_year, int loaded_total_hours_worked , List<Month> loaded_months)
     {
+        this.id_ = loaded_calendar_id;
         this.year_ = loaded_year;
         this.total_hours_worked_ = loaded_total_hours_worked;
-
-        this.months_ = new ArrayList<>(); // is this needed ?
         this.months_ = loaded_months;
-
         this.current_month_ = this.months_.get(0);
     }
 }

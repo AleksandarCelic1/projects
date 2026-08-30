@@ -3,38 +3,46 @@ package app;
 import javafx.scene.control.DatePicker;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAmount;
 import java.util.Date;
 
 public class Day
 {
     private final DayOfWeek type_;
     private final LocalDate date_;
-    private final Integer time_worked_;
+    private final Double time_worked_;
 
 
     // Control Path for creating initially Day objects.
-    Day(DatePicker picker, Integer started_work, Integer ended_work)
+    Day(LocalDate date, LocalTime started_work, LocalTime ended_work)
     {
-        this.date_ = picker.getValue();
+        this.date_ = date;
         this.type_ = this.date_.getDayOfWeek();
-        this.time_worked_ = calculateTimeWorked(started_work, ended_work);
+
+        Long calculated_minutes = calculateTimeWorked(started_work, ended_work);
+
+        int hours = calculated_minutes.intValue() / 60;
+        int minutes = calculated_minutes.intValue() % 60;
+
+        this.time_worked_ = hours + (minutes / 60.0);
+
+
     }
 
     // Control Path for loading Day objects from DB.
-    Day(DayOfWeek loaded_type, LocalDate loaded_date, Integer time_worked_)
+    Day(DayOfWeek loaded_type, LocalDate loaded_date, Double time_worked_)
     {
         this.type_ = loaded_type;
         this.date_ = loaded_date;
         this.time_worked_ = time_worked_;
     }
 
-    private Integer calculateTimeWorked(Integer start, Integer end)
+    private Long calculateTimeWorked(LocalTime start, LocalTime end)
     {
-        /* Yet to be implemented <!> */
-        return 0;
+        Duration duration = Duration.between(start, end).abs();
+        return duration.toMinutes();
     }
-
-
-
 }

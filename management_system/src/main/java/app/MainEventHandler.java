@@ -144,6 +144,9 @@ public class MainEventHandler extends Application
         handleClickLoginScreen(stage);
         handleClickRegistrationScreen(stage);
         handleClickHomeScreen(stage);
+        handleClickWorkSessionScreen(stage);
+
+
         // Handle also click for closure
         // So we can execute a save
         // and then let the user exit <!>
@@ -606,6 +609,11 @@ public class MainEventHandler extends Application
                 Employee new_employee = db.executeRegistration(DatabaseManager.SQLQueries.REGISTRATION_QUERY, args);
                 if(new_employee != null)
                 {
+                    /*
+                        Insert 3 Calendars
+                        Insert Each Calendars Months <!>
+                    */
+
                   this.account_ = new_employee;
                   this.updateHomeScreen();
                   stage.setScene(this.scenes_.get(Screens.HOME_SCREEN));
@@ -632,7 +640,7 @@ public class MainEventHandler extends Application
 
         plus_button.setOnAction(event ->
         {
-            // Not yet implemented <!>
+            stage.setScene(this.scenes_.get(Screens.WORK_SESSION_SCREEN));
         });
     }
 
@@ -664,6 +672,8 @@ public class MainEventHandler extends Application
                     end_time_hours.getValue(),
                     end_time_minutes.getValue()
             );
+
+
 
 
             // Query to modify the Customer repository
